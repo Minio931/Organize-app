@@ -1,9 +1,9 @@
 const Pool = require("pg").Pool;
 const pool = new Pool({
   user: "minio",
-  host: "localhost",
-  database: "postgres",
-  password: "root",
+  host: "postgresql-minio.alwaysdata.net",
+  database: "minio_organize_app",
+  password: "adminroot",
   port: 5432,
 });
 

@@ -1,0 +1,99 @@
+.display {
+  font-size: var(--display-font-size);
+  font-weight: bold;
+}
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+  margin-top: 10rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.name_input {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.name_input .input input {
+  width: 8.7rem;
+}
+
+.input input {
+  padding: 0.5rem;
+  border-radius: 0.3rem;
+  border: 1px solid var(--black-25);
+  width: 20rem;
+  height: 1.5rem;
+  outline: none;
+  box-shadow: 3px 3px 3px var(--black-25);
+}
+
+.input input::placeholder,
+.name_input input::placeholder {
+  color: var(--black-25);
+}
+
+.input label,
+.name_input label {
+  font-size: 0.9em;
+  color: var(--black-50);
+}
+
+.form_action {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.form_action button {
+  width: 7rem;
+  height: 2.2rem;
+  border-radius: 0.3rem;
+  font-size: 1rem;
+  border: none;
+  background-color: var(--primary-color);
+  color: var(--white);
+  box-shadow: 3px 3px 3px var(--black-25);
+  cursor: pointer;
+}
+
+.form_action button:hover {
+  background-color: var(--secondary-color);
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 1rem;
+  width: 7rem;
+  height: 2.2rem;
+  border-radius: 0.3rem;
+  border: none;
+  background-color: var(--black-50);
+  color: var(--white);
+  box-shadow: 3px 3px 3px var(--black-25);
+  cursor: pointer;
+}
+
+.login:hover {
+  background-color: var(--black-25);
+}

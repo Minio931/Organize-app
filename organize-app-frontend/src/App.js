@@ -2,10 +2,11 @@ import "./App.css";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./pages/Root";
-import HomePage from "./pages/Home";
+import LoginPage from "./pages/Login";
 import HabitTrackerPage from "./pages/HabitTracker";
 import TodoPage from "./pages/Todo";
 import BudgetPage from "./pages/Budget";
+import RegisterPage from "./pages/Register";
 
 const Router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const Router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <HomePage />,
+        element: <LoginPage />,
       },
       {
         path: "/habit-tracker",
@@ -27,6 +28,10 @@ const Router = createBrowserRouter([
       {
         path: "/budget",
         element: <BudgetPage />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />,
       },
     ],
   },
