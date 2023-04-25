@@ -7,6 +7,9 @@ import HabitTrackerPage from "./pages/HabitTracker";
 import TodoPage from "./pages/Todo";
 import BudgetPage from "./pages/Budget";
 import RegisterPage from "./pages/Register";
+import { action as registerUser } from "./components/RegisterForm";
+import { action as loginUser } from "./components/LoginForm";
+import DashboardPage from "./pages/Dashboard";
 
 const Router = createBrowserRouter([
   {
@@ -16,6 +19,7 @@ const Router = createBrowserRouter([
       {
         index: true,
         element: <LoginPage />,
+        action: loginUser,
       },
       {
         path: "/habit-tracker",
@@ -32,6 +36,11 @@ const Router = createBrowserRouter([
       {
         path: "/register",
         element: <RegisterPage />,
+        action: registerUser,
+      },
+      {
+        path: "/dashboard",
+        element: <DashboardPage />,
       },
     ],
   },

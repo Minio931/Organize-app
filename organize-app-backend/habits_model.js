@@ -9,7 +9,7 @@ const pool = new Pool({
 
 const getHabits = (request, response) => {
   return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM habits", (error, results) => {
+    pool.query("SELECT * FROM users", (error, results) => {
       if (error) {
         reject(error);
       }
