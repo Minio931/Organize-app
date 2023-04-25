@@ -106,11 +106,11 @@ export default RegisterForm;
 export async function action({ request, params }) {
   const user = await request.formData();
   const userData = {
-    firstName: user.get("firstName"),
-    lastName: user.get("lastName"),
     username: user.get("username"),
     email: user.get("email"),
     password: user.get("password"),
+    firstName: user.get("firstName"),
+    lastName: user.get("lastName"),
   };
 
   console.log(userData);
@@ -130,5 +130,5 @@ export async function action({ request, params }) {
     throw json({ message: "Something went wrong" }, { status: 500 });
   }
 
-  return redirect("/login");
+  return redirect("/");
 }

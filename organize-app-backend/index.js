@@ -22,6 +22,14 @@ app.options("/register", (req, res) => {
   res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
   res.status(200).send();
 });
+
+app.options("/login", (req, res) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+  res.status(200).send();
+});
+
 app.post("/register", (req, res) => {
   user_model
     .createUser(req.body)
@@ -33,6 +41,19 @@ app.post("/register", (req, res) => {
       res.status(500).send(error);
     });
 });
+
+app.post("/login", (req, res) => {
+  user_model
+    .getUser(req)
+    .then((response) => {
+      console.log(req.body);
+      res.status(200).send(response);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 app.get("/", (req, res) => {
   habits_model
     .getHabits()

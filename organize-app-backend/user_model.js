@@ -7,15 +7,20 @@ const pool = new Pool({
   port: 5432,
 });
 
-const getHabits = (request, response) => {
+const getUser = (request, response) => {
+  const { login, password } = request.body;
   return new Promise((resolve, reject) => {
-    pool.query("SELECT * FROM habits", (error, results) => {
-      if (error) {
-        reject(error);
+    pool.query(
+      "SELECT email, username, password FROM users WHERE (email=$1 OR username=$2) AND password=$3 ",
+      [login, login, password],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        }
+        console.log(results);
+        resolve(results.rows);
       }
-      console.log(results);
-      resolve(results.rows);
-    });
+    );
   });
 };
 
@@ -23,18 +28,16 @@ const createUser = (body) => {
   return new Promise((resolve, reject) => {
     const { username, email, password, firstName, lastName } = body;
     pool.query(
-      "INSERT INTO users (username, email, password, firstName, lastName) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      "INSERT INTO users (username, email, password, firstname, lastname) VALUES ($1, $2, $3, $4, $5) RETURNING *",
       [username, email, password, firstName, lastName],
       (error, results) => {
         if (error) {
           reject(error);
         }
+        console.log("results: ", results);
+        console.log("Error: ", error);
 
-        if (results.rows && results.rows[0]) {
-          resolve(`A new user has been added added: ${results.rows[0]}`);
-        } else {
-          reject(new Error("No rows returned from database"));
-        }
+        resolve(`A new user has been added added: ${results.rows[0]}`);
       }
     );
   });
@@ -53,6 +56,7 @@ const deleteUser = (request, response) => {
 };
 
 module.exports = {
+  getUser,
   createUser,
   deleteUser,
 };
