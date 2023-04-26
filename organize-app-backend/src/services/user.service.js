@@ -1,20 +1,33 @@
 const db = require("../config/db.config.js");
+const {
+  UserExistError,
+  UserNotFoundError,
+  UsernameAlreadyExistError,
+} = require("../utils/errors.utils.js");
 
 const createUser = async (user) => {
-  return new Promise((resolve, reject) => {
-    const { username, email, password, firstName, lastName } = user;
-    db.query(
-      "INSERT INTO users (username, email, password, firstname, lastname) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [username, email, password, firstName, lastName],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        }
+  const { username, email, password, firstName, lastName } = user;
 
-        resolve(`A new user has been added added: ${results.rows[0]}`);
-      }
-    );
-  });
+  const userNameExist = await db.query(
+    "SELECT * FROM users WHERE username=$1",
+    [username]
+  );
+  if (userNameExist.rows.length > 0) {
+    throw new UsernameAlreadyExistError("Username is already taken");
+  }
+  const userExists = await db.query(
+    "SELECT * FROM users WHERE username=$1 OR email=$2",
+    [username, email]
+  );
+  if (userExists.rows.length > 0) {
+    throw new UserExistError("User already exists");
+  }
+
+  const result = await db.query(
+    "INSERT INTO users (username, email, password, firstname, lastname) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+    [username, email, password, firstName, lastName]
+  );
+  return { message: `A new user has been added: ${result.rows[0]}` };
 };
 
 const loginUser = async (user) => {

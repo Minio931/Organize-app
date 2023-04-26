@@ -3,16 +3,21 @@ import {
   Link,
   json,
   redirect,
-  useNavigate,
   useNavigation,
   useActionData,
 } from "react-router-dom";
 import { Form } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const RegisterForm = () => {
-  const navigate = useNavigate();
   const navigation = useNavigation();
   const data = useActionData();
+  const [error, setError] = useState(false);
+  useEffect(() => {
+    if (data && data.errors && data.errors[0] === "Username is already taken") {
+      setError(true);
+    }
+  }, [data]);
 
   const isSubmiting = navigation.state === "submitting";
   return (
@@ -49,6 +54,7 @@ const RegisterForm = () => {
         <div className={classes.input}>
           <label htmlFor="username">Username: </label>
           <input
+            className={error ? classes.error : ""}
             type="text"
             id="username"
             name="username"
@@ -113,8 +119,6 @@ export async function action({ request, params }) {
     lastName: user.get("lastName"),
   };
 
-  console.log(userData);
-
   let url = "http://localhost:3001/user/register";
   const response = await fetch(url, {
     method: "POST",
@@ -124,9 +128,18 @@ export async function action({ request, params }) {
     body: JSON.stringify(userData),
   });
 
-  console.log(response);
+  const data = await response.json();
+
+  if (response.status === 403) {
+    return json({ errors: [data.message] }, { status: 403 });
+  }
+
+  if (response.status === 409) {
+    return json({ errors: [data.message] }, { status: 409 });
+  }
 
   if (!response.ok) {
+    console.log(response);
     throw json({ message: "Something went wrong" }, { status: 500 });
   }
 

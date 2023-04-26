@@ -97,3 +97,10 @@
 .login:hover {
   background-color: var(--black-25);
 }
+
+.error {
+  border: 2px solid rgb(245, 33, 33) !important;
+}
+li {
+  color: rgb(210, 32, 32);
+}
