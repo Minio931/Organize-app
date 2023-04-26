@@ -10,6 +10,7 @@ import classes from "./LoginForm.module.css";
 
 const LoginForm = () => {
   const data = useActionData();
+  console.log(data);
   const navigation = useNavigation();
 
   const isLogging = navigation.state === "submitting";
@@ -51,6 +52,7 @@ const LoginForm = () => {
               type="password"
               placeholder="Enter your password"
               id="password"
+              name="password"
             />
           </div>
           <div className={classes["form_action"]}>
@@ -82,7 +84,7 @@ export async function action({ request, params }) {
     password: user.get("password"),
   };
 
-  let url = "http://localhost:3001/login";
+  let url = "http://localhost:3001/user/login";
 
   const response = await fetch(url, {
     method: "POST",
@@ -92,9 +94,14 @@ export async function action({ request, params }) {
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    throw json({ message: "Something went wrong" }, { status: 500 });
+  if (response.status === 404) {
+    return json(
+      { errors: ["Login or password is incorrect"] },
+      { status: 404 }
+    );
+  } else if (!response.ok) {
+    return json({ message: "Something went wrong" }, { status: 500 });
+  } else {
+    return redirect("/dashboard");
   }
-
-  return redirect("/dashboard");
 }

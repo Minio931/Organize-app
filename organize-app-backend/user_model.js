@@ -17,7 +17,7 @@ const getUser = (request, response) => {
         if (error) {
           reject(error);
         }
-        console.log(results);
+
         resolve(results.rows);
       }
     );

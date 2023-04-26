@@ -115,7 +115,7 @@ export async function action({ request, params }) {
 
   console.log(userData);
 
-  let url = "http://localhost:3001/register";
+  let url = "http://localhost:3001/user/register";
   const response = await fetch(url, {
     method: "POST",
     headers: {
