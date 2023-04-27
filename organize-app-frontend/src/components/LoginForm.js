@@ -7,10 +7,38 @@ import {
   useActionData,
 } from "react-router-dom";
 import classes from "./LoginForm.module.css";
+import useInput from "../hooks/useInput";
+
+const isNotEmpty = (value) => value.trim() !== "";
 
 const LoginForm = () => {
   const data = useActionData();
   const navigation = useNavigation();
+
+  const {
+    value: loginValue,
+    isValid: loginIsValid,
+    hasError: loginHasError,
+    valueChangeHandler: loginChangeHandler,
+    inputBlurHandler: loginBlurHandler,
+  } = useInput(isNotEmpty);
+
+  const {
+    value: passwordValue,
+    isValid: passwordIsValid,
+    hasError: passwordHasError,
+    valueChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+  } = useInput(isNotEmpty);
+
+  let formIsValid = false;
+
+  if (loginIsValid && passwordIsValid) {
+    formIsValid = true;
+  }
+
+  const loginClasses = loginHasError ? classes.error : "";
+  const passwordClasses = passwordHasError ? classes.error : "";
 
   const isLogging = navigation.state === "submitting";
   return (
@@ -41,20 +69,35 @@ const LoginForm = () => {
             <input
               type="text"
               placeholder="Enter your username or email"
+              className={loginClasses}
               id="login"
               name="login"
+              value={loginValue}
+              onChange={loginChangeHandler}
+              onBlur={loginBlurHandler}
             />
+            {loginHasError && (
+              <p className={classes["error-text"]}>Please enter a username</p>
+            )}
           </div>
           <div className={classes.input}>
             <label htmlFor="password">Password: </label>
             <input
               type="password"
               placeholder="Enter your password"
+              className={passwordClasses}
               id="password"
+              name="password"
+              value={passwordValue}
+              onChange={passwordChangeHandler}
+              onBlur={passwordBlurHandler}
             />
+            {passwordHasError && (
+              <p className={classes["error-text"]}>Please enter a password</p>
+            )}
           </div>
           <div className={classes["form_action"]}>
-            <button type="submit">
+            <button disabled={!formIsValid} type="submit">
               {isLogging ? "Logging in.." : "Log in"}
             </button>
             <Link to="/register" className={classes.register}>
@@ -82,7 +125,7 @@ export async function action({ request, params }) {
     password: user.get("password"),
   };
 
-  let url = "http://localhost:3001/login";
+  let url = "http://localhost:3001/user/login";
 
   const response = await fetch(url, {
     method: "POST",
@@ -92,9 +135,14 @@ export async function action({ request, params }) {
     body: JSON.stringify(data),
   });
 
-  if (!response.ok) {
-    throw json({ message: "Something went wrong" }, { status: 500 });
+  if (response.status === 404) {
+    return json(
+      { errors: ["Login or password is incorrect"] },
+      { status: 404 }
+    );
+  } else if (!response.ok) {
+    return json({ message: "Something went wrong" }, { status: 500 });
+  } else {
+    return redirect("/dashboard");
   }
-
-  return redirect("/dashboard");
 }
