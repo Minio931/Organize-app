@@ -8,11 +8,66 @@ import {
 } from "react-router-dom";
 import { Form } from "react-router-dom";
 import { useEffect, useState } from "react";
+import useInput from "../hooks/useInput";
+
+const isNotEmpty = (value) => value.trim() !== "";
+const isEmail = (value) => value.includes("@");
 
 const RegisterForm = () => {
   const navigation = useNavigation();
   const data = useActionData();
   const [error, setError] = useState(false);
+
+  let formIsValid = false;
+
+  const isMatching = (value) => value === passwordValue && value !== "";
+
+  const {
+    value: usernameValue,
+    isValid: usernameIsValid,
+    hasError: usernameHasError,
+    valueChangeHandler: usernameChangeHandler,
+    inputBlurHandler: usernameBlurHandler,
+  } = useInput(isNotEmpty);
+
+  const {
+    value: emailValue,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+  } = useInput(isEmail);
+
+  const {
+    value: passwordValue,
+    isValid: passwordIsValid,
+    hasError: passwordHasError,
+    valueChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+  } = useInput(isNotEmpty);
+
+  const {
+    value: reenterPasswordValue,
+    isValid: reenterPasswordIsValid,
+    hasError: reenterPasswordHasError,
+    valueChangeHandler: reenterPasswordChangeHandler,
+    inputBlurHandler: reenterPasswordBlurHandler,
+  } = useInput(isMatching);
+
+  if (
+    usernameIsValid &&
+    emailIsValid &&
+    passwordIsValid &&
+    reenterPasswordIsValid
+  ) {
+    formIsValid = true;
+  }
+
+  const usernameClasses = usernameHasError;
+  const emailClasses = emailHasError ? classes.error : "";
+  const passwordClasses = passwordHasError ? classes.error : "";
+  const reenterPasswordClasses = reenterPasswordHasError ? classes.error : "";
+
   useEffect(() => {
     if (data && data.errors && data.errors[0] === "Username is already taken") {
       setError(true);
@@ -54,23 +109,36 @@ const RegisterForm = () => {
         <div className={classes.input}>
           <label htmlFor="username">Username: </label>
           <input
-            className={error ? classes.error : ""}
+            className={error || usernameClasses ? classes.error : ""}
             type="text"
             id="username"
             name="username"
             placeholder="Enter your username"
+            value={usernameValue}
+            onChange={usernameChangeHandler}
+            onBlur={usernameBlurHandler}
             required
           />
+          {usernameHasError && (
+            <p className={classes["error-text"]}>Please enter a username</p>
+          )}
         </div>
         <div className={classes.input}>
           <label htmlFor="email">Email: </label>
           <input
             type="email"
+            className={emailClasses}
             id="email"
             name="email"
             placeholder="Enter your email address"
+            value={emailValue}
+            onChange={emailChangeHandler}
+            onBlur={emailBlurHandler}
             required
           />
+          {emailHasError && (
+            <p className={classes["error-text"]}>Please enter a valid email</p>
+          )}
         </div>
         <div className={classes.input}>
           <label htmlFor="password">Password: </label>
@@ -78,16 +146,30 @@ const RegisterForm = () => {
             type="password"
             id="password"
             name="password"
+            className={passwordClasses}
             placeholder="Enter your password"
+            value={passwordValue}
+            onChange={passwordChangeHandler}
+            onBlur={passwordBlurHandler}
             required
           />
+          {passwordHasError && (
+            <p className={classes["error-text"]}>Please enter a password</p>
+          )}
           <input
             type="password"
             id="re-password"
             name="re-password"
+            className={reenterPasswordClasses}
             placeholder="Re-enter your password"
+            value={reenterPasswordValue}
+            onChange={reenterPasswordChangeHandler}
+            onBlur={reenterPasswordBlurHandler}
             required
           />
+          {reenterPasswordHasError && (
+            <p className={classes["error-text"]}>Passwords not match</p>
+          )}
         </div>
 
         <div className={classes.conditions}>
@@ -95,7 +177,7 @@ const RegisterForm = () => {
           <label htmlFor="terms"> *I agree to the terms and conditions</label>
         </div>
         <div className={classes["form_action"]}>
-          <button type="submit">
+          <button disabled={!formIsValid} type="submit">
             {isSubmiting ? "Submiting.." : "Register"}
           </button>
           <Link to="/" className={classes.login}>
@@ -139,7 +221,6 @@ export async function action({ request, params }) {
   }
 
   if (!response.ok) {
-    console.log(response);
     throw json({ message: "Something went wrong" }, { status: 500 });
   }
 

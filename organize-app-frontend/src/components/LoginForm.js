@@ -7,11 +7,38 @@ import {
   useActionData,
 } from "react-router-dom";
 import classes from "./LoginForm.module.css";
+import useInput from "../hooks/useInput";
+
+const isNotEmpty = (value) => value.trim() !== "";
 
 const LoginForm = () => {
   const data = useActionData();
-  console.log(data);
   const navigation = useNavigation();
+
+  const {
+    value: loginValue,
+    isValid: loginIsValid,
+    hasError: loginHasError,
+    valueChangeHandler: loginChangeHandler,
+    inputBlurHandler: loginBlurHandler,
+  } = useInput(isNotEmpty);
+
+  const {
+    value: passwordValue,
+    isValid: passwordIsValid,
+    hasError: passwordHasError,
+    valueChangeHandler: passwordChangeHandler,
+    inputBlurHandler: passwordBlurHandler,
+  } = useInput(isNotEmpty);
+
+  let formIsValid = false;
+
+  if (loginIsValid && passwordIsValid) {
+    formIsValid = true;
+  }
+
+  const loginClasses = loginHasError ? classes.error : "";
+  const passwordClasses = passwordHasError ? classes.error : "";
 
   const isLogging = navigation.state === "submitting";
   return (
@@ -42,21 +69,35 @@ const LoginForm = () => {
             <input
               type="text"
               placeholder="Enter your username or email"
+              className={loginClasses}
               id="login"
               name="login"
+              value={loginValue}
+              onChange={loginChangeHandler}
+              onBlur={loginBlurHandler}
             />
+            {loginHasError && (
+              <p className={classes["error-text"]}>Please enter a username</p>
+            )}
           </div>
           <div className={classes.input}>
             <label htmlFor="password">Password: </label>
             <input
               type="password"
               placeholder="Enter your password"
+              className={passwordClasses}
               id="password"
               name="password"
+              value={passwordValue}
+              onChange={passwordChangeHandler}
+              onBlur={passwordBlurHandler}
             />
+            {passwordHasError && (
+              <p className={classes["error-text"]}>Please enter a password</p>
+            )}
           </div>
           <div className={classes["form_action"]}>
-            <button type="submit">
+            <button disabled={!formIsValid} type="submit">
               {isLogging ? "Logging in.." : "Log in"}
             </button>
             <Link to="/register" className={classes.register}>
