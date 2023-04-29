@@ -18,8 +18,9 @@
   flex-direction: column;
   width: 100%;
   gap: 1rem;
-
+  font-family: Lato, sans-serif;
   margin-top: 10rem;
+  color: var(--black-100);
 }
 
 .form {
@@ -27,6 +28,8 @@
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
+  font-family: Lato, sans-serif;
+  color: var(--black-100);
 }
 .input {
   display: flex;

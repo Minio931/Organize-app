@@ -14,7 +14,7 @@ import DashboardPage from "./pages/Dashboard";
 const Router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    action: loginUser,
     children: [
       {
         index: true,
@@ -22,25 +22,31 @@ const Router = createBrowserRouter([
         action: loginUser,
       },
       {
-        path: "/habit-tracker",
-        element: <HabitTrackerPage />,
-      },
-      {
-        path: "/todo",
-        element: <TodoPage />,
-      },
-      {
-        path: "/budget",
-        element: <BudgetPage />,
-      },
-      {
-        path: "/register",
+        path: "register",
         element: <RegisterPage />,
         action: registerUser,
       },
       {
-        path: "/dashboard",
-        element: <DashboardPage />,
+        path: "organize-app",
+        element: <RootLayout />,
+        children: [
+          {
+            path: "dashboard",
+            element: <DashboardPage />,
+          },
+          {
+            path: "habit-tracker",
+            element: <HabitTrackerPage />,
+          },
+          {
+            path: "todo",
+            element: <TodoPage />,
+          },
+          {
+            path: "budget",
+            element: <BudgetPage />,
+          },
+        ],
       },
     ],
   },

@@ -1,6 +1,7 @@
 .display {
   font-size: var(--display-font-size);
   font-weight: bold;
+  color: var(--black-100);
 }
 .register {
   display: flex;
@@ -10,6 +11,8 @@
   width: 100%;
   gap: 1rem;
   margin-top: 10rem;
+  font-family: Lato, sans-serif;
+  color: var(--black-100);
 }
 
 .form {

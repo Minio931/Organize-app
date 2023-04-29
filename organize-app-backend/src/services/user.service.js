@@ -31,19 +31,18 @@ const createUser = async (user) => {
 };
 
 const loginUser = async (user) => {
-  return new Promise((resolve, reject) => {
-    const { login, password } = user;
-    db.query(
-      "SELECT email, username, password FROM users WHERE (email=$1 OR username=$2) AND password=$3 ",
-      [login, login, password],
-      (error, results) => {
-        if (error) {
-          reject(error);
-        }
-        resolve(results.rows);
-      }
-    );
-  });
+  const { login, password } = user;
+
+  const userExists = await db.query(
+    "SELECT * FROM users WHERE ((username=$1 OR email=$1) AND password=$2) ",
+    [login, password]
+  );
+
+  if (userExists.rows.length === 0) {
+    throw new UserNotFoundError("User not found");
+  }
+
+  return { user: userExists.rows[0] };
 };
 
 module.exports = {

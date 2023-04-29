@@ -8,12 +8,21 @@ import {
 } from "react-router-dom";
 import classes from "./LoginForm.module.css";
 import useInput from "../hooks/useInput";
+import { useEffect } from "react";
 
 const isNotEmpty = (value) => value.trim() !== "";
 
 const LoginForm = () => {
   const data = useActionData();
   const navigation = useNavigation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      navigate("/organize-app/dashboard");
+    }
+  });
 
   const {
     value: loginValue,
@@ -135,14 +144,19 @@ export async function action({ request, params }) {
     body: JSON.stringify(data),
   });
 
+  const responseData = await response.json();
+
   if (response.status === 404) {
     return json(
       { errors: ["Login or password is incorrect"] },
       { status: 404 }
     );
-  } else if (!response.ok) {
+  }
+  if (!response.ok) {
     return json({ message: "Something went wrong" }, { status: 500 });
   } else {
-    return redirect("/dashboard");
+    console.log(responseData.user);
+    localStorage.setItem("user", JSON.stringify(responseData.user));
+    return redirect("/organize-app/dashboard");
   }
 }
