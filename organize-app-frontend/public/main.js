@@ -10,6 +10,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
     },
+    autoHideMenuBar: true,
   });
 
   win.loadURL("http://localhost:3000");

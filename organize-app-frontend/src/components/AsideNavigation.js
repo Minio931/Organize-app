@@ -5,7 +5,7 @@ import HomeIcon from "../assets/HomeIcons";
 import LogoutIcon from "../assets/LogoutIcon";
 import TasksIcon from "../assets/TasksIcon";
 import classes from "./AsideNavigation.module.css";
-import { useEffect, useReducer } from "react";
+import { useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AsideNavigation = () => {

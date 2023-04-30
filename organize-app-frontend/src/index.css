@@ -2,10 +2,17 @@
 
 body {
   margin: 0;
-  font-family: Lato, sans-serif;
 }
 main {
   font-family: Lato, sans-serif;
+  width: calc(100% - 4rem);
+  height: 100vh;
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+}
+#root {
+  display: flex;
+  flex-direction: row;
 }
 
 * {
