@@ -19,7 +19,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  fill: var(--black-15);
+
+  stroke: var(--black-50);
   padding: 4px;
 
   cursor: pointer;
@@ -49,5 +50,5 @@
   border: 1px solid var(--primary-color);
   border-radius: 100%;
   background-color: var(--primary-color);
-  fill: var(--white) !important;
+  stroke: var(--white) !important;
 }
