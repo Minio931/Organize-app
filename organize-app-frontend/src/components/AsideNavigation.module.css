@@ -1,7 +1,22 @@
 .nav_wrapper {
-  width: 4rem;
+  width: 1.2rem;
   height: 100vh;
-  background-color: var(--black-85);
+  background-color: var(--white);
+  box-shadow: 5px 3px 33px 8px var(--black-25);
+}
+.nav {
+  margin-top: 5rem;
+  width: 4rem;
+  height: 20rem;
+  border-radius: 1.5rem;
+  background-color: var(--white);
+  box-shadow: 20px 22px 19px -10px var(--black-25);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  z-index: 1000;
 }
 .nav-main {
   display: flex;
@@ -11,7 +26,9 @@
   margin-top: 1rem;
 }
 .nav-action {
-  margin-bottom: 1rem;
+  margin-top: 3rem;
+  text-align: center;
+  cursor: pointer;
 }
 .nav-item-icon {
   width: 1.8rem;
@@ -28,14 +45,17 @@
 
 .nav-item button {
   background-color: inherit;
+  width: 100%;
+  display: flex;
+
   border: none;
 }
 
 .nav-list {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100vh;
+  align-items: center;
+  height: 100%;
 }
 
 .nav-list div {

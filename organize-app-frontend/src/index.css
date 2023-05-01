@@ -2,17 +2,33 @@
 
 body {
   margin: 0;
+  background: rgb(176, 244, 243);
+  background: linear-gradient(
+    108deg,
+    rgba(176, 244, 243, 1) 0%,
+    rgba(115, 63, 197, 1) 17%,
+    rgba(138, 45, 186, 1) 31%,
+    rgba(255, 159, 202, 1) 51%,
+    rgba(178, 44, 206, 1) 74%,
+    rgba(95, 83, 207, 1) 100%
+  );
 }
 main {
   font-family: Lato, sans-serif;
   width: calc(100% - 4rem);
+  float: right;
   height: 100vh;
-  scroll-behavior: smooth;
+
   overflow-y: scroll;
 }
 #root {
+  width: 100%;
+  height: 100vh;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+
+  background-color: rgba(253, 251, 255, 0.7);
 }
 
 * {
