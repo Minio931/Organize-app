@@ -8,7 +8,7 @@ import classes from "./AsideNavigation.module.css";
 import { useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 
-const AsideNavigation = () => {
+const AsideNavigation = ({ onClick }) => {
   const initialState = {
     isHome: true,
     isHabit: false,
@@ -62,10 +62,6 @@ const AsideNavigation = () => {
   }
   const navigate = useNavigate();
 
-  const logoutHandler = () => {
-    navigate("/");
-    localStorage.removeItem("user");
-  };
   return (
     <aside className={classes["nav_wrapper"]}>
       <nav className={classes["nav"]}>
@@ -100,7 +96,7 @@ const AsideNavigation = () => {
           </div>
           <div className={classes["nav-action"]}>
             <li className={classes["nav-item"]}>
-              <button onClick={logoutHandler}>
+              <button onClick={onClick}>
                 <LogoutIcon className={classes["nav-item-icon"]} />
               </button>
             </li>

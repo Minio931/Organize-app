@@ -1,0 +1,18 @@
+.proggress {
+  width: 10rem;
+  height: 0.7rem;
+  border-radius: 0.4rem;
+  border: 1px solid #b22cce;
+  background-color: #b22cce;
+}
+.inner-proggress {
+  height: 100%;
+  background: rgb(226, 52, 226);
+  background: linear-gradient(
+    108deg,
+    rgba(226, 52, 226, 1) 6%,
+    rgba(249, 107, 242, 1) 50%,
+    rgba(255, 159, 202, 1) 83%
+  );
+  border-radius: 0.4rem;
+}

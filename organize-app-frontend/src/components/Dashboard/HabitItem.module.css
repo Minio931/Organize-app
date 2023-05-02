@@ -1,0 +1,129 @@
+.habit-item {
+  width: 14rem;
+  height: 18rem;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 1rem;
+  gap: 0.2em;
+  box-shadow: 5px 5px 2px 2px var(--black-25);
+}
+
+.habit-completion {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+.habit-completion label {
+  display: block;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 100%;
+  border: 1px solid var(--primary-color);
+  cursor: pointer;
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+  position: relative;
+}
+
+.habit-completion label::after {
+  content: "";
+  position: absolute;
+  width: 0.85rem;
+  height: 0.4rem;
+  border: 3px solid var(--primary-color);
+  border-top: none;
+  border-right: none;
+  top: 3px;
+  left: 2px;
+  transform: rotate(-45deg);
+  margin: 0.3rem;
+  visibility: hidden;
+}
+.habit-completion input:checked + label::after {
+  visibility: visible;
+}
+.habit-completion input {
+  visibility: hidden;
+}
+
+.habit-name {
+  font-size: var(--header-3-font-size);
+  font-weight: bold;
+}
+
+.habit-goal {
+  font-size: 0.8rem;
+  color: var(--black-50);
+}
+
+.habit-streak {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+.streak-icon {
+  width: 5rem;
+  height: 5rem;
+  stroke: var(--primary-color);
+}
+.outer-circle {
+  stroke: #e234e2;
+  fill: none;
+}
+
+.inner-circle {
+  stroke: #ff88f4;
+  fill: none;
+}
+.habit-streak-count {
+  width: 3rem;
+  height: 1rem;
+  text-align: center;
+  position: absolute;
+  font-size: 1.2rem;
+  top: 2rem;
+  right: 1rem;
+
+  font-weight: bold;
+  color: var(--black-100);
+}
+.habit-streak-text {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--black-100);
+  margin: 1rem;
+}
+
+.habit-proggress {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.habit-proggress p {
+  font-size: 0.8rem;
+  color: var(--black-50);
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+.proggress {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 0.3rem;
+}
+.proggress span {
+  font-size: 0.8rem;
+  color: var(--black-50);
+  font-weight: bold;
+}
