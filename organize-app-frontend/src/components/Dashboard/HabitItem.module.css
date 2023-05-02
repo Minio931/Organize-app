@@ -8,6 +8,7 @@
   align-items: center;
   border-radius: 1rem;
   gap: 0.2em;
+  box-shadow: 5px 5px 2px 2px var(--black-25);
 }
 
 .habit-completion {
@@ -82,10 +83,13 @@
   fill: none;
 }
 .habit-streak-count {
+  width: 3rem;
+  height: 1rem;
+  text-align: center;
   position: absolute;
   font-size: 1.2rem;
   top: 2rem;
-  right: 1.5rem;
+  right: 1rem;
 
   font-weight: bold;
   color: var(--black-100);
