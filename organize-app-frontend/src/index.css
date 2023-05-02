@@ -15,7 +15,7 @@ body {
 }
 main {
   font-family: Lato, sans-serif;
-  width: calc(100% - 4rem);
+  width: calc(100% - 6rem);
   float: right;
   height: 100vh;
 

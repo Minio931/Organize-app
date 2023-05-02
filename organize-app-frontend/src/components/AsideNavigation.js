@@ -62,10 +62,6 @@ const AsideNavigation = ({ onClick }) => {
   }
   const navigate = useNavigate();
 
-  const logoutHandler = () => {
-    navigate("/");
-    localStorage.removeItem("user");
-  };
   return (
     <aside className={classes["nav_wrapper"]}>
       <nav className={classes["nav"]}>

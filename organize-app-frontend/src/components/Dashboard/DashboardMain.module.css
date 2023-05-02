@@ -1,0 +1,12 @@
+.header {
+  margin-top: 2rem;
+}
+
+.welcome {
+  font-size: 48px;
+}
+.username-display {
+  margin-top: 0.7rem;
+  font-size: 64px;
+  font-weight: bold;
+}
