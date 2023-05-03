@@ -9,6 +9,11 @@
   border-radius: 1rem;
   gap: 0.2em;
   box-shadow: 5px 5px 2px 2px var(--black-25);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
 }
 
 .habit-completion {
@@ -126,4 +131,7 @@
   font-size: 0.8rem;
   color: var(--black-50);
   font-weight: bold;
+}
+.not-show {
+  visibility: hidden;
 }

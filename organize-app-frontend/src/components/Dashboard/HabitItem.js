@@ -1,8 +1,16 @@
 import ProggressBar from "../UI/ProggressBar";
 import classes from "./HabitItem.module.css";
 const HabitItem = (props) => {
+  const styles = props.styles;
   return (
-    <div className={classes["habit-item"]}>
+    <div
+      className={
+        props.render
+          ? `${classes["habit-item"]} ${classes["not-show"]}`
+          : `${classes["habit-item"]}`
+      }
+      style={{ ...styles, transition: "all 0.5s ease" }}
+    >
       <div className={classes["habit-completion"]}>
         <input type="checkbox" id={props.id} name={props.id} />
         <label htmlFor={props.id}></label>{" "}
