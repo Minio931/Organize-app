@@ -109,7 +109,7 @@ const HabitsView = () => {
       } else if (i > habitOnTheRight && i !== habitOnMiddle) {
         xTranslate = habitWidth * 2;
         styles.transform = `translate(${xTranslate / 4}rem, ${yTranslate}rem)`;
-        opacity = opacity / 2;
+        opacity = opacity / 2 - 0.2;
         zIndex = zIndex - 1;
         styles.opacity = opacity;
         styles.zIndex = zIndex;
