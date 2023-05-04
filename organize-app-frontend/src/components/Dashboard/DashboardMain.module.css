@@ -10,3 +10,10 @@
   font-size: 64px;
   font-weight: bold;
 }
+
+.dashboard-body {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
