@@ -1,11 +1,15 @@
 .todos-wrapper {
   width: 20rem;
   margin-top: 2rem;
+  margin-left: 4rem;
+  position: relative;
 }
 .todo-container {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   background-color: var(--white);
-  padding: 1rem;
+
   border-radius: 1rem;
   box-shadow: 5px 5px 2px 2px var(--black-25);
 }
@@ -17,8 +21,15 @@
 .todo-item {
   display: flex;
   justify-content: flex-start;
-  gap: 0.5rem;
+  height: auto;
   align-items: center;
+  width: 100%;
+  margin-top: 0.6rem;
+}
+.todo-item p {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--black-100);
 }
 
 .todo-item input {
@@ -27,7 +38,7 @@
 
 .todo-item label {
   display: block;
-  width: 1.8rem;
+  min-width: 1.8rem;
   height: 1.8rem;
   border-radius: 100%;
   border: 1px solid var(--primary-color);
@@ -82,4 +93,53 @@
 
   box-shadow: 0px 0px 5px 2px var(--black-25);
   cursor: pointer;
+}
+
+.not-done-container {
+  padding: 1rem;
+  min-height: 15rem;
+  max-height: 23rem;
+  overflow: hidden;
+}
+
+.done-container {
+  padding: 1rem;
+  min-height: 15rem;
+  max-height: 23rem;
+  overflow: hidden;
+}
+
+.proggress {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+  align-items: center;
+  height: 5rem;
+  background-color: #8a2dbb;
+  gap: 0;
+}
+.proggress span {
+  color: var(--white);
+  margin-left: 0.3rem;
+}
+.proggress p {
+  color: var(--white);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.proggress-bar-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.completion {
+  border: 2px solid var(--white);
+  width: 80%;
+  height: 0.85rem;
 }

@@ -4,11 +4,14 @@ function createWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
 
   const { width, height } = primaryDisplay.workAreaSize;
+  let factor = primaryDisplay.scaleFactor;
+
   const win = new BrowserWindow({
     width: width,
     height: height,
     webPreferences: {
       nodeIntegration: true,
+      zoomFactor: 1.0 / factor,
     },
     autoHideMenuBar: true,
   });

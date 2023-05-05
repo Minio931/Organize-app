@@ -72,7 +72,7 @@ const HabitsView = () => {
 
     for (let i = 0; i <= totalHabits - 1; i++) {
       const styles = {};
-      console.log("i", i);
+
       let xTranslate = habitWidth;
       let yTranslate = -habitHeight;
       let opacity = 0.5;
