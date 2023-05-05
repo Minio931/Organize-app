@@ -1,8 +1,8 @@
 import classes from "./ProggressBar.module.css";
 
-const ProggressBar = ({ proggress }) => {
+const ProggressBar = ({ proggress, className }) => {
   return (
-    <div className={classes.proggress}>
+    <div className={`${classes.proggress} ${className}`}>
       <div
         className={classes["inner-proggress"]}
         style={{ width: `${proggress}%` }}

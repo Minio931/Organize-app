@@ -1,6 +1,7 @@
 import Arrow from "../../assets/Arrow";
 import classes from "./TodoView.module.css";
 import { useState } from "react";
+import ProggressBar from "../UI/ProggressBar";
 
 const DUMMY_TODOS = [
   {
@@ -33,6 +34,41 @@ const DUMMY_TODOS = [
     name: "Todo 6",
     completed: false,
   },
+  {
+    id: "t7",
+    name: "Todo 7",
+    completed: false,
+  },
+  {
+    id: "t8",
+    name: "Lorem ipsum dolor sit amet consectetur a",
+    completed: false,
+  },
+  {
+    id: "t9",
+    name: "lOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT",
+    completed: false,
+  },
+  {
+    id: "t10",
+    name: "Todo 10",
+    completed: false,
+  },
+  {
+    id: "t11",
+    name: "Todo 11",
+    completed: false,
+  },
+  {
+    id: "t12",
+    name: "Todo 12",
+    completed: false,
+  },
+  {
+    id: "t13",
+    name: "Todo 13",
+    completed: false,
+  },
 ];
 
 const TodoView = () => {
@@ -60,46 +96,57 @@ const TodoView = () => {
         <h2>Today's Todos</h2>
       </header>
       <div className={classes["todo-container"]}>
-        <ul className={classes["todos-list-not-done"]}>
-          {DUMMY_TODOS.map((todo) => {
-            if (todo.completed) return null;
-            return (
-              <li className={classes["todo-item"]} key={todo.id}>
-                <input
-                  type="checkbox"
-                  id={todo.id}
-                  checked={todo.completed}
-                  onChange={onDoneClickHandler}
-                />
-                <label htmlFor={todo.id}></label>
-                <p>{todo.name}</p>
-              </li>
-            );
-          })}
-        </ul>
+        <div className={classes["not-done-container"]}>
+          <ul className={classes["todos-list-not-done"]}>
+            {DUMMY_TODOS.map((todo) => {
+              if (todo.completed) return null;
+              return (
+                <li className={classes["todo-item"]} key={todo.id}>
+                  <input
+                    type="checkbox"
+                    id={todo.id}
+                    checked={todo.completed}
+                    onChange={onDoneClickHandler}
+                  />
+                  <label htmlFor={todo.id}></label>
+                  <p>{todo.name}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
         <div className={classes["todo-divider"]}>
           <div className={classes["todo-divider-line"]}></div>
           <span className={classes["not-done-arrow"]}>
             <Arrow />
           </span>
         </div>
-        <ul className={classes["todos-list-done"]}>
-          {DUMMY_TODOS.map((todo) => {
-            if (!todo.completed) return null;
-            return (
-              <li className={classes["todo-item"]} key={todo.id}>
-                <input
-                  type="checkbox"
-                  id={todo.id}
-                  checked={todo.completed}
-                  onChange={onUndoneClickHandler}
-                />
-                <label htmlFor={todo.id}></label>
-                <p>{todo.name}</p>
-              </li>
-            );
-          })}
-        </ul>
+        <div className={classes["done-container"]}>
+          <ul className={classes["todos-list-done"]}>
+            {DUMMY_TODOS.map((todo) => {
+              if (!todo.completed) return null;
+              return (
+                <li className={classes["todo-item"]} key={todo.id}>
+                  <input
+                    type="checkbox"
+                    id={todo.id}
+                    checked={todo.completed}
+                    onChange={onUndoneClickHandler}
+                  />
+                  <label htmlFor={todo.id}></label>
+                  <p>{todo.name}</p>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+        <div className={classes.proggress}>
+          <div className={classes["proggress-bar-wrapper"]}>
+            <ProggressBar className={classes.completion} proggress="64" />
+            <span>64%</span>
+          </div>
+          <p>today's proggress</p>
+        </div>
       </div>
     </div>
   );
