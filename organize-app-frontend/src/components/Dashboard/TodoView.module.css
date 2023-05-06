@@ -1,5 +1,6 @@
 .todos-wrapper {
   width: 20rem;
+
   margin-top: 2rem;
   margin-left: 4rem;
   position: relative;
@@ -9,7 +10,7 @@
   flex-direction: column;
   width: 100%;
   background-color: var(--white);
-
+  max-height: 55rem;
   border-radius: 1rem;
   box-shadow: 5px 5px 2px 2px var(--black-25);
 }
@@ -79,6 +80,7 @@
   width: 90%;
   height: 100%;
   background-color: var(--primary-color);
+  cursor: row-resize;
 }
 
 .not-done-arrow {
@@ -97,15 +99,15 @@
 
 .not-done-container {
   padding: 1rem;
-  min-height: 15rem;
-  max-height: 23rem;
+
+  height: 20rem;
   overflow: hidden;
 }
 
 .done-container {
   padding: 1rem;
-  min-height: 15rem;
-  max-height: 23rem;
+
+  height: 20rem;
   overflow: hidden;
 }
 
