@@ -1,6 +1,6 @@
 import Arrow from "../../assets/Arrow";
 import classes from "./TodoView.module.css";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import ProggressBar from "../UI/ProggressBar";
 
 const DUMMY_TODOS = [
@@ -74,6 +74,12 @@ const DUMMY_TODOS = [
 const TodoView = () => {
   const [doneTodos, setDoneTodos] = useState([]);
   const [undoneTodos, setUndoneTodos] = useState([]);
+  const [initialPos, setInitialPos] = useState(null);
+  const [initialSize, setInitialSize] = useState(null);
+  const [initialSize2, setInitialSize2] = useState(null);
+  const notDoneContainer = useRef(null);
+  const doneContainer = useRef(null);
+
   const onDoneClickHandler = (event) => {
     DUMMY_TODOS.forEach((todo) => {
       if (todo.id === event.target.id) {
@@ -90,13 +96,37 @@ const TodoView = () => {
       }
     });
   };
+
+  const initial = (event) => {
+    setInitialPos(event.clientY);
+    setInitialSize(notDoneContainer.current.offsetHeight);
+    setInitialSize2(doneContainer.current.offsetHeight);
+    console.log("initialSize", doneContainer.current.offsetHeight);
+  };
+
+  const resize = (event) => {
+    notDoneContainer.current.style.height = `${
+      parseInt(initialSize) + parseInt(event.clientY - initialPos)
+    }px`;
+
+    doneContainer.current.style.height = `${
+      parseInt(initialSize2) -
+      parseInt(notDoneContainer.current.offsetHeight - initialPos + 148)
+    }px`;
+
+    console.log("currentSize", doneContainer.current.offsetHeight);
+  };
   return (
     <div className={classes["todos-wrapper"]}>
       <header className={classes["todos-header"]}>
         <h2>Today's Todos</h2>
       </header>
       <div className={classes["todo-container"]}>
-        <div className={classes["not-done-container"]}>
+        <div
+          ref={notDoneContainer}
+          className={classes["not-done-container"]}
+          onDragStart={initial}
+        >
           <ul className={classes["todos-list-not-done"]}>
             {DUMMY_TODOS.map((todo) => {
               if (todo.completed) return null;
@@ -116,12 +146,17 @@ const TodoView = () => {
           </ul>
         </div>
         <div className={classes["todo-divider"]}>
-          <div className={classes["todo-divider-line"]}></div>
+          <div
+            onDragStart={initial}
+            draggable="true"
+            onDrag={resize}
+            className={classes["todo-divider-line"]}
+          ></div>
           <span className={classes["not-done-arrow"]}>
             <Arrow />
           </span>
         </div>
-        <div className={classes["done-container"]}>
+        <div ref={doneContainer} className={classes["done-container"]}>
           <ul className={classes["todos-list-done"]}>
             {DUMMY_TODOS.map((todo) => {
               if (!todo.completed) return null;
