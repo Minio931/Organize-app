@@ -1,8 +1,9 @@
+import BudgetView from "./BudgetView";
 import classes from "./DashboardMain.module.css";
 import HabitsView from "./HabitsView";
 import TodoView from "./TodoView";
 
-const DashboardMain = () => {
+const DashboardMain = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const username = user.username;
   return (
@@ -14,6 +15,7 @@ const DashboardMain = () => {
             <p className={classes["username-display"]}>{username}</p>
           </header>
           <HabitsView />
+          <BudgetView className={classes.chart} options={props.options} />
         </section>
         <section>
           <TodoView />
