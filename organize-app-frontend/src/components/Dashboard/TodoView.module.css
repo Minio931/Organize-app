@@ -2,7 +2,7 @@
   width: 20rem;
 
   margin-top: 2rem;
-  margin-left: 4rem;
+  margin-left: 6rem;
   position: relative;
 }
 .todo-container {
@@ -12,6 +12,7 @@
   background-color: var(--white);
   max-height: 55rem;
   border-radius: 1rem;
+  border-top-right-radius: 0;
   box-shadow: 5px 5px 2px 2px var(--black-25);
 }
 .todos-header {
@@ -83,11 +84,11 @@
   cursor: row-resize;
 }
 
-.not-done-arrow {
+.resize {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(90deg);
+  transform: translate(-50%, -50%);
   z-index: 200;
   padding: 0.5rem;
   background-color: var(--white);
@@ -102,6 +103,7 @@
 
   height: 20rem;
   overflow: hidden;
+  overflow-y: scroll;
 }
 
 .done-container {
@@ -109,6 +111,35 @@
 
   height: 20rem;
   overflow: hidden;
+  overflow-y: scroll;
+}
+
+.not-done-container::-webkit-scrollbar {
+  width: 0.3rem;
+  border-radius: 0.5rem;
+}
+.not-done-container::-webkit-scrollbar-track {
+  background-color: var(--black-25);
+  border-radius: 1rem;
+}
+.not-done-container::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 0.5rem;
+  margin: 0.2rem;
+}
+
+.done-container::-webkit-scrollbar {
+  width: 0.3rem;
+  border-radius: 0.5rem;
+}
+.done-container::-webkit-scrollbar-track {
+  background-color: var(--black-25);
+  border-radius: 1rem;
+}
+.done-container::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 0.5rem;
+  margin: 0.2rem;
 }
 
 .proggress {

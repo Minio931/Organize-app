@@ -2,6 +2,7 @@ import Arrow from "../../assets/Arrow";
 import classes from "./TodoView.module.css";
 import { useState, useRef } from "react";
 import ProggressBar from "../UI/ProggressBar";
+import ResizeIcon from "../../assets/ResizeIcon";
 
 const DUMMY_TODOS = [
   {
@@ -151,10 +152,11 @@ const TodoView = () => {
             draggable="true"
             onDrag={resize}
             className={classes["todo-divider-line"]}
-          ></div>
-          <span className={classes["not-done-arrow"]}>
-            <Arrow />
-          </span>
+          >
+            <span className={classes["resize"]}>
+              <ResizeIcon />
+            </span>
+          </div>
         </div>
         <div ref={doneContainer} className={classes["done-container"]}>
           <ul className={classes["todos-list-done"]}>
