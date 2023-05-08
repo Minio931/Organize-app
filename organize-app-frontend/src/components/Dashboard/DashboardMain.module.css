@@ -16,4 +16,5 @@
   flex-direction: row;
   flex-wrap: wrap;
   gap: 2rem;
+  user-select: none;
 }

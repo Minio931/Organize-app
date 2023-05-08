@@ -27,8 +27,8 @@
   border-radius: 1rem;
 }
 .chart {
-  width: 100%;
-  height: 100%;
+  width: 90%;
+  height: 90%;
   display: flex;
   justify-content: center;
 }
@@ -36,27 +36,33 @@
 .budget-chart-options ul {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  list-style: none;
-  width: 5rem;
-  gap: 1rem;
+  justify-content: space-around;
+  align-items: space-around;
 }
-.budget-chart-options ul li {
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: var(--white);
-}
-.budget-chart-options {
-  margin-bottom: 0.5rem;
-  background-color: #7eace2;
-  border-radius: 1rem;
-  padding: 0.5rem;
-  height: 0.9rem;
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 10rem;
+.budget-chart-options ul li {
+  color: var(--white);
+  font-size: 0.8rem;
+
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  width: 33%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.budget-chart-options {
+  width: 15rem;
+  background-color: var(--secondary-150);
+  border-radius: 1rem;
+}
+.budget-chart-option-item-active {
+  background: rgb(95, 83, 207);
+  background: linear-gradient(
+    108deg,
+    rgba(95, 83, 207, 1) 5%,
+    rgba(150, 213, 236, 1) 100%
+  );
+  border-radius: 1rem;
+  font-weight: 600;
 }

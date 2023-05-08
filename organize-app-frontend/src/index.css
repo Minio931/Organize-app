@@ -42,8 +42,19 @@ code {
 
 :root {
   --primary-color: #9a5bd9;
+  --primary-200: #8a2dbb;
+  --primary-150: #b22cce;
+  --praimry-80: #e234e2;
+  --primary-50: #f96bf2;
+  --primary-25: #ff88f4;
 
   --secondary-color: #b591d9;
+  --secondary-200: #723fc5;
+  --secondary-150: #5f53cf;
+  --secondary-80: #7eace2;
+  --secondary-50: #96d5ec;
+  --secondary-25: #b0f5f4;
+
   --black-100: #0c0711;
   --black-85: #302c35;
   --black-50: #858388;
@@ -60,7 +71,17 @@ code {
 /* css reset
 
 Primary: #9A5BD9
+Primary-200: #8A2DBB
+Primary-150: #B22CCE
+Praimry-80: #E234E2
+Primary-50: #F96BF2
+Primary-25: #FF88F4
 Secondary: #B591D9
+Secondary-200: #723FC5
+Secondary-150: #5F53CF
+Secondary-80: #7EACE2
+Secondary-50: #96D5EC
+Secondary-25: #B0F5F4
 Black-100: #0C0711
 Black-85: #302C35
 Black-50: #858388
