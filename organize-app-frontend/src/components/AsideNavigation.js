@@ -6,7 +6,6 @@ import LogoutIcon from "../assets/LogoutIcon";
 import TasksIcon from "../assets/TasksIcon";
 import classes from "./AsideNavigation.module.css";
 import { useReducer } from "react";
-import { useNavigate } from "react-router-dom";
 
 const AsideNavigation = ({ onClick }) => {
   const initialState = {
@@ -60,7 +59,6 @@ const AsideNavigation = ({ onClick }) => {
   if (state.isBudget) {
     budgetClass = `${classes["nav-item-icon"]} ${classes["nav-item-active"]}`;
   }
-  const navigate = useNavigate();
 
   return (
     <aside className={classes["nav_wrapper"]}>

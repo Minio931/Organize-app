@@ -11,6 +11,7 @@
   width: 100%;
   background-color: var(--white);
   max-height: 55rem;
+  min-height: 40rem;
   border-radius: 1rem;
   border-top-right-radius: 0;
   box-shadow: 5px 5px 2px 2px var(--black-25);
@@ -119,7 +120,7 @@
   border-radius: 0.5rem;
 }
 .not-done-container::-webkit-scrollbar-track {
-  background-color: var(--black-25);
+  background-color: var(--white);
   border-radius: 1rem;
 }
 .not-done-container::-webkit-scrollbar-thumb {
@@ -133,7 +134,7 @@
   border-radius: 0.5rem;
 }
 .done-container::-webkit-scrollbar-track {
-  background-color: var(--black-25);
+  background-color: var(--white);
   border-radius: 1rem;
 }
 .done-container::-webkit-scrollbar-thumb {
