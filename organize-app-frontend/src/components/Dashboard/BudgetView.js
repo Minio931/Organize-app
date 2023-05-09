@@ -10,6 +10,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Filler,
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
@@ -20,7 +21,8 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  CategoryScale
+  CategoryScale,
+  Filler
 );
 
 const labels = [
@@ -37,10 +39,10 @@ const BudgetView = (props) => {
   const chart = useRef(null);
   console.log(chart);
   const getGradient = (ctx, chartArea) => {
-    const colorStart = "rgb(138,45,187)";
-    const colorMid = "rgb(226,52,226)";
-    const colorEnd = "rgb(255,136,244)";
-    console.log(ctx);
+    const colorStart = "rgba(138,45,187, 0.4)";
+    const colorMid = "rgba(226,52,226, 0.4)";
+    const colorEnd = "rgba(255,136,244, 0.4)";
+
     const gradient = ctx.createLinearGradient(
       0,
       chartArea.bottom,
@@ -59,21 +61,17 @@ const BudgetView = (props) => {
       {
         label: "Expenses",
         data: [65, 59, 80, 81, 56, 55, 40],
-        backgroundColor: "#b22cce",
-        borderColor: (context) => {
-          console.log(context);
+        fill: true,
+        backgroundColor: (context) => {
           const chart = context.chart;
           const { ctx, chartArea } = chart;
           if (!chartArea) {
             return null;
           }
-          if (context.dataIndex === 0) {
-            return getGradient(ctx, chartArea);
-          }
+          return getGradient(ctx, chartArea);
         },
-        fill: true,
-        fillColor: "#b22cce",
-        tension: 0.1,
+        borderColor: "rgba(138,45,187, 0.8)",
+        tension: 0.2,
       },
     ],
   };

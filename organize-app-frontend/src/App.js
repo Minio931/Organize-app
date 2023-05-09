@@ -13,6 +13,7 @@ import DashboardPage from "./pages/Dashboard";
 import "chartjs-adapter-date-fns";
 
 export const options = {
+  tension: 0.4,
   scales: {
     x: {
       type: "time",
@@ -22,6 +23,16 @@ export const options = {
     },
     y: {
       beginAtZero: true,
+      fontColor: "rgba(0,0,0,0.5)",
+      fontStyle: "bold",
+      beginAtZero: true,
+      maxTicksLimit: 5,
+      padding: 10,
+
+      gridLines: {
+        drawTicks: false,
+        display: false,
+      },
     },
   },
 };
