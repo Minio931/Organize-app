@@ -1,4 +1,5 @@
 import { useReducer } from "react";
+
 import classes from "./Statistics.module.css";
 
 const Statistics = () => {
@@ -26,9 +27,10 @@ const Statistics = () => {
   const habitHandler = () => {
     dispatch({ type: "habits" });
   };
-  const BudgetHandler = () => {
+  const budgetHandler = () => {
     dispatch({ type: "budget" });
   };
+
   let todoClass = `${classes["statistics-menu-item"]} `;
   let habitClass = `${classes["statistics-menu-item"]} `;
   let budgetClass = `${classes["statistics-menu-item"]} `;
@@ -42,7 +44,6 @@ const Statistics = () => {
   if (state.isBudget) {
     budgetClass = `${classes["statistics-menu-item"]} ${classes["statistics-menu-item-active"]}`;
   }
-
   return (
     <div className={classes["statistics-wrapper"]}>
       <h1>Statistics</h1>
@@ -55,10 +56,15 @@ const Statistics = () => {
             <li onClick={habitHandler} className={habitClass}>
               Habits
             </li>
-            <li onClick={BudgetHandler} className={budgetClass}>
+            <li onClick={budgetHandler} className={budgetClass}>
               Budget
             </li>
           </ul>
+        </div>
+        <div className={classes["statistics-content"]}>
+          {state.isTasks && <h1>Tasks</h1>}
+          {state.isHabits && <h1>Habits</h1>}
+          {state.isBudget && <h1>Budget</h1>}
         </div>
       </div>
     </div>
