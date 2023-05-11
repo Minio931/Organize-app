@@ -1,4 +1,3 @@
-import Arrow from "../../assets/Arrow";
 import classes from "./TodoView.module.css";
 import { useState, useRef } from "react";
 import ProggressBar from "../UI/ProggressBar";

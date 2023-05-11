@@ -1,6 +1,7 @@
 import BudgetView from "./BudgetView";
 import classes from "./DashboardMain.module.css";
 import HabitsView from "./HabitsView";
+import Statistics from "./Statistics";
 import TodoView from "./TodoView";
 
 const DashboardMain = (props) => {
@@ -15,10 +16,13 @@ const DashboardMain = (props) => {
             <p className={classes["username-display"]}>{username}</p>
           </header>
           <HabitsView />
-          <BudgetView className={classes.chart} options={props.options} />
+          <BudgetView />
         </section>
         <section>
           <TodoView />
+        </section>
+        <section>
+          <Statistics />
         </section>
       </div>
     </>

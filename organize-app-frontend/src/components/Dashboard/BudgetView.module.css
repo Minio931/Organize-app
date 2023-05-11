@@ -53,15 +53,16 @@
 
 .budget-chart-options {
   width: 15rem;
-  background-color: var(--secondary-150);
+  background-color: var(--primary-200);
   border-radius: 1rem;
 }
 .budget-chart-option-item-active {
-  background: rgb(95, 83, 207);
+  background: rgb(138, 45, 187);
   background: linear-gradient(
     108deg,
-    rgba(95, 83, 207, 1) 5%,
-    rgba(150, 213, 236, 1) 100%
+    rgba(138, 45, 187, 1) 11%,
+    rgba(226, 52, 226, 1) 52%,
+    rgba(255, 136, 244, 1) 99%
   );
   border-radius: 1rem;
   font-weight: 600;

@@ -11,10 +11,17 @@
   font-weight: bold;
 }
 
-.dashboard-body {
+/* .dashboard-body {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  gap: 2rem;
+  user-select: none;
+} */
+.dashboard-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr;
   gap: 2rem;
   user-select: none;
 }

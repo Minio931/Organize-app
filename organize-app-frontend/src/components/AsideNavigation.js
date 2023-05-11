@@ -5,41 +5,28 @@ import HomeIcon from "../assets/HomeIcons";
 import LogoutIcon from "../assets/LogoutIcon";
 import TasksIcon from "../assets/TasksIcon";
 import classes from "./AsideNavigation.module.css";
-import { useReducer } from "react";
+
+import useMenu from "../hooks/useMenu";
 
 const AsideNavigation = ({ onClick }) => {
-  const initialState = {
-    isHome: true,
-    isHabit: false,
-    isTask: false,
-    isBudget: false,
-  };
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "home":
-        return { isHome: true, isHabit: false, isTask: false, isBudget: false };
-      case "habit":
-        return { isHome: false, isHabit: true, isTask: false, isBudget: false };
-      case "task":
-        return { isHome: false, isHabit: false, isTask: true, isBudget: false };
-      case "budget":
-        return { isHome: false, isHabit: false, isTask: false, isBudget: true };
-    }
-  };
-
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const { state: activeState, activeHandler } = useMenu([
+    "isHome",
+    "isHabit",
+    "isTask",
+    "isBudget",
+  ]);
 
   const homeHandler = () => {
-    dispatch({ type: "home" });
+    activeHandler("isHome");
   };
   const habitHandler = () => {
-    dispatch({ type: "habit" });
+    activeHandler("isHabit");
   };
   const taskHandler = () => {
-    dispatch({ type: "task" });
+    activeHandler("isTask");
   };
   const budgetHandler = () => {
-    dispatch({ type: "budget" });
+    activeHandler("isBudget");
   };
 
   let homeClass = `${classes["nav-item-icon"]} `;
@@ -47,16 +34,16 @@ const AsideNavigation = ({ onClick }) => {
   let taskClass = `${classes["nav-item-icon"]} `;
   let budgetClass = `${classes["nav-item-icon"]} `;
 
-  if (state.isHome) {
+  if (activeState.isHome) {
     homeClass = `${classes["nav-item-icon"]} ${classes["nav-item-active"]}`;
   }
-  if (state.isHabit) {
+  if (activeState.isHabit) {
     habitClass = `${classes["nav-item-icon"]} ${classes["nav-item-active"]}`;
   }
-  if (state.isTask) {
+  if (activeState.isTask) {
     taskClass = `${classes["nav-item-icon"]} ${classes["nav-item-active"]}`;
   }
-  if (state.isBudget) {
+  if (activeState.isBudget) {
     budgetClass = `${classes["nav-item-icon"]} ${classes["nav-item-active"]}`;
   }
 
