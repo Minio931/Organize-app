@@ -1,5 +1,4 @@
-import classes from "./BudgetView.module.css";
-
+import classes from "./TaskStats.module.css";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,17 +24,17 @@ ChartJS.register(
   Filler
 );
 
-const labels = [
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday",
-  "Sunday",
-];
+const TaskStats = (props) => {
+  const labels = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
 
-const BudgetView = (props) => {
   const getGradient = (ctx, chartArea) => {
     const colorStart = "rgba(138,45,187, 0.4)";
     const colorMid = "rgba(226,52,226, 0.4)";
@@ -58,7 +57,7 @@ const BudgetView = (props) => {
     datasets: [
       {
         label: "Expenses",
-        data: [65, 59, 80, 81, 56, 55, 40],
+        data: [14, 5, 6, 20, 10, 15, 10],
         fill: true,
         backgroundColor: (context) => {
           const chart = context.chart;
@@ -73,7 +72,6 @@ const BudgetView = (props) => {
       },
     ],
   };
-
   const options = {
     responsive: true,
     plugins: {
@@ -85,58 +83,60 @@ const BudgetView = (props) => {
       },
     },
   };
-
-  let budgetWeeklyClass = `${classes["budget-chart-option-item"]} `;
-  let budgetMonthlyClass = `${classes["budget-chart-option-item"]} `;
-  let budgetYearlyClass = `${classes["budget-chart-option-item"]} `;
-
   const { state: activeState, activeHandler } = useMenu([
     "isWeekly",
     "isMonthly",
     "isYearly",
   ]);
 
-  const weeklyHandler = () => {
+  const { isWeekly, isMonthly, isYearly } = activeState;
+
+  const weeklyClickHandler = () => {
     activeHandler("isWeekly");
   };
-  const monthlyHandler = () => {
+  const monthlyClickHandler = () => {
     activeHandler("isMonthly");
   };
-  const yearlyHandler = () => {
+  const yearlyClickHandler = () => {
     activeHandler("isYearly");
   };
-
-  if (activeState.isWeekly) {
-    budgetWeeklyClass = `${classes["budget-chart-option-item"]} ${classes["budget-chart-option-item-active"]}`;
+  let weeklyClass = classes["chart-options-list-item"];
+  let monthlyClass = classes["chart-options-list-item"];
+  let yearlyClass = classes["chart-options-list-item"];
+  if (isWeekly) {
+    weeklyClass = `${classes["chart-options-list-item"]} ${classes["chart-options-list-item-active"]}`;
   }
-  if (activeState.isMonthly) {
-    budgetMonthlyClass = `${classes["budget-chart-option-item"]} ${classes["budget-chart-option-item-active"]}`;
+  if (isMonthly) {
+    monthlyClass = `${classes["chart-options-list-item"]} ${classes["chart-options-list-item-active"]}`;
   }
-  if (activeState.isYearly) {
-    budgetYearlyClass = `${classes["budget-chart-option-item"]} ${classes["budget-chart-option-item-active"]}`;
+  if (isYearly) {
+    yearlyClass = `${classes["chart-options-list-item"]} ${classes["chart-options-list-item-active"]}`;
   }
 
   return (
-    <div className={classes["budget-view"]}>
-      <h2 className={classes["budget-header"]}>Budget</h2>
-      <div className={classes["budget-chart-container"]}>
-        <div className={classes.chart}>
-          <Line
-            id="budget-chart"
-            className={classes.chart}
-            options={options}
-            data={data}
-          />
+    <div className={classes["stats-wrapper"]}>
+      <div className={classes["count-container"]}>
+        <h2>Proggress</h2>
+        <div className={classes["stats-done"]}>
+          <div>100</div>
+          <p>done</p>
         </div>
-        <div className={classes["budget-chart-options"]}>
-          <ul>
-            <li onClick={weeklyHandler} className={budgetWeeklyClass}>
+        <div className={classes["stats-notdone"]}>
+          <div>23</div>
+          <p>not done</p>
+        </div>
+      </div>
+      <div className={classes["chart-container"]}>
+        <Line options={options} data={data} />
+        <div className={classes["chart-options"]}>
+          <ul className={classes["chart-options-list"]}>
+            <li className={weeklyClass} onClick={weeklyClickHandler}>
               Weekly
             </li>
-            <li onClick={monthlyHandler} className={budgetMonthlyClass}>
+            <li className={monthlyClass} onClick={monthlyClickHandler}>
               Monthly
             </li>
-            <li onClick={yearlyHandler} className={budgetYearlyClass}>
+            <li className={yearlyClass} onClick={yearlyClickHandler}>
               Yearly
             </li>
           </ul>
@@ -146,4 +146,4 @@ const BudgetView = (props) => {
   );
 };
 
-export default BudgetView;
+export default TaskStats;

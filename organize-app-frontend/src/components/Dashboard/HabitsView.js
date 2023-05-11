@@ -1,7 +1,7 @@
 import Arrow from "../../assets/Arrow";
 import HabitItem from "./HabitItem";
 import classes from "./HabitsView.module.css";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 const DUMMY_HABITS = [
   {

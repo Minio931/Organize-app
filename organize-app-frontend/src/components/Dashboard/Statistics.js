@@ -1,47 +1,36 @@
-import { useReducer } from "react";
+import useMenu from "../../hooks/useMenu";
 
 import classes from "./Statistics.module.css";
+import TaskStats from "./TaskStats";
 
-const Statistics = () => {
-  const initialState = {
-    isTasks: true,
-    isHabits: false,
-    isBudget: false,
-  };
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "tasks":
-        return { isTasks: true, isHabits: false, isBudget: false };
-      case "habits":
-        return { isTasks: false, isHabits: true, isBudget: false };
-      case "budget":
-        return { isTasks: false, isHabits: false, isBudget: true };
-    }
-  };
-  const [state, dispatch] = useReducer(reducer, initialState);
+const Statistics = (props) => {
+  const { state: activeState, activeHandler } = useMenu([
+    "isTasks",
+    "isHabits",
+    "isBudget",
+  ]);
 
   const tasksHandler = () => {
-    dispatch({ type: "tasks" });
+    activeHandler("isTasks");
   };
   const habitHandler = () => {
-    dispatch({ type: "habits" });
+    activeHandler("isHabits");
   };
   const budgetHandler = () => {
-    dispatch({ type: "budget" });
+    activeHandler("isBudget");
   };
 
   let todoClass = `${classes["statistics-menu-item"]} `;
   let habitClass = `${classes["statistics-menu-item"]} `;
   let budgetClass = `${classes["statistics-menu-item"]} `;
 
-  if (state.isTasks) {
+  if (activeState.isTasks) {
     todoClass = `${classes["statistics-menu-item"]} ${classes["statistics-menu-item-active"]}`;
   }
-  if (state.isHabits) {
+  if (activeState.isHabits) {
     habitClass = `${classes["statistics-menu-item"]} ${classes["statistics-menu-item-active"]}`;
   }
-  if (state.isBudget) {
+  if (activeState.isBudget) {
     budgetClass = `${classes["statistics-menu-item"]} ${classes["statistics-menu-item-active"]}`;
   }
   return (
@@ -62,9 +51,9 @@ const Statistics = () => {
           </ul>
         </div>
         <div className={classes["statistics-content"]}>
-          {state.isTasks && <h1>Tasks</h1>}
-          {state.isHabits && <h1>Habits</h1>}
-          {state.isBudget && <h1>Budget</h1>}
+          {activeState.isTasks && <TaskStats options={props.options} />}
+          {activeState.isHabits && <h1>Habits</h1>}
+          {activeState.isBudget && <h1>Budget</h1>}
         </div>
       </div>
     </div>

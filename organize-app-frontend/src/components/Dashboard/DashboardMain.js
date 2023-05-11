@@ -16,7 +16,7 @@ const DashboardMain = (props) => {
             <p className={classes["username-display"]}>{username}</p>
           </header>
           <HabitsView />
-          <BudgetView options={props.options} />
+          <BudgetView />
         </section>
         <section>
           <TodoView />

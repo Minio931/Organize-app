@@ -12,31 +12,6 @@ import { action as loginUser } from "./components/LoginForm";
 import DashboardPage from "./pages/Dashboard";
 import "chartjs-adapter-date-fns";
 
-export const options = {
-  tension: 0.4,
-  scales: {
-    x: {
-      type: "time",
-      time: {
-        unit: "day",
-      },
-    },
-    y: {
-      beginAtZero: true,
-      fontColor: "rgba(0,0,0,0.5)",
-      fontStyle: "bold",
-      beginAtZero: true,
-      maxTicksLimit: 5,
-      padding: 10,
-
-      gridLines: {
-        drawTicks: false,
-        display: false,
-      },
-    },
-  },
-};
-
 const Router = createBrowserRouter([
   {
     path: "/",
@@ -58,7 +33,7 @@ const Router = createBrowserRouter([
         children: [
           {
             path: "dashboard",
-            element: <DashboardPage options={options} />,
+            element: <DashboardPage />,
           },
           {
             path: "habit-tracker",
