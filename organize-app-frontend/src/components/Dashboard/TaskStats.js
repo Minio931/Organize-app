@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
   Filler,
+  Colors,
 } from "chart.js";
 
 import { Line } from "react-chartjs-2";
@@ -21,7 +22,8 @@ ChartJS.register(
   Tooltip,
   Legend,
   CategoryScale,
-  Filler
+  Filler,
+  Colors
 );
 
 const TaskStats = (props) => {
@@ -36,9 +38,9 @@ const TaskStats = (props) => {
   ];
 
   const getGradient = (ctx, chartArea) => {
-    const colorStart = "rgba(138,45,187, 0.4)";
-    const colorMid = "rgba(226,52,226, 0.4)";
-    const colorEnd = "rgba(255,136,244, 0.4)";
+    const colorStart = "rgba(253,251,255,0.4)";
+    const colorMid = " rgba(219,218,219,0.4)";
+    const colorEnd = "rgba(194,193,195,0.4)";
 
     const gradient = ctx.createLinearGradient(
       0,
@@ -67,12 +69,40 @@ const TaskStats = (props) => {
           }
           return getGradient(ctx, chartArea);
         },
-        borderColor: "rgba(138,45,187, 0.8)",
-        tension: 0.2,
+        borderColor: "rgba(253,251,255,0.8)",
+
+        tension: 0.3,
       },
     ],
   };
   const options = {
+    plugins: {
+      colors: {
+        forceOverride: true,
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(253,251,255,0.2)",
+        },
+        ticks: {
+          color: "rgba(253,251,255,0.8)",
+        },
+      },
+
+      x: {
+        beginAtZero: true,
+        grid: {
+          color: "rgba(253,251,255,0.2)",
+        },
+        ticks: {
+          color: "rgba(253,251,255,0.8)",
+        },
+      },
+    },
+    color: "rgba(253,251,255,1)",
     responsive: true,
     plugins: {
       legend: {
@@ -128,19 +158,19 @@ const TaskStats = (props) => {
       </div>
       <div className={classes["chart-container"]}>
         <Line options={options} data={data} />
-        <div className={classes["chart-options"]}>
-          <ul className={classes["chart-options-list"]}>
-            <li className={weeklyClass} onClick={weeklyClickHandler}>
-              Weekly
-            </li>
-            <li className={monthlyClass} onClick={monthlyClickHandler}>
-              Monthly
-            </li>
-            <li className={yearlyClass} onClick={yearlyClickHandler}>
-              Yearly
-            </li>
-          </ul>
-        </div>
+      </div>
+      <div className={classes["chart-options"]}>
+        <ul className={classes["chart-options-list"]}>
+          <li className={weeklyClass} onClick={weeklyClickHandler}>
+            Weekly
+          </li>
+          <li className={monthlyClass} onClick={monthlyClickHandler}>
+            Monthly
+          </li>
+          <li className={yearlyClass} onClick={yearlyClickHandler}>
+            Yearly
+          </li>
+        </ul>
       </div>
     </div>
   );
