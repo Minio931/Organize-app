@@ -9,8 +9,10 @@ import BudgetPage from "./pages/Budget";
 import RegisterPage from "./pages/Register";
 import { action as registerUser } from "./components/RegisterForm";
 import { action as loginUser } from "./components/LoginForm";
+import { loader as LoadTodos } from "./components/Dashboard/TodoView";
 import DashboardPage from "./pages/Dashboard";
 import "chartjs-adapter-date-fns";
+import ErrorPage from "./pages/Error";
 
 const Router = createBrowserRouter([
   {
@@ -20,6 +22,7 @@ const Router = createBrowserRouter([
       {
         index: true,
         element: <LoginPage />,
+
         action: loginUser,
       },
       {
@@ -30,6 +33,7 @@ const Router = createBrowserRouter([
       {
         path: "organize-app",
         element: <RootLayout />,
+        errorElement: <ErrorPage />,
         children: [
           {
             path: "dashboard",

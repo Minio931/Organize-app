@@ -189,3 +189,15 @@ const TodoView = () => {
 };
 
 export default TodoView;
+
+// export async function loader() {
+//   const { id: userId } = localStorage.getItem("user");
+//   const response = await fetch(`http://localhost:3001/todos/${userId}`);
+
+//   if (!response.ok) {
+//     throw new Error("Something went wrong!");
+//   }
+
+//   const responseData = await response.json();
+//   return responseData;
+// }
