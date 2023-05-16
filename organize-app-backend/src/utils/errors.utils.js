@@ -18,8 +18,16 @@ class UserNotFoundError {
   }
 }
 
+class TodoNotFoundError {
+  constructor(message) {
+    this.status = 404;
+    this.message = message;
+  }
+}
+
 module.exports = {
   UserExistError,
   UserNotFoundError,
   UsernameAlreadyExistError,
+  TodoNotFoundError,
 };

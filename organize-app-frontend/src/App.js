@@ -38,6 +38,7 @@ const Router = createBrowserRouter([
           {
             path: "dashboard",
             element: <DashboardPage />,
+            loader: LoadTodos,
           },
           {
             path: "habit-tracker",

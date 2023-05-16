@@ -7,7 +7,6 @@ function ErrorPage() {
   let title = "An error occured!";
   let message = "Something went wrong";
 
-  console.log(error);
   if (error.status === 500) {
     message = error.data.message;
     console.log(message);

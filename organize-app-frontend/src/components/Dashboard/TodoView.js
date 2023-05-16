@@ -2,6 +2,7 @@ import classes from "./TodoView.module.css";
 import { useState, useRef } from "react";
 import ProggressBar from "../UI/ProggressBar";
 import ResizeIcon from "../../assets/ResizeIcon";
+import { parse } from "date-fns";
 
 const DUMMY_TODOS = [
   {
@@ -190,14 +191,14 @@ const TodoView = () => {
 
 export default TodoView;
 
-// export async function loader() {
-//   const { id: userId } = localStorage.getItem("user");
-//   const response = await fetch(`http://localhost:3001/todos/${userId}`);
-
-//   if (!response.ok) {
-//     throw new Error("Something went wrong!");
-//   }
-
-//   const responseData = await response.json();
-//   return responseData;
-// }
+export async function loader() {
+  // const user = localStorage.getItem("user");
+  // const parseUser = JSON.parse(user);
+  // const response = await fetch(`http://localhost:3001/todos/${parseUser.id}`);
+  // console.log(response);
+  // if (!response.ok) {
+  //   throw new Error("Something went wrong!");
+  // }
+  // const responseData = await response.json();
+  // return responseData;
+}
