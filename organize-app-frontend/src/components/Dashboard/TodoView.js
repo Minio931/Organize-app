@@ -1,77 +1,9 @@
 import classes from "./TodoView.module.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ProggressBar from "../UI/ProggressBar";
 import ResizeIcon from "../../assets/ResizeIcon";
 import { parse } from "date-fns";
 import { useLoaderData } from "react-router-dom";
-
-const DUMMY_TODOS = [
-  {
-    id: "t1",
-    name: "Todo 1",
-    completed: false,
-  },
-  {
-    id: "t2",
-    name: "Todo 2",
-    completed: false,
-  },
-  {
-    id: "t3",
-    name: "Todo 3",
-    completed: true,
-  },
-  {
-    id: "t4",
-    name: "Todo 4",
-    completed: false,
-  },
-  {
-    id: "t5",
-    name: "Todo 5",
-    completed: false,
-  },
-  {
-    id: "t6",
-    name: "Todo 6",
-    completed: false,
-  },
-  {
-    id: "t7",
-    name: "Todo 7",
-    completed: false,
-  },
-  {
-    id: "t8",
-    name: "Lorem ipsum dolor sit amet consectetur a",
-    completed: false,
-  },
-  {
-    id: "t9",
-    name: "lOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT",
-    completed: false,
-  },
-  {
-    id: "t10",
-    name: "Todo 10",
-    completed: false,
-  },
-  {
-    id: "t11",
-    name: "Todo 11",
-    completed: false,
-  },
-  {
-    id: "t12",
-    name: "Todo 12",
-    completed: false,
-  },
-  {
-    id: "t13",
-    name: "Todo 13",
-    completed: false,
-  },
-];
 
 const TodoView = () => {
   const [doneTodos, setDoneTodos] = useState([]);
@@ -84,8 +16,17 @@ const TodoView = () => {
   const data = useLoaderData();
   console.log(data);
 
+  useEffect(() => {
+    data.forEach((todo) => {
+      if (todo.completed) {
+        setDoneTodos((prev) => [...prev, todo]);
+      } else {
+        setUndoneTodos((prev) => [...prev, todo]);
+      }
+    });
+  }, [data]);
   const onDoneClickHandler = (event) => {
-    DUMMY_TODOS.forEach((todo) => {
+    data.forEach((todo) => {
       if (todo.id === event.target.id) {
         todo.completed = !todo.completed;
         setDoneTodos((prev) => [...prev, todo]);
@@ -93,7 +34,7 @@ const TodoView = () => {
     });
   };
   const onUndoneClickHandler = (event) => {
-    DUMMY_TODOS.forEach((todo) => {
+    data.forEach((todo) => {
       if (todo.id === event.target.id) {
         todo.completed = !todo.completed;
         setUndoneTodos((prev) => [...prev, todo]);
@@ -132,8 +73,7 @@ const TodoView = () => {
           onDragStart={initial}
         >
           <ul className={classes["todos-list-not-done"]}>
-            {DUMMY_TODOS.map((todo) => {
-              if (todo.completed) return null;
+            {undoneTodos.map((todo) => {
               return (
                 <li className={classes["todo-item"]} key={todo.id}>
                   <input
@@ -163,8 +103,7 @@ const TodoView = () => {
         </div>
         <div ref={doneContainer} className={classes["done-container"]}>
           <ul className={classes["todos-list-done"]}>
-            {DUMMY_TODOS.map((todo) => {
-              if (!todo.completed) return null;
+            {doneTodos.map((todo) => {
               return (
                 <li className={classes["todo-item"]} key={todo.id}>
                   <input
