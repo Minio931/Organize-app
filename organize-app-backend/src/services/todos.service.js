@@ -20,6 +20,7 @@ const getTodos = async (userId) => {
   if (result.rows.length === 0) {
     throw new TodoNotFoundError("No todos found for this user");
   }
+  console.log(result.rows);
   return result.rows;
 };
 

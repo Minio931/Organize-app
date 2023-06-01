@@ -9,7 +9,7 @@ import BudgetPage from "./pages/Budget";
 import RegisterPage from "./pages/Register";
 import { action as registerUser } from "./components/RegisterForm";
 import { action as loginUser } from "./components/LoginForm";
-import { loader as LoadTodos } from "./components/Dashboard/TodoView";
+import { loader as loadTodos } from "./components/Dashboard/TodoView";
 import DashboardPage from "./pages/Dashboard";
 import "chartjs-adapter-date-fns";
 import ErrorPage from "./pages/Error";
@@ -38,7 +38,7 @@ const Router = createBrowserRouter([
           {
             path: "dashboard",
             element: <DashboardPage />,
-            loader: LoadTodos,
+            loader: loadTodos,
           },
           {
             path: "habit-tracker",

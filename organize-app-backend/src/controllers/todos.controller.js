@@ -12,6 +12,7 @@ const create = async (req, res, next) => {
 const get = async (req, res, next) => {
   try {
     const todos = await todosService.getTodos(req.params.userId);
+    console.log(req.params.userId);
     res.status(200).send(todos);
   } catch (error) {
     next(error);

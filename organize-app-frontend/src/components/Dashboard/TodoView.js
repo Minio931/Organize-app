@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import ProggressBar from "../UI/ProggressBar";
 import ResizeIcon from "../../assets/ResizeIcon";
 import { parse } from "date-fns";
+import { useLoaderData } from "react-router-dom";
 
 const DUMMY_TODOS = [
   {
@@ -80,6 +81,8 @@ const TodoView = () => {
   const [initialSize2, setInitialSize2] = useState(null);
   const notDoneContainer = useRef(null);
   const doneContainer = useRef(null);
+  const data = useLoaderData();
+  console.log(data);
 
   const onDoneClickHandler = (event) => {
     DUMMY_TODOS.forEach((todo) => {
@@ -192,13 +195,16 @@ const TodoView = () => {
 export default TodoView;
 
 export async function loader() {
-  // const user = localStorage.getItem("user");
-  // const parseUser = JSON.parse(user);
-  // const response = await fetch(`http://localhost:3001/todos/${parseUser.id}`);
-  // console.log(response);
-  // if (!response.ok) {
-  //   throw new Error("Something went wrong!");
-  // }
-  // const responseData = await response.json();
-  // return responseData;
+  const user = localStorage.getItem("user");
+  const parseUser = JSON.parse(user);
+
+  const response = await fetch("http://localhost:3001/todo/" + parseUser.id, {
+    method: "GET",
+  });
+  console.log(response);
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  const responseData = await response.json();
+  return responseData;
 }
