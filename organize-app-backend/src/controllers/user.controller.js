@@ -12,7 +12,7 @@ const create = async (req, res, next) => {
 const get = async (req, res, next) => {
   try {
     const user = await userService.loginUser(req.body);
-    console.log(req.body);
+
     res.status(200).send(user);
   } catch (error) {
     next(error);

@@ -2,51 +2,74 @@ import classes from "./TodoView.module.css";
 import { useState, useRef, useEffect } from "react";
 import ProggressBar from "../UI/ProggressBar";
 import ResizeIcon from "../../assets/ResizeIcon";
-import { parse } from "date-fns";
 import { useLoaderData } from "react-router-dom";
 
 const TodoView = () => {
   const [doneTodos, setDoneTodos] = useState([]);
   const [undoneTodos, setUndoneTodos] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [initialPos, setInitialPos] = useState(null);
   const [initialSize, setInitialSize] = useState(null);
   const [initialSize2, setInitialSize2] = useState(null);
   const notDoneContainer = useRef(null);
   const doneContainer = useRef(null);
   const data = useLoaderData();
-  console.log(data);
+
+  const loadTodos = () => {
+    const notDoneTodos = [];
+    const doneTodos = [];
+
+    todos.forEach((todo) => {
+      if (todo.completion) {
+        doneTodos.push(todo);
+      } else {
+        notDoneTodos.push(todo);
+      }
+    });
+    console.log(doneTodos);
+    console.log(notDoneTodos);
+    setDoneTodos(doneTodos);
+    setUndoneTodos(notDoneTodos);
+  };
 
   useEffect(() => {
-    data.forEach((todo) => {
-      if (todo.completed) {
-        setDoneTodos((prev) => [...prev, todo]);
-      } else {
-        setUndoneTodos((prev) => [...prev, todo]);
-      }
+    setTodos(data);
+  });
+
+  useEffect(() => {
+    loadTodos();
+  }, [todos]);
+
+  const onClickHandler = async (event) => {
+    const todoId = parseInt(event.target.id);
+
+    const completion = event.target.checked;
+    const todo = { id: todoId, completion };
+
+    const response = await fetch("http://localhost:3001/todo/update", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(todo),
     });
-  }, [data]);
-  const onDoneClickHandler = (event) => {
-    data.forEach((todo) => {
-      if (todo.id === event.target.id) {
-        todo.completed = !todo.completed;
-        setDoneTodos((prev) => [...prev, todo]);
-      }
-    });
-  };
-  const onUndoneClickHandler = (event) => {
-    data.forEach((todo) => {
-      if (todo.id === event.target.id) {
-        todo.completed = !todo.completed;
-        setUndoneTodos((prev) => [...prev, todo]);
-      }
-    });
+
+    if (response.ok) {
+      const previosTodos = [...todos];
+
+      previosTodos.forEach((todoItem) => {
+        if (todoItem.id === todoId) {
+          todoItem.completion = completion;
+        }
+      });
+      setTodos(previosTodos);
+    }
   };
 
   const initial = (event) => {
     setInitialPos(event.clientY);
     setInitialSize(notDoneContainer.current.offsetHeight);
     setInitialSize2(doneContainer.current.offsetHeight);
-    console.log("initialSize", doneContainer.current.offsetHeight);
   };
 
   const resize = (event) => {
@@ -58,8 +81,6 @@ const TodoView = () => {
       parseInt(initialSize2) -
       parseInt(notDoneContainer.current.offsetHeight - initialPos + 148)
     }px`;
-
-    console.log("currentSize", doneContainer.current.offsetHeight);
   };
   return (
     <div className={classes["todos-wrapper"]}>
@@ -79,8 +100,8 @@ const TodoView = () => {
                   <input
                     type="checkbox"
                     id={todo.id}
-                    checked={todo.completed}
-                    onChange={onDoneClickHandler}
+                    onChange={onClickHandler}
+                    checked={todo.completion}
                   />
                   <label htmlFor={todo.id}></label>
                   <p>{todo.name}</p>
@@ -109,8 +130,8 @@ const TodoView = () => {
                   <input
                     type="checkbox"
                     id={todo.id}
-                    checked={todo.completed}
-                    onChange={onUndoneClickHandler}
+                    checked={todo.completion}
+                    onChange={onClickHandler}
                   />
                   <label htmlFor={todo.id}></label>
                   <p>{todo.name}</p>
