@@ -12,7 +12,17 @@ const create = async (req, res, next) => {
 const get = async (req, res, next) => {
   try {
     const todos = await todosService.getTodos(req.params.userId);
+    console.log(todos);
     res.status(200).send(todos);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const update = async (req, res, next) => {
+  try {
+    const todo = await todosService.updateTodo(req.body);
+    res.status(200).send(todo);
   } catch (error) {
     next(error);
   }
@@ -21,4 +31,5 @@ const get = async (req, res, next) => {
 module.exports = {
   create,
   get,
+  update,
 };

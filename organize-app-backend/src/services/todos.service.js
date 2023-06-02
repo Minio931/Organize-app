@@ -20,10 +20,26 @@ const getTodos = async (userId) => {
   if (result.rows.length === 0) {
     throw new TodoNotFoundError("No todos found for this user");
   }
+
   return result.rows;
+};
+
+const updateTodo = async (todo) => {
+  const { id, completion } = todo;
+
+  const result = await db.query(
+    "UPDATE todos SET completion = $1 WHERE id = $2 RETURNING *",
+    [completion, id]
+  );
+  if (result.rows.length === 0) {
+    throw new TodoNotFoundError("Todo not found");
+  }
+  console.log(result.rows[0]);
+  return { message: `Todo has been updated: ${result.rows[0]}` };
 };
 
 module.exports = {
   createTodo,
   getTodos,
+  updateTodo,
 };

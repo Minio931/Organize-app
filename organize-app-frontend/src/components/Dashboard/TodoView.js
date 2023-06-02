@@ -1,108 +1,75 @@
 import classes from "./TodoView.module.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import ProggressBar from "../UI/ProggressBar";
 import ResizeIcon from "../../assets/ResizeIcon";
-import { parse } from "date-fns";
-
-const DUMMY_TODOS = [
-  {
-    id: "t1",
-    name: "Todo 1",
-    completed: false,
-  },
-  {
-    id: "t2",
-    name: "Todo 2",
-    completed: false,
-  },
-  {
-    id: "t3",
-    name: "Todo 3",
-    completed: true,
-  },
-  {
-    id: "t4",
-    name: "Todo 4",
-    completed: false,
-  },
-  {
-    id: "t5",
-    name: "Todo 5",
-    completed: false,
-  },
-  {
-    id: "t6",
-    name: "Todo 6",
-    completed: false,
-  },
-  {
-    id: "t7",
-    name: "Todo 7",
-    completed: false,
-  },
-  {
-    id: "t8",
-    name: "Lorem ipsum dolor sit amet consectetur a",
-    completed: false,
-  },
-  {
-    id: "t9",
-    name: "lOREM IPSUM DOLOR SIT AMET CONSECTETUR ADIPISICING ELIT",
-    completed: false,
-  },
-  {
-    id: "t10",
-    name: "Todo 10",
-    completed: false,
-  },
-  {
-    id: "t11",
-    name: "Todo 11",
-    completed: false,
-  },
-  {
-    id: "t12",
-    name: "Todo 12",
-    completed: false,
-  },
-  {
-    id: "t13",
-    name: "Todo 13",
-    completed: false,
-  },
-];
+import { useLoaderData } from "react-router-dom";
 
 const TodoView = () => {
   const [doneTodos, setDoneTodos] = useState([]);
   const [undoneTodos, setUndoneTodos] = useState([]);
+  const [todos, setTodos] = useState([]);
   const [initialPos, setInitialPos] = useState(null);
   const [initialSize, setInitialSize] = useState(null);
   const [initialSize2, setInitialSize2] = useState(null);
   const notDoneContainer = useRef(null);
   const doneContainer = useRef(null);
+  const data = useLoaderData();
 
-  const onDoneClickHandler = (event) => {
-    DUMMY_TODOS.forEach((todo) => {
-      if (todo.id === event.target.id) {
-        todo.completed = !todo.completed;
-        setDoneTodos((prev) => [...prev, todo]);
+  const loadTodos = () => {
+    const notDoneTodos = [];
+    const doneTodos = [];
+
+    todos.forEach((todo) => {
+      if (todo.completion) {
+        doneTodos.push(todo);
+      } else {
+        notDoneTodos.push(todo);
       }
     });
+    console.log(doneTodos);
+    console.log(notDoneTodos);
+    setDoneTodos(doneTodos);
+    setUndoneTodos(notDoneTodos);
   };
-  const onUndoneClickHandler = (event) => {
-    DUMMY_TODOS.forEach((todo) => {
-      if (todo.id === event.target.id) {
-        todo.completed = !todo.completed;
-        setUndoneTodos((prev) => [...prev, todo]);
-      }
+
+  useEffect(() => {
+    setTodos(data);
+  });
+
+  useEffect(() => {
+    loadTodos();
+  }, [todos]);
+
+  const onClickHandler = async (event) => {
+    const todoId = parseInt(event.target.id);
+
+    const completion = event.target.checked;
+    const todo = { id: todoId, completion };
+
+    const response = await fetch("http://localhost:3001/todo/update", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(todo),
     });
+
+    if (response.ok) {
+      const previosTodos = [...todos];
+
+      previosTodos.forEach((todoItem) => {
+        if (todoItem.id === todoId) {
+          todoItem.completion = completion;
+        }
+      });
+      setTodos(previosTodos);
+    }
   };
 
   const initial = (event) => {
     setInitialPos(event.clientY);
     setInitialSize(notDoneContainer.current.offsetHeight);
     setInitialSize2(doneContainer.current.offsetHeight);
-    console.log("initialSize", doneContainer.current.offsetHeight);
   };
 
   const resize = (event) => {
@@ -114,8 +81,6 @@ const TodoView = () => {
       parseInt(initialSize2) -
       parseInt(notDoneContainer.current.offsetHeight - initialPos + 148)
     }px`;
-
-    console.log("currentSize", doneContainer.current.offsetHeight);
   };
   return (
     <div className={classes["todos-wrapper"]}>
@@ -129,15 +94,14 @@ const TodoView = () => {
           onDragStart={initial}
         >
           <ul className={classes["todos-list-not-done"]}>
-            {DUMMY_TODOS.map((todo) => {
-              if (todo.completed) return null;
+            {undoneTodos.map((todo) => {
               return (
                 <li className={classes["todo-item"]} key={todo.id}>
                   <input
                     type="checkbox"
                     id={todo.id}
-                    checked={todo.completed}
-                    onChange={onDoneClickHandler}
+                    onChange={onClickHandler}
+                    checked={todo.completion}
                   />
                   <label htmlFor={todo.id}></label>
                   <p>{todo.name}</p>
@@ -160,15 +124,14 @@ const TodoView = () => {
         </div>
         <div ref={doneContainer} className={classes["done-container"]}>
           <ul className={classes["todos-list-done"]}>
-            {DUMMY_TODOS.map((todo) => {
-              if (!todo.completed) return null;
+            {doneTodos.map((todo) => {
               return (
                 <li className={classes["todo-item"]} key={todo.id}>
                   <input
                     type="checkbox"
                     id={todo.id}
-                    checked={todo.completed}
-                    onChange={onUndoneClickHandler}
+                    checked={todo.completion}
+                    onChange={onClickHandler}
                   />
                   <label htmlFor={todo.id}></label>
                   <p>{todo.name}</p>
@@ -192,13 +155,16 @@ const TodoView = () => {
 export default TodoView;
 
 export async function loader() {
-  // const user = localStorage.getItem("user");
-  // const parseUser = JSON.parse(user);
-  // const response = await fetch(`http://localhost:3001/todos/${parseUser.id}`);
-  // console.log(response);
-  // if (!response.ok) {
-  //   throw new Error("Something went wrong!");
-  // }
-  // const responseData = await response.json();
-  // return responseData;
+  const user = localStorage.getItem("user");
+  const parseUser = JSON.parse(user);
+
+  const response = await fetch("http://localhost:3001/todo/" + parseUser.id, {
+    method: "GET",
+  });
+  console.log(response);
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  const responseData = await response.json();
+  return responseData;
 }

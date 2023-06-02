@@ -17,12 +17,12 @@ const LoginForm = () => {
   const navigation = useNavigation();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      navigate("/organize-app/dashboard");
-    }
-  });
+  // useEffect(() => {
+  //   const user = localStorage.getItem("user");
+  //   if (user) {
+  //     navigate("/organize-app/dashboard");
+  //   }
+  // });
 
   const {
     value: loginValue,
