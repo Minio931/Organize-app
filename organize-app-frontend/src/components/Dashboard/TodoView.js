@@ -4,7 +4,7 @@ import ProggressBar from "../UI/ProggressBar";
 import ResizeIcon from "../../assets/ResizeIcon";
 import { useLoaderData } from "react-router-dom";
 
-const TodoView = () => {
+const TodoView = ({ tasks }) => {
   const [doneTodos, setDoneTodos] = useState([]);
   const [undoneTodos, setUndoneTodos] = useState([]);
   const [todos, setTodos] = useState([]);
@@ -14,7 +14,7 @@ const TodoView = () => {
   const [initialSize2, setInitialSize2] = useState(null);
   const notDoneContainer = useRef(null);
   const doneContainer = useRef(null);
-  const data = useLoaderData();
+  // const data = useLoaderData();
 
   const loadTodos = () => {
     const notDoneTodos = [];
@@ -27,14 +27,12 @@ const TodoView = () => {
         notDoneTodos.push(todo);
       }
     });
-    console.log(doneTodos);
-    console.log(notDoneTodos);
     setDoneTodos(doneTodos);
     setUndoneTodos(notDoneTodos);
   };
 
   useEffect(() => {
-    setTodos(data);
+    setTodos(tasks);
     const progress = (doneTodos.length / todos.length) * 100;
     setTasksProgress(progress);
   });
@@ -160,17 +158,17 @@ const TodoView = () => {
 
 export default TodoView;
 
-export async function loader() {
-  const user = localStorage.getItem("user");
-  const parseUser = JSON.parse(user);
+// export async function loader() {
+//   const user = localStorage.getItem("user");
+//   const parseUser = JSON.parse(user);
 
-  const response = await fetch("http://localhost:3001/todo/" + parseUser.id, {
-    method: "GET",
-  });
-  console.log(response);
-  if (!response.ok) {
-    throw new Error("Something went wrong!");
-  }
-  const responseData = await response.json();
-  return responseData;
-}
+//   const response = await fetch("http://localhost:3001/todo/" + parseUser.id, {
+//     method: "GET",
+//   });
+//   console.log(response);
+//   if (!response.ok) {
+//     throw new Error("Something went wrong!");
+//   }
+//   const responseData = await response.json();
+//   return responseData;
+// }
