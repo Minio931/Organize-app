@@ -8,6 +8,7 @@ const TodoView = () => {
   const [doneTodos, setDoneTodos] = useState([]);
   const [undoneTodos, setUndoneTodos] = useState([]);
   const [todos, setTodos] = useState([]);
+  const [tasksProgress, setTasksProgress] = useState(0);
   const [initialPos, setInitialPos] = useState(null);
   const [initialSize, setInitialSize] = useState(null);
   const [initialSize2, setInitialSize2] = useState(null);
@@ -34,6 +35,8 @@ const TodoView = () => {
 
   useEffect(() => {
     setTodos(data);
+    const progress = (doneTodos.length / todos.length) * 100;
+    setTasksProgress(progress);
   });
 
   useEffect(() => {
@@ -142,8 +145,11 @@ const TodoView = () => {
         </div>
         <div className={classes.proggress}>
           <div className={classes["proggress-bar-wrapper"]}>
-            <ProggressBar className={classes.completion} proggress="64" />
-            <span>64%</span>
+            <ProggressBar
+              className={classes.completion}
+              proggress={tasksProgress}
+            />
+            <span>{tasksProgress}%</span>
           </div>
           <p>today's proggress</p>
         </div>
