@@ -18,7 +18,14 @@ const DashboardMain = (props) => {
             <h1 className={classes.welcome}>Welcome</h1>
             <p className={classes["username-display"]}>{username}</p>
           </header>
-          <HabitsView />
+          <Suspense
+            fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
+          >
+            <Await resolve={habits}>
+              {(habits) => <HabitsView habits={habits} />}
+            </Await>
+          </Suspense>
+
           <BudgetView />
         </section>
         <section>
@@ -62,8 +69,9 @@ async function loadHabits() {
   const response = await fetch("http://localhost:3001/habits/" + parseUser.id, {
     method: "GET",
   });
+
   if (!response.ok) {
-    throw json({ message: "Could not fetch habits!" }, { status: 500 });
+    throw new Error("Something went wrong!");
   }
   const responseData = await response.json();
   return responseData;
