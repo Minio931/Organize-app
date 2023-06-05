@@ -54,7 +54,7 @@ async function loadTasks() {
   const response = await fetch("http://localhost:3001/todo/" + parseUser.id, {
     method: "GET",
   });
-  console.log(response);
+
   if (!response.ok) {
     throw new Error("Something went wrong!");
   }
@@ -66,14 +66,17 @@ async function loadHabits() {
   const user = localStorage.getItem("user");
   const parseUser = JSON.parse(user);
 
-  const response = await fetch("http://localhost:3001/habits/" + parseUser.id, {
+  const response = await fetch("http://localhost:3001/habit/" + parseUser.id, {
     method: "GET",
   });
 
-  if (!response.ok) {
-    throw new Error("Something went wrong!");
-  }
   const responseData = await response.json();
+  console.log(responseData);
+
+  if (!response.ok) {
+    return json({ error: "Something went wrong!" });
+  }
+
   return responseData;
 }
 

@@ -24,10 +24,17 @@ class TodoNotFoundError {
     this.message = message;
   }
 }
+class NotFoundError {
+  constructor(message) {
+    this.status = 404;
+    this.message = message;
+  }
+}
 
 module.exports = {
   UserExistError,
   UserNotFoundError,
   UsernameAlreadyExistError,
   TodoNotFoundError,
+  NotFoundError,
 };
