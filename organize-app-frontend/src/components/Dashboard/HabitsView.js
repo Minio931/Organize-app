@@ -48,7 +48,7 @@ const DUMMY_HABITS = [
   },
 ];
 
-const HabitsView = () => {
+const HabitsView = ({ habits }) => {
   const [habitOnMiddle, setHabitOnMiddle] = useState(1);
   const [visibleHabitsProps, setVisibleHabitsProps] = useState({
     order: [],
