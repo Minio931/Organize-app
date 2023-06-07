@@ -9,8 +9,8 @@ import { Suspense } from "react";
 const DashboardMain = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const username = user.username;
-  const { tasks, habits } = useLoaderData();
-  console.log(habits, "habits");
+  const { tasks, habitsData } = useLoaderData();
+
   return (
     <>
       <div className={classes["dashboard-body"]}>
@@ -22,8 +22,8 @@ const DashboardMain = (props) => {
           <Suspense
             fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
           >
-            <Await resolve={habits}>
-              {(habits) => <HabitsView habits={habits} />}
+            <Await resolve={habitsData}>
+              {(habitsData) => <HabitsView habitsData={habitsData} />}
             </Await>
           </Suspense>
 
@@ -85,6 +85,6 @@ async function loadHabits() {
 export function loader() {
   return defer({
     tasks: loadTasks(),
-    habits: loadHabits(),
+    habitsData: loadHabits(),
   });
 }
