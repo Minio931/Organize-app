@@ -3,59 +3,63 @@ import HabitItem from "./HabitItem";
 import classes from "./HabitsView.module.css";
 import { useState, useEffect } from "react";
 
-const DUMMY_HABITS = [
-  {
-    id: "h1",
-    name: "Running",
-    goal: "3km",
-    streak: 100,
-    proggress: 60,
-  },
-  {
-    id: "h2",
-    name: "Reading",
-    goal: "10 pages",
-    streak: 50,
-    proggress: 30,
-  },
-  {
-    id: "h3",
-    name: "Coding",
-    goal: "1 hour",
-    streak: 200,
-    proggress: 100,
-  },
-  {
-    id: "h4",
-    name: "Meditation",
-    goal: "10 minutes",
-    streak: 10,
-    proggress: 10,
-  },
-  {
-    id: "h5",
-    name: "Gym",
-    goal: "1 hour",
-    streak: 100,
-    proggress: 60,
-  },
-  {
-    id: "h6",
-    name: "Running",
-    goal: "3km",
-    streak: 100,
-    proggress: 60,
-  },
-];
+const HabitsView = ({ habitsData }) => {
+  const { habits, completionDates } = habitsData;
 
-const HabitsView = ({ habits }) => {
+  const daysInMonth = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    0
+  ).getDate();
+  const habitStats = {};
+  for (let i = 0; i <= habits.length - 1; i++) {
+    let completionDatesForHabit = completionDates.filter((item) => {
+      let date = new Date(item.completion_date);
+
+      if (
+        date.getMonth() === new Date().getMonth() &&
+        date.getFullYear() === new Date().getFullYear() &&
+        parseInt(item.habit_id) === habits[i].id
+      ) {
+        return item;
+      }
+    });
+
+    let streak = () => {
+      let streak = 0;
+      for (let i = 0; i <= completionDatesForHabit.length - 2; i++) {
+        let date = new Date(completionDatesForHabit[i].completion_date);
+        let nextDate = new Date(completionDatesForHabit[i + 1].completion_date);
+
+        let difference = date.getDate() - nextDate.getDate();
+        console.log(difference);
+        if (difference === parseInt(habits[i].frequency)) {
+          streak += 1;
+        } else {
+          streak = 0;
+        }
+      }
+      return streak;
+    };
+
+    habitStats[habits[i].name] = {
+      monthlyProggress: Math.round(
+        (completionDatesForHabit.length /
+          Math.floor(daysInMonth / parseInt(habits[i].frequency))) *
+          100
+      ),
+      streak: streak(),
+    };
+  }
+  console.log(habitStats);
+
   const [habitOnMiddle, setHabitOnMiddle] = useState(1);
   const [visibleHabitsProps, setVisibleHabitsProps] = useState({
     order: [],
     styles: {},
   });
 
-  const totalHabits = DUMMY_HABITS.length;
+  const totalHabits = habits.length;
   const habitWidth = 14 + 4; // 14rem + 2rem padding on each side
   const habitHeight = 18 / 3;
 
@@ -140,7 +144,7 @@ const HabitsView = ({ habits }) => {
     <div className={classes["habits-wrapper"]}>
       <h2 className={classes["habits-header"]}>Your Habits</h2>
       <div className={classes["habits-container"]}>
-        {DUMMY_HABITS.map((habit, index) => {
+        {habits.map((habit, index) => {
           const dontRender = visibleHabitsProps.order.indexOf(index) === -1;
           const styles = visibleHabitsProps[index]
             ? visibleHabitsProps[index].styles
@@ -151,8 +155,8 @@ const HabitsView = ({ habits }) => {
               id={habit.id}
               name={habit.name}
               goal={habit.goal}
-              streak={habit.streak}
-              proggress={habit.proggress}
+              streak={habitStats[habit.name].streak}
+              proggress={habitStats[habit.name].monthlyProggress}
               render={dontRender}
               styles={styles}
             />

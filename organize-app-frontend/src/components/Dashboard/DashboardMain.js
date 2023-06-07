@@ -9,7 +9,8 @@ import { Suspense } from "react";
 const DashboardMain = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const username = user.username;
-  const { tasks, habits } = useLoaderData();
+  const { tasks, habitsData } = useLoaderData();
+
   return (
     <>
       <div className={classes["dashboard-body"]}>
@@ -21,8 +22,8 @@ const DashboardMain = (props) => {
           <Suspense
             fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
           >
-            <Await resolve={habits}>
-              {(habits) => <HabitsView habits={habits} />}
+            <Await resolve={habitsData}>
+              {(habitsData) => <HabitsView habitsData={habitsData} />}
             </Await>
           </Suspense>
 
@@ -70,12 +71,13 @@ async function loadHabits() {
     method: "GET",
   });
 
-  const responseData = await response.json();
-  console.log(responseData);
-
-  if (!response.ok) {
-    return json({ error: "Something went wrong!" });
+  if (response.status === 404) {
+    return json({ error: "No habits found for this user" });
   }
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  const responseData = await response.json();
 
   return responseData;
 }
@@ -83,6 +85,6 @@ async function loadHabits() {
 export function loader() {
   return defer({
     tasks: loadTasks(),
-    habits: loadHabits(),
+    habitsData: loadHabits(),
   });
 }
