@@ -10,6 +10,7 @@ const DashboardMain = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const username = user.username;
   const { tasks, habits } = useLoaderData();
+  console.log(habits, "habits");
   return (
     <>
       <div className={classes["dashboard-body"]}>
@@ -70,12 +71,13 @@ async function loadHabits() {
     method: "GET",
   });
 
-  const responseData = await response.json();
-  console.log(responseData);
-
-  if (!response.ok) {
-    return json({ error: "Something went wrong!" });
+  if (response.status === 404) {
+    return json({ error: "No habits found for this user" });
   }
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+  const responseData = await response.json();
 
   return responseData;
 }

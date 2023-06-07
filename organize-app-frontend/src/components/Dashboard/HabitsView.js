@@ -49,13 +49,14 @@ const DUMMY_HABITS = [
 ];
 
 const HabitsView = ({ habits }) => {
+  console.log(habits, "habits");
   const [habitOnMiddle, setHabitOnMiddle] = useState(1);
   const [visibleHabitsProps, setVisibleHabitsProps] = useState({
     order: [],
     styles: {},
   });
 
-  const totalHabits = DUMMY_HABITS.length;
+  const totalHabits = habits.length;
   const habitWidth = 14 + 4; // 14rem + 2rem padding on each side
   const habitHeight = 18 / 3;
 
@@ -140,7 +141,7 @@ const HabitsView = ({ habits }) => {
     <div className={classes["habits-wrapper"]}>
       <h2 className={classes["habits-header"]}>Your Habits</h2>
       <div className={classes["habits-container"]}>
-        {DUMMY_HABITS.map((habit, index) => {
+        {habits.map((habit, index) => {
           const dontRender = visibleHabitsProps.order.indexOf(index) === -1;
           const styles = visibleHabitsProps[index]
             ? visibleHabitsProps[index].styles
@@ -151,8 +152,8 @@ const HabitsView = ({ habits }) => {
               id={habit.id}
               name={habit.name}
               goal={habit.goal}
-              streak={habit.streak}
-              proggress={habit.proggress}
+              streak="100"
+              proggress="60"
               render={dontRender}
               styles={styles}
             />
