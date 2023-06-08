@@ -4,6 +4,11 @@ import classes from "./HabitsView.module.css";
 import { useState, useEffect } from "react";
 
 const HabitsView = ({ habitsData }) => {
+  if (habitsData.status === 404) {
+    const habits = [];
+    const completionDates = [];
+    habitsData = { habits, completionDates };
+  }
   const { habits, completionDates } = habitsData;
 
   const daysInMonth = new Date(
@@ -32,7 +37,7 @@ const HabitsView = ({ habitsData }) => {
         let nextDate = new Date(completionDatesForHabit[i + 1].completion_date);
 
         let difference = date.getDate() - nextDate.getDate();
-        console.log(difference);
+
         if (difference === parseInt(habits[i].frequency)) {
           streak += 1;
         } else {
@@ -51,7 +56,6 @@ const HabitsView = ({ habitsData }) => {
       streak: streak(),
     };
   }
-  console.log(habitStats);
 
   const [habitOnMiddle, setHabitOnMiddle] = useState(1);
   const [visibleHabitsProps, setVisibleHabitsProps] = useState({
@@ -162,6 +166,9 @@ const HabitsView = ({ habitsData }) => {
             />
           );
         })}
+        {habits.length === 0 && (
+          <div className={classes["empty-habits"]}>No habits for today</div>
+        )}
       </div>
       <span className={classes.left} onClick={handleLeftArrowClick}>
         <Arrow className={classes["left-arrow"]} />

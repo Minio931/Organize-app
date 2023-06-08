@@ -56,9 +56,13 @@ async function loadTasks() {
     method: "GET",
   });
 
+  if (response.status === 404) {
+    return json({ error: "No tasks found for this user" }, { status: 404 });
+  }
   if (!response.ok) {
     throw new Error("Something went wrong!");
   }
+
   const responseData = await response.json();
   return responseData;
 }
@@ -72,7 +76,7 @@ async function loadHabits() {
   });
 
   if (response.status === 404) {
-    return json({ error: "No habits found for this user" });
+    return json({ error: "No habits found for this user" }, { status: 404 });
   }
   if (!response.ok) {
     throw new Error("Something went wrong!");

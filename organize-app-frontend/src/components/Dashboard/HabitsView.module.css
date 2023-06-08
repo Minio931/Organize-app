@@ -57,3 +57,14 @@
   background-color: var(--white);
   box-shadow: 2px 2px 2px 2px var(--black-25);
 }
+
+.empty-habits {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  font-size: var(--header-2-font-size);
+  color: var(--black-50);
+  font-style: italic;
+}
