@@ -32,6 +32,9 @@ const TodoView = ({ tasks }) => {
   };
 
   useEffect(() => {
+    if (tasks.status === 404) {
+      return;
+    }
     setTodos(tasks);
     const progress = (doneTodos.length / todos.length) * 100;
     setTasksProgress(progress);
@@ -95,6 +98,9 @@ const TodoView = ({ tasks }) => {
           onDragStart={initial}
         >
           <ul className={classes["todos-list-not-done"]}>
+            {todos.length === 0 && (
+              <li className={classes["empty-todo"]}>No todos for today</li>
+            )}
             {undoneTodos.map((todo) => {
               return (
                 <li className={classes["todo-item"]} key={todo.id}>
@@ -157,18 +163,3 @@ const TodoView = ({ tasks }) => {
 };
 
 export default TodoView;
-
-// export async function loader() {
-//   const user = localStorage.getItem("user");
-//   const parseUser = JSON.parse(user);
-
-//   const response = await fetch("http://localhost:3001/todo/" + parseUser.id, {
-//     method: "GET",
-//   });
-//   console.log(response);
-//   if (!response.ok) {
-//     throw new Error("Something went wrong!");
-//   }
-//   const responseData = await response.json();
-//   return responseData;
-// }

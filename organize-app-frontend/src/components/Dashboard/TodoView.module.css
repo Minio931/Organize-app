@@ -177,3 +177,15 @@
   width: 80%;
   height: 0.85rem;
 }
+
+.empty-todo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  gap: 1rem;
+  font-size: var(--header-3-font-size);
+  font-style: italic;
+  color: var(--black-50);
+}
