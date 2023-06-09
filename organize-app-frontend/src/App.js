@@ -11,6 +11,7 @@ import { action as registerUser } from "./components/RegisterForm";
 import { action as loginUser } from "./components/LoginForm";
 // import { loader as loadTodos } from "./components/Dashboard/TodoView";
 import { loader as dashboardLoaders } from "./components/Dashboard/DashboardMain";
+import { action as createTodo } from "./components/Todos/TodoForm";
 import DashboardPage from "./pages/Dashboard";
 import "chartjs-adapter-date-fns";
 import ErrorPage from "./pages/Error";
@@ -48,6 +49,7 @@ const Router = createBrowserRouter([
           {
             path: "todo",
             element: <TodoPage />,
+            action: createTodo,
           },
           {
             path: "budget",

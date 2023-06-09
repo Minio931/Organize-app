@@ -10,7 +10,7 @@ const getHabits = async (userId) => {
     'SELECT * FROM habits INNER JOIN "habitsCompletionDates" as HCD ON habits.id = HCD.habit_id WHERE user_id = $1',
     [userId]
   );
-  console.log(completionDates.rows);
+
   if (result.rows.length === 0) {
     throw new NotFoundError("No habits found for this user");
   }

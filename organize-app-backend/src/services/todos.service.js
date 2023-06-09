@@ -8,7 +8,7 @@ const createTodo = async (todo) => {
     "INSERT INTO Todos (user_id, name, description, creation_date, execution_date, completion ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
     [userId, name, description, creationDate, executionDate, completion]
   );
-  console.log(result.rows[0]);
+
   return { message: `A new todo has been added: ${result.rows[0]}` };
 };
 

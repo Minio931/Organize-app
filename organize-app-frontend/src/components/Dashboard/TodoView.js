@@ -2,7 +2,6 @@ import classes from "./TodoView.module.css";
 import { useState, useRef, useEffect } from "react";
 import ProggressBar from "../UI/ProggressBar";
 import ResizeIcon from "../../assets/ResizeIcon";
-import { useLoaderData } from "react-router-dom";
 
 const TodoView = ({ tasks }) => {
   const [doneTodos, setDoneTodos] = useState([]);
@@ -14,7 +13,6 @@ const TodoView = ({ tasks }) => {
   const [initialSize2, setInitialSize2] = useState(null);
   const notDoneContainer = useRef(null);
   const doneContainer = useRef(null);
-  // const data = useLoaderData();
 
   const loadTodos = () => {
     const notDoneTodos = [];
