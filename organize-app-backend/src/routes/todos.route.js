@@ -4,6 +4,7 @@ const todos_controller = require("../controllers/todos.controller");
 
 router.post("/create", todos_controller.create);
 router.get("/:userId", todos_controller.get);
+router.get("/today/:userId", todos_controller.getToday);
 router.patch("/update", todos_controller.update);
 
 module.exports = router;

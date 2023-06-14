@@ -52,9 +52,12 @@ async function loadTasks() {
   const user = localStorage.getItem("user");
   const parseUser = JSON.parse(user);
 
-  const response = await fetch("http://localhost:3001/todo/" + parseUser.id, {
-    method: "GET",
-  });
+  const response = await fetch(
+    "http://localhost:3001/todo/today/" + parseUser.id,
+    {
+      method: "GET",
+    }
+  );
 
   if (response.status === 404) {
     return json({ error: "No tasks found for this user" }, { status: 404 });
@@ -64,6 +67,7 @@ async function loadTasks() {
   }
 
   const responseData = await response.json();
+  console.log(responseData, "responseData");
   return responseData;
 }
 
