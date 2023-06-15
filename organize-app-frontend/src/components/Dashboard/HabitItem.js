@@ -1,6 +1,33 @@
 import ProggressBar from "../UI/ProggressBar";
 import classes from "./HabitItem.module.css";
 const HabitItem = (props) => {
+  const completeTodaysHabitsHandler = (event) => {
+    if (event.target.checked) {
+      fetch("http://localhost:3001/habit/complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ habitId: props.id }),
+      });
+    } else {
+      const date = new Date();
+      const month =
+        date.getMonth() + 1 < 10
+          ? `0${date.getMonth() + 1}`
+          : date.getMonth() + 1;
+      const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+      const todayDate = `${date.getFullYear()}-${month}-${day}`;
+      fetch("http://localhost:3001/habit/deleteComplete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ habitId: props.id, completionDate: todayDate }),
+      });
+    }
+  };
+
   const styles = props.styles;
   return (
     <div
@@ -12,7 +39,12 @@ const HabitItem = (props) => {
       style={{ ...styles, transition: "all 0.5s ease" }}
     >
       <div className={classes["habit-completion"]}>
-        <input type="checkbox" id={props.id} name={props.id} />
+        <input
+          type="checkbox"
+          id={props.id}
+          name={props.id}
+          onChange={completeTodaysHabitsHandler}
+        />
         <label htmlFor={props.id}></label>{" "}
       </div>
       <h2 className={classes["habit-name"]}>{props.name}</h2>
