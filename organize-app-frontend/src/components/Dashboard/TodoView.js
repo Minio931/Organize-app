@@ -34,7 +34,7 @@ const TodoView = ({ tasks }) => {
       return;
     }
     setTodos(tasks);
-    const progress = (doneTodos.length / todos.length) * 100;
+    const progress = Math.round((doneTodos.length / todos.length) * 100);
     setTasksProgress(progress);
   });
 

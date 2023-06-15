@@ -1,6 +1,37 @@
 import ProggressBar from "../UI/ProggressBar";
 import classes from "./HabitItem.module.css";
+import { useState } from "react";
 const HabitItem = (props) => {
+  const [isDone, setIsDone] = useState(props.isChecked);
+  const completeTodaysHabitsHandler = (event) => {
+    if (event.target.checked) {
+      fetch("http://localhost:3001/habit/complete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ habitId: props.id }),
+      });
+      setIsDone(true);
+    } else {
+      const date = new Date();
+      const month =
+        date.getMonth() + 1 < 10
+          ? `0${date.getMonth() + 1}`
+          : date.getMonth() + 1;
+      const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+      const todayDate = `${date.getFullYear()}-${month}-${day}`;
+      fetch("http://localhost:3001/habit/deleteComplete", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ habitId: props.id, completionDate: todayDate }),
+      });
+      setIsDone(false);
+    }
+  };
+
   const styles = props.styles;
   return (
     <div
@@ -12,7 +43,13 @@ const HabitItem = (props) => {
       style={{ ...styles, transition: "all 0.5s ease" }}
     >
       <div className={classes["habit-completion"]}>
-        <input type="checkbox" id={props.id} name={props.id} />
+        <input
+          type="checkbox"
+          id={props.id}
+          name={props.id}
+          onClick={completeTodaysHabitsHandler}
+          checked={isDone}
+        />
         <label htmlFor={props.id}></label>{" "}
       </div>
       <h2 className={classes["habit-name"]}>{props.name}</h2>

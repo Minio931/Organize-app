@@ -30,6 +30,7 @@ const HabitsView = ({ habitsData }) => {
       }
     });
 
+    let isDone = false;
     let streak = () => {
       let streak = 0;
       for (let i = 0; i <= completionDatesForHabit.length - 2; i++) {
@@ -37,6 +38,7 @@ const HabitsView = ({ habitsData }) => {
         let nextDate = new Date(completionDatesForHabit[i + 1].completion_date);
 
         let difference = date.getDate() - nextDate.getDate();
+        isDone = nextDate.getDate() === new Date().getDate() ? true : false;
 
         if (difference === parseInt(habits[i].frequency)) {
           streak += 1;
@@ -54,6 +56,7 @@ const HabitsView = ({ habitsData }) => {
           100
       ),
       streak: streak(),
+      isDone: isDone,
     };
   }
 
@@ -157,6 +160,7 @@ const HabitsView = ({ habitsData }) => {
             <HabitItem
               key={habit.id}
               id={habit.id}
+              isChecked={habitStats[habit.name].isDone}
               name={habit.name}
               goal={habit.goal}
               streak={habitStats[habit.name].streak}
