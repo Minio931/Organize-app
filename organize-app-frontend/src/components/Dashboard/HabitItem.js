@@ -1,6 +1,8 @@
 import ProggressBar from "../UI/ProggressBar";
 import classes from "./HabitItem.module.css";
+import { useState } from "react";
 const HabitItem = (props) => {
+  const [isDone, setIsDone] = useState(props.isChecked);
   const completeTodaysHabitsHandler = (event) => {
     if (event.target.checked) {
       fetch("http://localhost:3001/habit/complete", {
@@ -10,6 +12,7 @@ const HabitItem = (props) => {
         },
         body: JSON.stringify({ habitId: props.id }),
       });
+      setIsDone(true);
     } else {
       const date = new Date();
       const month =
@@ -25,6 +28,7 @@ const HabitItem = (props) => {
         },
         body: JSON.stringify({ habitId: props.id, completionDate: todayDate }),
       });
+      setIsDone(false);
     }
   };
 
@@ -43,7 +47,8 @@ const HabitItem = (props) => {
           type="checkbox"
           id={props.id}
           name={props.id}
-          onChange={completeTodaysHabitsHandler}
+          onClick={completeTodaysHabitsHandler}
+          checked={isDone}
         />
         <label htmlFor={props.id}></label>{" "}
       </div>
