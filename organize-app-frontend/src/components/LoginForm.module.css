@@ -1,107 +1,108 @@
 .display {
-  font-size: var(--display-font-size);
-  font-weight: bold;
+   font-size: var(--display-font-size);
+   font-weight: bold;
+   text-align: center;
 }
 .link {
-  text-decoration: none;
-  color: var(--primary-color);
+   text-decoration: none;
+   color: var(--primary-color);
 }
 
 .link:hover {
-  text-decoration: underline;
+   text-decoration: underline;
 }
 
 .welcome {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  gap: 1rem;
-  font-family: Lato, sans-serif;
-  margin-top: 5rem;
-  color: var(--black-100);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   width: 100%;
+   gap: 1rem;
+   font-family: Lato, sans-serif;
+   margin-top: 5rem;
+   color: var(--black-100);
 }
 
 .form {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1rem;
-  font-family: Lato, sans-serif;
-  color: var(--black-100);
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   gap: 1rem;
+   font-family: Lato, sans-serif;
+   color: var(--black-100);
 }
 .input {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+   display: flex;
+   flex-direction: column;
+   gap: 0.5rem;
 }
 
 .input input {
-  padding: 0.5rem;
-  border-radius: 0.3rem;
-  border: 1px solid var(--black-25);
-  width: 20rem;
-  height: 1.5rem;
-  outline: none;
-  box-shadow: 3px 3px 3px var(--black-25);
+   padding: 0.5rem;
+   border-radius: 0.3rem;
+   border: 1px solid var(--black-25);
+   width: 20rem;
+   height: 1.5rem;
+   outline: none;
+   box-shadow: 3px 3px 3px var(--black-25);
 }
 
 .input input::placeholder {
-  color: var(--black-25);
+   color: var(--black-25);
 }
 
 .input label {
-  font-size: 0.9em;
-  color: var(--black-50);
+   font-size: 0.9em;
+   color: var(--black-50);
 }
 
 .form_action {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+   display: flex;
+   justify-content: center;
+   gap: 1rem;
 }
 
 .form_action button {
-  width: 7rem;
-  height: 2.2rem;
-  border-radius: 0.3rem;
-  font-size: 1rem;
-  border: none;
-  background-color: var(--primary-color);
-  color: var(--white);
-  box-shadow: 3px 3px 3px var(--black-25);
-  cursor: pointer;
+   width: 7rem;
+   height: 2.2rem;
+   border-radius: 0.3rem;
+   font-size: 1rem;
+   border: none;
+   background-color: var(--primary-color);
+   color: var(--white);
+   box-shadow: 3px 3px 3px var(--black-25);
+   cursor: pointer;
 }
 
 .form_action button:hover {
-  background-color: var(--secondary-color);
+   background-color: var(--secondary-color);
 }
 
 .register {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-decoration: none;
-  font-size: 1rem;
-  width: 7rem;
-  height: 2.2rem;
-  border-radius: 0.3rem;
-  border: none;
-  background-color: var(--black-50);
-  color: var(--white);
-  box-shadow: 3px 3px 3px var(--black-25);
-  cursor: pointer;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   text-decoration: none;
+   font-size: 1rem;
+   width: 7rem;
+   height: 2.2rem;
+   border-radius: 0.3rem;
+   border: none;
+   background-color: var(--black-50);
+   color: var(--white);
+   box-shadow: 3px 3px 3px var(--black-25);
+   cursor: pointer;
 }
 
 .register:hover {
-  background-color: var(--black-25);
+   background-color: var(--black-25);
 }
 
 .error-text {
-  color: rgb(210, 32, 32);
+   color: rgb(210, 32, 32);
 }
 
 .error {
-  border: 2px solid rgb(245, 33, 33) !important;
+   border: 2px solid rgb(245, 33, 33) !important;
 }

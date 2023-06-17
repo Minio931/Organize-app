@@ -1,71 +1,66 @@
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
 body {
-  margin: 0;
-  background: rgb(176, 244, 243);
-  background: linear-gradient(
-    108deg,
-    rgba(176, 244, 243, 1) 0%,
-    rgba(115, 63, 197, 1) 17%,
-    rgba(138, 45, 186, 1) 31%,
-    rgba(255, 159, 202, 1) 51%,
-    rgba(178, 44, 206, 1) 74%,
-    rgba(95, 83, 207, 1) 100%
-  );
+   margin: 0;
+   background: rgb(176, 244, 243);
+   background: linear-gradient(
+      108deg,
+      rgba(176, 244, 243, 1) 0%,
+      rgba(115, 63, 197, 1) 17%,
+      rgba(138, 45, 186, 1) 31%,
+      rgba(255, 159, 202, 1) 51%,
+      rgba(178, 44, 206, 1) 74%,
+      rgba(95, 83, 207, 1) 100%
+   );
 }
 main {
-  font-family: Lato, sans-serif;
-  width: calc(100% - 6rem);
-  float: right;
-  height: 100vh;
-
-  overflow-y: scroll;
+   font-family: Lato, sans-serif;
+   width: calc(100% - 4rem);
+   height: 100vh;
+   overflow-y: auto;
 }
 #root {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-
-  background-color: rgba(253, 251, 255, 0.7);
+   width: 100%;
+   height: 100vh;
+   display: flex;
+   background-color: rgba(253, 251, 255, 0.7);
 }
 
 * {
-  font-family: Lato, sans-serif;
-  color: var(--black-100);
+   font-family: Lato, sans-serif;
+   color: var(--black-100);
 }
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 :root {
-  --primary-color: #9a5bd9;
-  --primary-200: #8a2dbb;
-  --primary-150: #b22cce;
-  --primary-80: #e234e2;
-  --primary-50: #f96bf2;
-  --primary-25: #ff88f4;
+   --primary-color: #9a5bd9;
+   --primary-200: #8a2dbb;
+   --primary-150: #b22cce;
+   --primary-80: #e234e2;
+   --primary-50: #f96bf2;
+   --primary-25: #ff88f4;
 
-  --secondary-color: #b591d9;
-  --secondary-200: #723fc5;
-  --secondary-150: #5f53cf;
-  --secondary-80: #7eace2;
-  --secondary-50: #96d5ec;
-  --secondary-25: #b0f5f4;
+   --secondary-color: #b591d9;
+   --secondary-200: #723fc5;
+   --secondary-150: #5f53cf;
+   --secondary-80: #7eace2;
+   --secondary-50: #96d5ec;
+   --secondary-25: #b0f5f4;
 
-  --black-100: #0c0711;
-  --black-85: #302c35;
-  --black-50: #858388;
-  --black-25: #c2c1c3;
-  --black-15: #dbdadb;
-  --white: #fdfbff;
-  --display-font-size: 64px;
-  --header-1-font-size: 48px;
-  --header-2-font-size: 36px;
-  --header-3-font-size: 24px;
-  --text-font-size: 16px;
+   --black-100: #0c0711;
+   --black-85: #302c35;
+   --black-50: #858388;
+   --black-25: #c2c1c3;
+   --black-15: #dbdadb;
+   --black-5: #efefef;
+   --white: #fdfbff;
+   --display-font-size: 64px;
+   --header-1-font-size: 48px;
+   --header-2-font-size: 36px;
+   --header-3-font-size: 24px;
+   --text-font-size: 16px;
 }
 
 /* css reset
@@ -180,12 +175,12 @@ time,
 mark,
 audio,
 video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
-  vertical-align: baseline;
+   margin: 0;
+   padding: 0;
+   border: 0;
+   font-size: 100%;
+   font: inherit;
+   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
 article,
@@ -199,27 +194,27 @@ hgroup,
 menu,
 nav,
 section {
-  display: block;
+   display: block;
 }
 body {
-  line-height: 1;
+   line-height: 1;
 }
 ol,
 ul {
-  list-style: none;
+   list-style: none;
 }
 blockquote,
 q {
-  quotes: none;
+   quotes: none;
 }
 blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
-  content: none;
+   content: '';
+   content: none;
 }
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+   border-collapse: collapse;
+   border-spacing: 0;
 }
