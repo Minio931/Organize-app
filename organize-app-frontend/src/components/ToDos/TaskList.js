@@ -1,11 +1,11 @@
 import classes from './TaskList.module.css';
 
-import { IconCircleHalf2, IconChecks, IconCheckbox, IconSquare } from '@tabler/icons-react';
+import { IconCircleHalf2, IconChecks, IconCheckbox, IconSquare, IconPlus } from '@tabler/icons-react';
 
 const Task = (props) => {
    const { icon: Icon, text } = props;
    return (
-      <li>
+      <li className={classes.task}>
          <Icon /> {text}
       </li>
    );
@@ -40,7 +40,12 @@ const TaskList = (props) => {
    return (
       <div className={classes.taskList}>
          <h2 className={classes['taskList-header']}>
-            <config.header.icon /> {config.header.text} <span>{taskCount}</span>
+            <config.header.icon />
+            {config.header.text}
+            <span>{taskCount}</span>
+            <button>
+               <IconPlus size={16} color="var(--white)" />
+            </button>
          </h2>
          <ul className={classes['taskList-list']}>
             {tasks.map((task) => (

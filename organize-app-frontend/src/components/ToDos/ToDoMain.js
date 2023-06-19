@@ -20,6 +20,7 @@ const ToDoMain = () => {
             type="inProgress"
             tasks={['Testing the development', 'Reviewing logo and branding', 'Dashboard, mobile and web DS']}
          />
+         <TaskList type="completed" tasks={['Web version', 'Mobile version']} />
       </Wrapper>
    );
 };
