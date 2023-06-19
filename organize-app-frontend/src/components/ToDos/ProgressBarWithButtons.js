@@ -37,6 +37,7 @@ const ProgressBarWithButtons = (props) => {
          </div>
          <ProgressBar fillPercent={fillPercent} />
          <ProgressText percent={fillPercent} />
+         
       </div>
    );
 };
