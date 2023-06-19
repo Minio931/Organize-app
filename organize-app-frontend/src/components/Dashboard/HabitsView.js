@@ -120,15 +120,113 @@ const HabitsView = ({ habitsData }) => {
 
          setVisibleHabitsProps(visibleHabits);
       }
-   };
+    });
 
-   useEffect(() => {
-      visibleHabitsPropsConstructor();
-   }, [habitOnMiddle]);
+    let isDone = false;
 
-   const handleLeftArrowClick = () => {
-      if (habitOnMiddle > 0) {
-         setHabitOnMiddle((prev) => prev - 1);
+    let streak = () => {
+      let streak = 0;
+      for (let j = 0; j < completionDatesForHabit.length - 1; j++) {
+        let todayDate = new Date();
+        let completionDate = new Date(
+          completionDatesForHabit[j].completion_date
+        );
+        let nextCompletionDate = new Date(
+          completionDatesForHabit[j + 1].completion_date
+        );
+        let diff = Math.abs(
+          completionDate.getDate() - nextCompletionDate.getDate()
+        );
+
+        if (nextCompletionDate.toDateString() === todayDate.toDateString()) {
+          isDone = true;
+        }
+
+        if (diff === habits[i].frequency) {
+          streak++;
+        } else {
+          streak = 0;
+        }
+      }
+      return streak;
+    };
+
+    habitStats[habits[i].name] = {
+      monthlyProggress: Math.round(
+        (completionDatesForHabit.length /
+          Math.floor(daysInMonth / parseInt(habits[i].frequency))) *
+          100
+      ),
+      streak: streak(),
+      isDone: isDone,
+    };
+  }
+
+  const [habitOnMiddle, setHabitOnMiddle] = useState(1);
+  const [visibleHabitsProps, setVisibleHabitsProps] = useState({
+    order: [],
+    styles: {},
+  });
+
+  const totalHabits = habits.length;
+  const habitWidth = 14 + 4; // 14rem + 2rem padding on each side
+  const habitHeight = 18 / 3;
+
+  const visibleHabitsPropsConstructor = () => {
+    const visibleHabits = {};
+    visibleHabits.order = [];
+
+    let habitOnTheLeft = habitOnMiddle - 1;
+    let habitOnTheRight = habitOnMiddle + 1;
+
+    let isHabitOnTheLeft = true;
+    let isHabitOnTheRight = true;
+    let isHabitOnTheMiddle = true;
+
+    for (let i = 0; i <= totalHabits - 1; i++) {
+      const styles = {};
+
+      let xTranslate = habitWidth;
+      let yTranslate = -habitHeight;
+      let opacity = 0.5;
+      let zIndex = -habitOnMiddle;
+      if (habitOnTheLeft >= 0 && isHabitOnTheLeft && i === habitOnTheLeft) {
+        styles.transform = `translate(${-xTranslate}rem, ${yTranslate}rem)`;
+        styles.opacity = opacity;
+        styles.zIndex = zIndex;
+        visibleHabits.order.push(habitOnTheLeft);
+        visibleHabits[habitOnTheLeft] = { styles };
+        isHabitOnTheLeft = false;
+      } else if (
+        habitOnTheRight < totalHabits &&
+        isHabitOnTheRight &&
+        i === habitOnTheRight
+      ) {
+        styles.transform = `translate(${xTranslate / 4}rem, ${yTranslate}rem)`;
+        styles.opacity = opacity;
+        styles.zIndex = zIndex;
+        visibleHabits.order.push(habitOnTheRight);
+        visibleHabits[habitOnTheRight] = { styles };
+        isHabitOnTheRight = false;
+      } else if (isHabitOnTheMiddle && i === habitOnMiddle) {
+        visibleHabits.order.push(habitOnMiddle);
+        isHabitOnTheMiddle = false;
+      } else if (i < habitOnTheLeft && i !== habitOnMiddle) {
+        xTranslate = -habitWidth * 2;
+        styles.transform = `translate(${xTranslate}rem, ${yTranslate}rem)`;
+        opacity = opacity / 2;
+        zIndex = zIndex - 1;
+        styles.opacity = opacity;
+        styles.zIndex = zIndex;
+        visibleHabits[i] = { styles };
+      } else if (i > habitOnTheRight && i !== habitOnMiddle) {
+        xTranslate = habitWidth * 2;
+        styles.transform = `translate(${xTranslate / 4}rem, ${yTranslate}rem)`;
+        opacity = opacity / 2 - 0.2;
+        zIndex = zIndex - 1;
+        styles.opacity = opacity;
+        styles.zIndex = zIndex;
+        visibleHabits[i] = { styles };
       }
    };
 
