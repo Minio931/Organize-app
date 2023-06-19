@@ -1,0 +1,49 @@
+.progressBarWithButtons {
+   padding: 25px 0;
+   display: flex;
+   gap: 30px;
+}
+
+.buttons {
+   display: flex;
+   gap: 15px;
+}
+
+.button {
+   border: 2px solid var(--secondary-color);
+   border-radius: 100%;
+   aspect-ratio: 1 / 1;
+   background-color: var(--white);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   cursor: pointer;
+   transition: background-color 0.2s;
+}
+
+.button:hover {
+   background-color: var(--black-5);
+}
+
+.progressBar {
+   margin: 12px 0;
+   flex-grow: 1;
+   background-color: var(--white);
+   border-radius: 100vw;
+   overflow: hidden;
+}
+
+.progressBar-fill {
+   display: block;
+   width: 0%;
+   height: 100%;
+   border-radius: 100vw;
+   background-color: var(--secondary-color);
+}
+
+.progressText {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   font-weight: bold;
+}

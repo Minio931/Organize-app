@@ -1,0 +1,38 @@
+.picker {
+   padding: 15px;
+   border-radius: 100vw;
+   background-color: var(--secondary-color);
+   overflow: hidden;
+   display: flex;
+   justify-content: space-between;
+   font-weight: bold;
+}
+
+.day {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 100vw;
+   width: 1em;
+   height: 1em;
+   padding: 10px;
+   aspect-ratio: 1 / 1;
+   transition: background-color 0.2s;
+   cursor: pointer;
+}
+
+.day:hover {
+   background-color: #fff;
+}
+
+.today {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   border-radius: 100vw;
+   height: 1em;
+   padding: 10px;
+   transition: background-color 0.2s;
+   cursor: default;
+   background-color: #fff;
+}
