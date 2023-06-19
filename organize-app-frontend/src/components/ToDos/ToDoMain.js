@@ -22,16 +22,17 @@ const tasks = {
 };
 
 const ToDoMain = () => {
-   const [today, setToday] = useState(new Date());
+   const today = new Date();
+   const [day, setDay] = useState(today);
 
-   const changeDayHandler = (date) => {
-      console.log(date);
+   const changeDayHandler = (isToday, date) => {
+      setDay(isToday ? today : date);
    };
 
    return (
       <Wrapper>
          <Header>Todo List</Header>
-         <HorizontalDatePicker currentDay={today} numOfDays={19} changeDayHandler={changeDayHandler} />
+         <HorizontalDatePicker currentDay={day} numOfDays={19} changeDayHandler={changeDayHandler} />
          <ProgressBarWithButtons fillPercent={69} />
          <Divider />
          <TaskList type="inProgress" tasks={tasks.inProgress} />

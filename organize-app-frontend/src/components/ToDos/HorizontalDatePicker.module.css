@@ -33,6 +33,6 @@
    height: 1em;
    padding: 10px;
    transition: background-color 0.2s;
-   cursor: default;
+   cursor: pointer;
    background-color: #fff;
 }
