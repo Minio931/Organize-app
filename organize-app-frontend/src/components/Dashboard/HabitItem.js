@@ -47,7 +47,7 @@ const HabitItem = (props) => {
           type="checkbox"
           id={props.id}
           name={props.id}
-          onClick={completeTodaysHabitsHandler}
+          onChange={completeTodaysHabitsHandler}
           checked={isDone}
         />
         <label htmlFor={props.id}></label>{" "}

@@ -31,17 +31,27 @@ const HabitsView = ({ habitsData }) => {
     });
 
     let isDone = false;
+
     let streak = () => {
       let streak = 0;
-      for (let i = 0; i <= completionDatesForHabit.length - 2; i++) {
-        let date = new Date(completionDatesForHabit[i].completion_date);
-        let nextDate = new Date(completionDatesForHabit[i + 1].completion_date);
+      for (let j = 0; j < completionDatesForHabit.length - 1; j++) {
+        let todayDate = new Date();
+        let completionDate = new Date(
+          completionDatesForHabit[j].completion_date
+        );
+        let nextCompletionDate = new Date(
+          completionDatesForHabit[j + 1].completion_date
+        );
+        let diff = Math.abs(
+          completionDate.getDate() - nextCompletionDate.getDate()
+        );
 
-        let difference = date.getDate() - nextDate.getDate();
-        isDone = nextDate.getDate() === new Date().getDate() ? true : false;
+        if (nextCompletionDate.toDateString() === todayDate.toDateString()) {
+          isDone = true;
+        }
 
-        if (difference === parseInt(habits[i].frequency)) {
-          streak += 1;
+        if (diff === habits[i].frequency) {
+          streak++;
         } else {
           streak = 0;
         }
