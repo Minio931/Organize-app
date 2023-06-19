@@ -49,7 +49,7 @@ const TaskList = (props) => {
          </h2>
          <ul className={classes['taskList-list']}>
             {tasks.map((task) => (
-               <Task icon={config.task.icon} text={task} />
+               <Task key={task.id} icon={config.task.icon} text={task.text} />
             ))}
          </ul>
       </div>

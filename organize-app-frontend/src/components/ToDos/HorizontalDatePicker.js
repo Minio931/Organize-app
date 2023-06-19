@@ -1,12 +1,16 @@
 import classes from './HorizontalDatePicker.module.css';
 
 const Day = (props) => {
-   const { isToday, children } = props;
-   return <div className={isToday ? classes.today : classes.day}>{children}</div>;
+   const { isToday, children, onClick } = props;
+   return (
+      <div className={isToday ? classes.today : classes.day} onClick={isToday ? onClick : undefined}>
+         {children}
+      </div>
+   );
 };
 
 const HorizontalDatePicker = (props) => {
-   const { currentDay, numOfDays } = props;
+   const { currentDay, numOfDays, changeDayHandler } = props;
    const days = [];
 
    for (let i = 0; i < numOfDays; i++) {
@@ -35,7 +39,13 @@ const HorizontalDatePicker = (props) => {
                if (!today) text = date.getDate();
                else text = `${date.toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}`;
                return (
-                  <Day key={id} isToday={today}>
+                  <Day
+                     key={id}
+                     isToday={today}
+                     onClick={() => {
+                        changeDayHandler(date);
+                     }}
+                  >
                      {text}
                   </Day>
                );

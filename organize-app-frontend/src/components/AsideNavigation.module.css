@@ -71,5 +71,5 @@
    border: 1px solid var(--primary-color);
    border-radius: 100%;
    background-color: var(--primary-color);
-   stroke: var(--white) !important;
+   stroke: var(--white);
 }
