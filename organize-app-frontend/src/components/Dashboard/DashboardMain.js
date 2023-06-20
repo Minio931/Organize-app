@@ -5,6 +5,7 @@ import Statistics from "./Statistics";
 import TodoView from "./TodoView";
 import { useLoaderData, json, defer, Await } from "react-router-dom";
 import { Suspense } from "react";
+import Wrapper from "../UI/Wrapper";
 
 const DashboardMain = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -12,7 +13,7 @@ const DashboardMain = (props) => {
   const { tasks, habitsData } = useLoaderData();
 
   return (
-    <>
+    <Wrapper>
       <div className={classes["dashboard-body"]}>
         <section>
           <header className={classes.header}>
@@ -42,7 +43,7 @@ const DashboardMain = (props) => {
           <Statistics />
         </section>
       </div>
-    </>
+    </Wrapper>
   );
 };
 
