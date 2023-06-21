@@ -12,6 +12,18 @@ const createHabit = async (habit) => {
   return { message: `A new habit has been added: ${result.rows[0]}` };
 };
 
+const editHabit = async (habit) => {
+  const { id, name, description, startDate, frequency, goal } = habit;
+  const result = await db.query(
+    "UPDATE habits SET name = $1, description = $2, start_date = $3, frequency = $4, goal = $5 WHERE id = $6 RETURNING *",
+    [name, description, startDate, frequency, goal, id]
+  );
+  if (result.rows.length === 0) {
+    throw new NotFoundError("Habit not found");
+  }
+
+  return { message: `Habit has been updated: ${result.rows[0]}` };
+};
 const getHabits = async (userId) => {
   const result = await db.query(
     "SELECT * FROM habits WHERE user_id = $1 ORDER BY id ASC",
@@ -53,6 +65,7 @@ const deleteCompletionDate = async ({ habitId, completionDate }) => {
 
 module.exports = {
   createHabit,
+  editHabit,
   getHabits,
   completeHabit,
   deleteCompletionDate,
