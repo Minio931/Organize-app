@@ -1,177 +1,200 @@
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import HabitItem from './HabitItem';
-import classes from './HabitsView.module.css';
-import { useState, useEffect } from 'react';
+import { IconChevronLeft, IconChevronRight } from "@tabler/icons-react";
+import HabitItem from "./HabitItem";
+import classes from "./HabitsView.module.css";
+import { useState, useEffect } from "react";
 
 const HabitsView = ({ habitsData }) => {
-   if (habitsData.status === 404) {
-      const habits = [];
-      const completionDates = [];
-      habitsData = { habits, completionDates };
-   }
-   const { habits, completionDates } = habitsData;
+  if (habitsData.status === 404) {
+    const habits = [];
+    const completionDates = [];
+    habitsData = { habits, completionDates };
+  }
+  const { habits, completionDates } = habitsData;
 
-   const daysInMonth = new Date(new Date().getFullYear(), new Date().getMonth(), 0).getDate();
-   const habitStats = {};
-   for (let i = 0; i <= habits.length - 1; i++) {
-      let completionDatesForHabit = completionDates.filter((item) => {
-         let date = new Date(item.completion_date);
+  const daysInMonth = new Date(
+    new Date().getFullYear(),
+    new Date().getMonth(),
+    0
+  ).getDate();
+  const habitStats = {};
+  for (let i = 0; i <= habits.length - 1; i++) {
+    let completionDatesForHabit = completionDates.filter((item) => {
+      let date = new Date(item.completion_date);
 
-         if (
-            date.getMonth() === new Date().getMonth() &&
-            date.getFullYear() === new Date().getFullYear() &&
-            parseInt(item.habit_id) === habits[i].id
-         ) {
-            return item;
-         }
-      });
-
-      let isDone = false;
-
-      let streak = () => {
-         let streak = 0;
-         for (let j = 0; j < completionDatesForHabit.length - 1; j++) {
-            let todayDate = new Date();
-            let completionDate = new Date(completionDatesForHabit[j].completion_date);
-            let nextCompletionDate = new Date(completionDatesForHabit[j + 1].completion_date);
-            let diff = Math.abs(completionDate.getDate() - nextCompletionDate.getDate());
-
-            if (nextCompletionDate.toDateString() === todayDate.toDateString()) {
-               isDone = true;
-            }
-
-            if (diff === habits[i].frequency) {
-               streak++;
-            } else {
-               streak = 0;
-            }
-         }
-         return streak;
-      };
-
-      habitStats[habits[i].name] = {
-         monthlyProggress: Math.round(
-            (completionDatesForHabit.length / Math.floor(daysInMonth / parseInt(habits[i].frequency))) * 100,
-         ),
-         streak: streak(),
-         isDone: isDone,
-      };
-   }
-
-   const [habitOnMiddle, setHabitOnMiddle] = useState(1);
-   const [visibleHabitsProps, setVisibleHabitsProps] = useState({
-      order: [],
-      styles: {},
-   });
-
-   const totalHabits = habits.length;
-   const habitWidth = 14 + 4; // 14rem + 2rem padding on each side
-   const habitHeight = 18 / 3;
-
-   const visibleHabitsPropsConstructor = () => {
-      const visibleHabits = {};
-      visibleHabits.order = [];
-
-      let habitOnTheLeft = habitOnMiddle - 1;
-      let habitOnTheRight = habitOnMiddle + 1;
-
-      let isHabitOnTheLeft = true;
-      let isHabitOnTheRight = true;
-      let isHabitOnTheMiddle = true;
-
-      for (let i = 0; i <= totalHabits - 1; i++) {
-         const styles = {};
-
-         let xTranslate = habitWidth;
-         let yTranslate = -habitHeight;
-         let opacity = 0.5;
-         let zIndex = -habitOnMiddle;
-         if (habitOnTheLeft >= 0 && isHabitOnTheLeft && i === habitOnTheLeft) {
-            styles.transform = `translate(${-xTranslate}rem, ${yTranslate}rem)`;
-            styles.opacity = opacity;
-            styles.zIndex = zIndex;
-            visibleHabits.order.push(habitOnTheLeft);
-            visibleHabits[habitOnTheLeft] = { styles };
-            isHabitOnTheLeft = false;
-         } else if (habitOnTheRight < totalHabits && isHabitOnTheRight && i === habitOnTheRight) {
-            styles.transform = `translate(${xTranslate / 4}rem, ${yTranslate}rem)`;
-            styles.opacity = opacity;
-            styles.zIndex = zIndex;
-            visibleHabits.order.push(habitOnTheRight);
-            visibleHabits[habitOnTheRight] = { styles };
-            isHabitOnTheRight = false;
-         } else if (isHabitOnTheMiddle && i === habitOnMiddle) {
-            visibleHabits.order.push(habitOnMiddle);
-            isHabitOnTheMiddle = false;
-         } else if (i < habitOnTheLeft && i !== habitOnMiddle) {
-            xTranslate = -habitWidth * 2;
-            styles.transform = `translate(${xTranslate}rem, ${yTranslate}rem)`;
-            opacity = opacity / 2;
-            zIndex = zIndex - 1;
-            styles.opacity = opacity;
-            styles.zIndex = zIndex;
-            visibleHabits[i] = { styles };
-         } else if (i > habitOnTheRight && i !== habitOnMiddle) {
-            xTranslate = habitWidth * 2;
-            styles.transform = `translate(${xTranslate / 4}rem, ${yTranslate}rem)`;
-            opacity = opacity / 2 - 0.2;
-            zIndex = zIndex - 1;
-            styles.opacity = opacity;
-            styles.zIndex = zIndex;
-            visibleHabits[i] = { styles };
-         }
-
-         setVisibleHabitsProps(visibleHabits);
+      if (
+        date.getMonth() === new Date().getMonth() &&
+        date.getFullYear() === new Date().getFullYear() &&
+        parseInt(item.habit_id) === habits[i].id
+      ) {
+        return item;
       }
-   };
+    });
 
-   useEffect(() => {
-      visibleHabitsPropsConstructor();
-   }, [habitOnMiddle]);
+    let isDone = false;
 
-   const handleLeftArrowClick = () => {
-      if (habitOnMiddle > 0) {
-         setHabitOnMiddle((prev) => prev - 1);
+    completionDatesForHabit.sort(
+      (a, b) => new Date(a.completion_date) - new Date(b.completion_date)
+    );
+
+    let streak = () => {
+      let streak = 0;
+      for (let j = 0; j < completionDatesForHabit.length - 1; j++) {
+        let todayDate = new Date();
+        let completionDate = new Date(
+          completionDatesForHabit[j].completion_date
+        );
+        let nextCompletionDate = new Date(
+          completionDatesForHabit[j + 1].completion_date
+        );
+        let diff = Math.abs(
+          completionDate.getDate() - nextCompletionDate.getDate()
+        );
+        if (nextCompletionDate.toDateString() === todayDate.toDateString()) {
+          isDone = true;
+        }
+        console.log(habits[i].frequency);
+        if (diff === parseInt(habits[i].frequency)) {
+          streak++;
+        } else {
+          streak = 0;
+        }
       }
-   };
+      return streak;
+    };
 
-   const handleRightArrowClick = () => {
-      if (habitOnMiddle < totalHabits - 1) {
-         setHabitOnMiddle((prev) => prev + 1);
+    habitStats[habits[i].name] = {
+      monthlyProggress: Math.round(
+        (completionDatesForHabit.length /
+          Math.floor(daysInMonth / parseInt(habits[i].frequency))) *
+          100
+      ),
+      streak: streak(),
+      isDone: isDone,
+    };
+  }
+
+  const [habitOnMiddle, setHabitOnMiddle] = useState(1);
+  const [visibleHabitsProps, setVisibleHabitsProps] = useState({
+    order: [],
+    styles: {},
+  });
+
+  const totalHabits = habits.length;
+  const habitWidth = 14 + 4; // 14rem + 2rem padding on each side
+  const habitHeight = 18 / 3;
+
+  const visibleHabitsPropsConstructor = () => {
+    const visibleHabits = {};
+    visibleHabits.order = [];
+
+    let habitOnTheLeft = habitOnMiddle - 1;
+    let habitOnTheRight = habitOnMiddle + 1;
+
+    let isHabitOnTheLeft = true;
+    let isHabitOnTheRight = true;
+    let isHabitOnTheMiddle = true;
+
+    for (let i = 0; i <= totalHabits - 1; i++) {
+      const styles = {};
+
+      let xTranslate = habitWidth;
+      let yTranslate = -habitHeight;
+      let opacity = 0.5;
+      let zIndex = -habitOnMiddle;
+      if (habitOnTheLeft >= 0 && isHabitOnTheLeft && i === habitOnTheLeft) {
+        styles.transform = `translate(${-xTranslate}rem, ${yTranslate}rem)`;
+        styles.opacity = opacity;
+        styles.zIndex = zIndex;
+        visibleHabits.order.push(habitOnTheLeft);
+        visibleHabits[habitOnTheLeft] = { styles };
+        isHabitOnTheLeft = false;
+      } else if (
+        habitOnTheRight < totalHabits &&
+        isHabitOnTheRight &&
+        i === habitOnTheRight
+      ) {
+        styles.transform = `translate(${xTranslate / 4}rem, ${yTranslate}rem)`;
+        styles.opacity = opacity;
+        styles.zIndex = zIndex;
+        visibleHabits.order.push(habitOnTheRight);
+        visibleHabits[habitOnTheRight] = { styles };
+        isHabitOnTheRight = false;
+      } else if (isHabitOnTheMiddle && i === habitOnMiddle) {
+        visibleHabits.order.push(habitOnMiddle);
+        isHabitOnTheMiddle = false;
+      } else if (i < habitOnTheLeft && i !== habitOnMiddle) {
+        xTranslate = -habitWidth * 2;
+        styles.transform = `translate(${xTranslate}rem, ${yTranslate}rem)`;
+        opacity = opacity / 2;
+        zIndex = zIndex - 1;
+        styles.opacity = opacity;
+        styles.zIndex = zIndex;
+        visibleHabits[i] = { styles };
+      } else if (i > habitOnTheRight && i !== habitOnMiddle) {
+        xTranslate = habitWidth * 2;
+        styles.transform = `translate(${xTranslate / 4}rem, ${yTranslate}rem)`;
+        opacity = opacity / 2 - 0.2;
+        zIndex = zIndex - 1;
+        styles.opacity = opacity;
+        styles.zIndex = zIndex;
+        visibleHabits[i] = { styles };
       }
-   };
 
-   return (
-      <div className={classes['habits-wrapper']}>
-         <h2 className={classes['habits-header']}>Your Habits</h2>
-         <div className={classes['habits-container']}>
-            {habits.map((habit, index) => {
-               const dontRender = visibleHabitsProps.order.indexOf(index) === -1;
-               const styles = visibleHabitsProps[index] ? visibleHabitsProps[index].styles : {};
-               return (
-                  <HabitItem
-                     key={habit.id}
-                     id={habit.id}
-                     isChecked={habitStats[habit.name].isDone}
-                     name={habit.name}
-                     goal={habit.goal}
-                     streak={habitStats[habit.name].streak}
-                     proggress={habitStats[habit.name].monthlyProggress}
-                     render={dontRender}
-                     styles={styles}
-                  />
-               );
-            })}
-            {habits.length === 0 && <div className={classes['empty-habits']}>No habits for today</div>}
-         </div>
-         <span className={classes.left} onClick={handleLeftArrowClick}>
-            <IconChevronLeft className={classes.arrow} />
-         </span>
-         <span className={classes.right} onClick={handleRightArrowClick}>
-            <IconChevronRight className={classes.arrow} />
-         </span>
+      setVisibleHabitsProps(visibleHabits);
+    }
+  };
+
+  useEffect(() => {
+    visibleHabitsPropsConstructor();
+  }, [habitOnMiddle]);
+
+  const handleLeftArrowClick = () => {
+    if (habitOnMiddle > 0) {
+      setHabitOnMiddle((prev) => prev - 1);
+    }
+  };
+
+  const handleRightArrowClick = () => {
+    if (habitOnMiddle < totalHabits - 1) {
+      setHabitOnMiddle((prev) => prev + 1);
+    }
+  };
+
+  return (
+    <div className={classes["habits-wrapper"]}>
+      <h2 className={classes["habits-header"]}>Your Habits</h2>
+      <div className={classes["habits-container"]}>
+        {habits.map((habit, index) => {
+          const dontRender = visibleHabitsProps.order.indexOf(index) === -1;
+          const styles = visibleHabitsProps[index]
+            ? visibleHabitsProps[index].styles
+            : {};
+          return (
+            <HabitItem
+              key={habit.id}
+              id={habit.id}
+              isChecked={habitStats[habit.name].isDone}
+              name={habit.name}
+              goal={habit.goal}
+              streak={habitStats[habit.name].streak}
+              proggress={habitStats[habit.name].monthlyProggress}
+              render={dontRender}
+              styles={styles}
+            />
+          );
+        })}
+        {habits.length === 0 && (
+          <div className={classes["empty-habits"]}>No habits for today</div>
+        )}
       </div>
-   );
+      <span className={classes.left} onClick={handleLeftArrowClick}>
+        <IconChevronLeft className={classes.arrow} />
+      </span>
+      <span className={classes.right} onClick={handleRightArrowClick}>
+        <IconChevronRight className={classes.arrow} />
+      </span>
+    </div>
+  );
 };
 
 export default HabitsView;
