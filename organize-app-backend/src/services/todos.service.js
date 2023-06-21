@@ -25,7 +25,6 @@ const getTodos = async (userId) => {
 };
 
 const getTodayTodos = async (userId) => {
-  console.log(userId, "userId");
   const date = new Date();
   const month =
     date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
@@ -44,6 +43,20 @@ const getTodayTodos = async (userId) => {
   return result.rows;
 };
 
+const editTodo = async (todo) => {
+  const { id, name, description, executionDate } = todo;
+
+  const result = await db.query(
+    "UPDATE todos SET name = $1, description = $2, execution_date = $3 WHERE id = $4 RETURNING *",
+    [name, description, executionDate, id]
+  );
+  if (result.rows.length === 0) {
+    throw new TodoNotFoundError("Todo not found");
+  }
+
+  return { message: `Todo has been updated: ${result.rows[0]}` };
+};
+
 const updateTodo = async (todo) => {
   const { id, completion } = todo;
 
@@ -51,11 +64,23 @@ const updateTodo = async (todo) => {
     "UPDATE todos SET completion = $1 WHERE id = $2 RETURNING *",
     [completion, id]
   );
+
   if (result.rows.length === 0) {
     throw new TodoNotFoundError("Todo not found");
   }
-  console.log(result.rows[0]);
+
   return { message: `Todo has been updated: ${result.rows[0]}` };
+};
+const deleteTodo = async (id) => {
+  const result = await db.query("DELETE FROM todos WHERE id = $1 RETURNING *", [
+    id,
+  ]);
+
+  if (result.rows.length === 0) {
+    throw new TodoNotFoundError("Todo not found");
+  }
+
+  return { message: `Todo has been deleted` };
 };
 
 module.exports = {
@@ -63,4 +88,6 @@ module.exports = {
   getTodos,
   updateTodo,
   getTodayTodos,
+  editTodo,
+  deleteTodo,
 };

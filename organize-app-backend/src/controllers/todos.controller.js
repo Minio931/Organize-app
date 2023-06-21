@@ -40,9 +40,32 @@ const update = async (req, res, next) => {
   }
 };
 
+const edit = async (req, res, next) => {
+  try {
+    console.log(req.body, "req.body");
+    const todo = await todosService.editTodo(req.body);
+
+    res.status(200).send(todo);
+  } catch (error) {
+    next(error);
+  }
+};
+
+//delete is not allowed as name :(
+const deleteTodo = async (req, res, next) => {
+  try {
+    console.log(req.params.id, "req.params.id");
+    const todo = await todosService.deleteTodo(req.params.id);
+    res.status(200).send(todo);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   create,
   get,
   update,
   getToday,
+  edit,
+  deleteTodo,
 };

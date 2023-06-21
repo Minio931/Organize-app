@@ -88,6 +88,8 @@ async function loadHabits() {
   }
   const responseData = await response.json();
 
+  console.log(responseData, "responseData");
+
   return responseData;
 }
 
