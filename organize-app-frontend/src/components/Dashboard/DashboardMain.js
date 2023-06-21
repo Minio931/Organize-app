@@ -88,7 +88,15 @@ async function loadHabits() {
   }
   const responseData = await response.json();
 
-  console.log(responseData, "responseData");
+  const { habits, completionDates } = responseData;
+  const today = new Date();
+  const todayHabits = habits.filter((habit) => {
+    habit.start_date = new Date(habit.start_date);
+    const difference = today.getTime() - habit.start_date.getTime();
+    const days = Math.floor(difference / (1000 * 3600 * 24));
+    return days % habit.frequency === 0;
+  });
+  responseData.habits = todayHabits;
 
   return responseData;
 }
