@@ -1,5 +1,14 @@
 const habitsService = require("../services/habits.service");
 
+const create = async (req, res, next) => {
+  try {
+    const habit = await habitsService.createHabit(req.body);
+    res.status(200).send(habit);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const get = async (req, res, next) => {
   try {
     const habits = await habitsService.getHabits(req.params.userId);
@@ -31,4 +40,5 @@ module.exports = {
   get,
   complete,
   deleteComplete,
+  create,
 };

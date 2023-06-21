@@ -1,6 +1,17 @@
 const db = require("../config/db.config.js");
 const { NotFoundError } = require("../utils/errors.utils.js");
 
+const createHabit = async (habit) => {
+  const { userId, name, description, startDate, frequency, goal } = habit;
+
+  const result = await db.query(
+    "INSERT INTO habits (user_id, name, description, start_date, frequency, goal) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+    [userId, name, description, startDate, frequency, goal]
+  );
+
+  return { message: `A new habit has been added: ${result.rows[0]}` };
+};
+
 const getHabits = async (userId) => {
   const result = await db.query(
     "SELECT * FROM habits WHERE user_id = $1 ORDER BY id ASC",
@@ -41,6 +52,7 @@ const deleteCompletionDate = async ({ habitId, completionDate }) => {
 };
 
 module.exports = {
+  createHabit,
   getHabits,
   completeHabit,
   deleteCompletionDate,

@@ -1,10 +1,13 @@
 import { Form } from "react-router-dom";
+import { useActionData } from "react-router-dom";
 
 const TodoForm = () => {
+  const data = useActionData();
   return (
     <div>
+      {data && (data.success ? <p>Success</p> : <p>Failure</p>)}
       <Form
-        method="PUT"
+        method="POST"
         style={{
           display: "flex",
           flexDirection: "column",
@@ -28,14 +31,16 @@ const TodoForm = () => {
 export async function action({ request, params }) {
   const todo = await request.formData();
   const data = {
-    id: 41,
+    userId: 6,
     name: todo.get("name"),
     description: todo.get("description"),
-    executionDate: todo.get("date"),
+    startDate: todo.get("date"),
+    frequency: 1,
+    goal: "3km",
   };
 
-  const response = await fetch("http://localhost:3001/todo/edit", {
-    method: "PUT",
+  const response = await fetch("http://localhost:3001/habit/create", {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
@@ -43,7 +48,7 @@ export async function action({ request, params }) {
   });
 
   const result = await response.json();
-
+  console.log(result);
   return result;
 }
 
