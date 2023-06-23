@@ -5,6 +5,7 @@ import Statistics from "./Statistics";
 import TodoView from "./TodoView";
 import { useLoaderData, json, defer, Await } from "react-router-dom";
 import { Suspense } from "react";
+import Wrapper from "../UI/Wrapper";
 
 const DashboardMain = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -12,7 +13,7 @@ const DashboardMain = (props) => {
   const { tasks, habitsData } = useLoaderData();
 
   return (
-    <>
+    <Wrapper>
       <div className={classes["dashboard-body"]}>
         <section>
           <header className={classes.header}>
@@ -42,7 +43,7 @@ const DashboardMain = (props) => {
           <Statistics />
         </section>
       </div>
-    </>
+    </Wrapper>
   );
 };
 
@@ -86,6 +87,16 @@ async function loadHabits() {
     throw new Error("Something went wrong!");
   }
   const responseData = await response.json();
+
+  const { habits, completionDates } = responseData;
+  const today = new Date();
+  const todayHabits = habits.filter((habit) => {
+    habit.start_date = new Date(habit.start_date);
+    const difference = today.getTime() - habit.start_date.getTime();
+    const days = Math.floor(difference / (1000 * 3600 * 24));
+    return days % habit.frequency === 0;
+  });
+  responseData.habits = todayHabits;
 
   return responseData;
 }
