@@ -28,16 +28,16 @@ const ProgressText = (props) => {
 };
 
 const ProgressBarWithButtons = (props) => {
-   const { fillPercent } = props;
+   const { fillPercent, nextDayHandler, prevDayHandler } = props;
+
    return (
       <div className={classes.progressBarWithButtons}>
          <div className={classes.buttons}>
-            <Button direction="left" />
-            <Button direction="right" />
+            <Button direction="left" onClick={prevDayHandler} />
+            <Button direction="right" onClick={nextDayHandler} />
          </div>
          <ProgressBar fillPercent={fillPercent} />
          <ProgressText percent={fillPercent} />
-         
       </div>
    );
 };
