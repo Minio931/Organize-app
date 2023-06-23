@@ -27,6 +27,15 @@ const edit = async (req, res, next) => {
   }
 };
 
+const deleteHabit = async (req, res, next) => {
+  try {
+    const habit = await habitsService.deleteHabit(req.params.habitId);
+    res.status(200).send(habit);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const complete = async (req, res, next) => {
   try {
     const habit = await habitsService.completeHabit(req.body);
@@ -49,6 +58,7 @@ module.exports = {
   get,
   complete,
   edit,
+  deleteHabit,
   deleteComplete,
   create,
 };

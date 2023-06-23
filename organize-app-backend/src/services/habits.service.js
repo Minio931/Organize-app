@@ -40,6 +40,17 @@ const getHabits = async (userId) => {
   return { habits: result.rows, completionDates: completionDates.rows };
 };
 
+const deleteHabit = async (habitId) => {
+  const result = await db.query(
+    "DELETE FROM habits WHERE id = $1 RETURNING *",
+    [habitId]
+  );
+  if (result.rows.length === 0) {
+    throw new NotFoundError("Habit not found");
+  }
+  return { message: `Habit has been deleted: ${result.rows[0]}` };
+};
+
 const completeHabit = async ({ habitId }) => {
   const date = new Date();
   const month =
@@ -67,6 +78,7 @@ module.exports = {
   createHabit,
   editHabit,
   getHabits,
+  deleteHabit,
   completeHabit,
   deleteCompletionDate,
 };
