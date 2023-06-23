@@ -40,8 +40,11 @@ const ToDoMain = () => {
 
    useEffect(() => {
       setTasks(DUMMY_TASKS.filter((task) => task.date.toDateString() === day.toDateString()));
-      setFillPercent(Math.floor((tasks.filter((task) => task.status === 'completed').length / tasks.length) * 100));
    }, [day]);
+
+   useEffect(() => {
+      setFillPercent(Math.floor((tasks.filter((task) => task.status === 'completed').length / tasks.length) * 100));
+   }, [tasks]);
 
    const changeDayHandler = (isToday, date) => {
       setDay(isToday ? today : date);

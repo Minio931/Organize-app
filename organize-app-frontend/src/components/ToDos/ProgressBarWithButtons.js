@@ -3,10 +3,14 @@ import classes from './ProgressBarWithButtons.module.css';
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 
 const Button = (props) => {
-   const { direction } = props;
+   const { direction, onClick } = props;
    if (direction !== 'left' && direction !== 'right')
       throw new Error('You need to specify direction! Eligible values: "left", "right".');
-   return <button className={classes.button}>{direction === 'left' ? <IconArrowLeft /> : <IconArrowRight />}</button>;
+   return (
+      <button className={classes.button} onClick={onClick}>
+         {direction === 'left' ? <IconArrowLeft /> : <IconArrowRight />}
+      </button>
+   );
 };
 
 const ProgressBar = (props) => {
