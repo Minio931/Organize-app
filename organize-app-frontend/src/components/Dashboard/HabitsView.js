@@ -52,7 +52,7 @@ const HabitsView = ({ habitsData }) => {
         if (nextCompletionDate.toDateString() === todayDate.toDateString()) {
           isDone = true;
         }
-        console.log(habits[i].frequency);
+
         if (diff === parseInt(habits[i].frequency)) {
           streak++;
         } else {
