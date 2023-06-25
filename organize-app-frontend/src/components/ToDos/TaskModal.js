@@ -8,16 +8,26 @@ import Button from '../UI/Button';
 
 const NewTaskForm = (props) => {
    const [task, setTask] = useState('');
-   const [date, setDate] = useState(props.date);
+   const [description, setDescription] = useState('');
+   const [date, setDate] = useState(props.date.toISOString().slice(0, 10));
    const [status, setStatus] = useState(props.type);
 
    const submitHandler = (event) => {
       event.preventDefault();
-      props.onAddTask({});
+      props.onAddTask({
+         task: task,
+         description: description,
+         date: new Date(date),
+         status: status,
+      });
    };
 
    const taskChangeHandler = (event) => {
       setTask(event.target.value);
+   };
+
+   const descriptionChangeHandler = (event) => {
+      setDescription(event.target.value);
    };
 
    const dateChangeHandler = (event) => {
@@ -36,10 +46,19 @@ const NewTaskForm = (props) => {
                <p>The new task will be added directly to the to-do list on the chosen day.</p>
             </header>
             <Divider />
-            <form className={classes.form} onSubmit={[submitHandler]}>
+            <form className={classes.form} onSubmit={submitHandler}>
                <div className={classes['form--section']}>
-                  <label htmlFor="task">Task description:</label>
+                  <label htmlFor="task">Task:</label>
                   <input id="task" type="text" placeholder="Do the laundry" value={task} onChange={taskChangeHandler} />
+               </div>
+               <div className={classes['form--section']}>
+                  <label htmlFor="description">Description:</label>
+                  <textarea
+                     id="description"
+                     placeholder="Don't forget to clean the washmachine filter before that!"
+                     value={description}
+                     onChange={descriptionChangeHandler}
+                  />
                </div>
                <div className={classes['form--section']}>
                   <label htmlFor="date">Date:</label>
