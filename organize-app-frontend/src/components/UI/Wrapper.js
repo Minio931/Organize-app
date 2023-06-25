@@ -1,7 +1,10 @@
-import classes from './Wrapper.module.css';
+import classes from "./Wrapper.module.css";
 
 const Wrapper = (props) => {
-   return <div className={classes.wrapper}>{props.children}</div>;
+  const className = props.className
+    ? `${classes.wrapper} ${props.className}`
+    : classes.wrapper;
+  return <div className={className}>{props.children}</div>;
 };
 
 export default Wrapper;
