@@ -14,11 +14,11 @@ const DashboardMain = (props) => {
 
   return (
     <>
-      <Wrapper>
+      <Wrapper className={classes.wrapper}>
         <div className={classes["dashboard-body"]}>
           <section>
             <header className={classes.header}>
-              <h1 className={classes.welcome}>Welcome</h1>
+              <h1 className={classes.welcome}>Welcome </h1>
               <p className={classes["username-display"]}>{username}</p>
             </header>
             <Suspense
@@ -40,10 +40,10 @@ const DashboardMain = (props) => {
               </Await>
             </Suspense>
           </section>
+          <section>
+            <Statistics />
+          </section>
         </div>
-        <section>
-          <Statistics />
-        </section>
       </Wrapper>
     </>
   );
