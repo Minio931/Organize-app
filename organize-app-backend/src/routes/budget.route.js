@@ -13,7 +13,7 @@ router.delete(
   budget_controller.deleteBudgetCategory
 );
 router.get("/category/:userId", budget_controller.getBudgetCategories);
-router.update(
+router.patch(
   "/category/updateStatus",
   budget_controller.updateBudgetCategoryStatus
 );
@@ -30,7 +30,7 @@ router.delete(
   "/financialGoal/delete/:financialGoalId",
   budget_controller.deleteFinancialGoal
 );
-router.update(
+router.patch(
   "/financialGoal/updateStatus",
   budget_controller.updateFinancialGoalStatus
 );
