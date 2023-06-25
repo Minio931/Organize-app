@@ -8,7 +8,7 @@ import HorizontalDatePicker from './HorizontalDatePicker';
 import ProgressBarWithButtons from './ProgressBarWithButtons';
 import Divider from '../UI/Divider';
 import TaskList from './TaskList';
-import NewTaskForm from './NewTaskForm';
+import TaskModal from './TaskModal';
 
 const DUMMY_TASKS = [];
 
@@ -36,7 +36,7 @@ const ToDoMain = () => {
    const [day, setDay] = useState(today);
    const [tasks, setTasks] = useState(DUMMY_TASKS);
    const [fillPercent, setFillPercent] = useState(0);
-   const [isNewTaskFormShown, setIsNewTaskFormShown] = useState(true);
+   const [isTaskFormShown, setIsTaskFormShown] = useState(true);
 
    useEffect(() => {
       setTasks(DUMMY_TASKS.filter((task) => task.date.toDateString() === day.toDateString()));
@@ -62,6 +62,21 @@ const ToDoMain = () => {
       setDay(prevDay);
    };
 
+   const addTaskHandler = (task) => {
+      setTasks((prevTasks) => {
+         return [...prevTasks, task];
+      });
+      setIsTaskFormShown(false);
+   };
+
+   const showTaskFormHandler = () => {
+      setIsTaskFormShown(true);
+   };
+
+   const hideTaskFormHandler = () => {
+      setIsTaskFormShown(false);
+   };
+
    return (
       <Wrapper>
          <Header>Todo List</Header>
@@ -72,9 +87,9 @@ const ToDoMain = () => {
             prevDayHandler={prevDayHandler}
          />
          <Divider />
-         <TaskList type="inProgress" tasks={tasks} />
-         <TaskList type="completed" tasks={tasks} />
-         {isNewTaskFormShown && <NewTaskForm date={day} type="inProgress" />}
+         <TaskList type="inProgress" tasks={tasks} onAddTask={showTaskFormHandler} />
+         <TaskList type="completed" tasks={tasks} onAddTask={showTaskFormHandler} />
+         {isTaskFormShown && <TaskModal date={day} type="inProgress" action="Create" onClose={hideTaskFormHandler} />}
       </Wrapper>
    );
 };

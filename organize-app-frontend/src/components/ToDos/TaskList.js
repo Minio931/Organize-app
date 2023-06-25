@@ -12,7 +12,7 @@ const Task = (props) => {
 };
 
 const TaskList = (props) => {
-   const { type, tasks, date } = props;
+   const { type, tasks, onAddTask } = props;
    const config = {
       header: {
          icon: undefined,
@@ -46,7 +46,7 @@ const TaskList = (props) => {
             <config.header.icon />
             {config.header.text}
             <span>{taskCount}</span>
-            <button>
+            <button onClick={onAddTask}>
                <IconPlus size={16} color="var(--white)" />
             </button>
          </h2>

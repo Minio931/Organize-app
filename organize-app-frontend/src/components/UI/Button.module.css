@@ -1,0 +1,30 @@
+.button {
+   padding: 0.5rem 1rem;
+   border-radius: 0.3rem;
+   font-size: 1rem;
+   border: none;
+   background-color: var(--primary-color);
+   color: var(--white);
+   box-shadow: 3px 3px 3px var(--black-25);
+   cursor: pointer;
+}
+
+.primary {
+   background-color: var(--primary-color);
+   color: var(--white);
+}
+
+.primary:hover {
+   background-color: color-mix(in srgb, var(--primary-color), transparent 20%);
+   color: var(--white);
+}
+
+.secondary {
+   background-color: var(--black-50);
+   color: var(--white);
+}
+
+.secondary:hover {
+   background-color: color-mix(in srgb, var(--black-50), transparent 20%);
+   color: var(--white);
+}
