@@ -8,5 +8,6 @@ router.delete("/deleteComplete", habits_controller.deleteComplete);
 router.post("/create", habits_controller.create);
 router.put("/edit", habits_controller.edit);
 router.delete("/delete/:habitId", habits_controller.deleteHabit);
+router.get("/get/:habitId", habits_controller.getOne);
 
 module.exports = router;

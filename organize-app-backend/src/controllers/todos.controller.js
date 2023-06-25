@@ -21,6 +21,15 @@ const get = async (req, res, next) => {
   }
 };
 
+const getTodo = async (req, res, next) => {
+  try {
+    const todo = await todosService.getTodoById(req.params.id);
+    res.status(200).send(todo);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getToday = async (req, res, next) => {
   try {
     const todos = await todosService.getTodayTodos(req.params.userId);
@@ -66,6 +75,7 @@ module.exports = {
   get,
   update,
   getToday,
+  getTodo,
   edit,
   deleteTodo,
 };
