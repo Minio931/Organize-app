@@ -5,7 +5,7 @@ const budget_controller = require("../controllers/budget.controller");
 router.get("/:userId", budget_controller.getBudget);
 router.post("/create", budget_controller.createBudget);
 router.put("/edit", budget_controller.editBudget);
-router.delete("/delete/:budgetId", budget_controller.deleteBudget);
+
 router.post("/category/create", budget_controller.createBudgetCategory);
 router.put("/category/edit", budget_controller.editBudgetCategory);
 router.delete(

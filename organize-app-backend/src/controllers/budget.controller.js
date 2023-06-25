@@ -114,9 +114,7 @@ const deleteTransaction = async (req, res, next) => {
 
 const getTransactions = async (req, res, next) => {
   try {
-    const budget = await budgetService.getTransactions(
-      req.params.budgetCategoryId
-    );
+    const budget = await budgetService.getTransactions(req.params.userId);
     res.status(200).send(budget);
   } catch (error) {
     next(error);

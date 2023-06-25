@@ -2,11 +2,11 @@ const db = require("../config/db.config.js");
 const { NotFoundError } = require("../utils/errors.utils.js");
 
 const createBudget = async (budget) => {
-  const { balance, income, expesnes, planned, userId } = budget;
+  const { balance, income, expenses, planned, userId } = budget;
 
   const result = await db.query(
     "INSERT INTO budget (balance, income, expenses, planned, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-    [balance, income, expesnes, planned, userId]
+    [balance, income, expenses, planned, userId]
   );
 
   return { message: `A new budget has been added: ${result.rows[0]}` };
@@ -15,7 +15,7 @@ const createBudget = async (budget) => {
 const editBudget = async (budget) => {
   const { userId, balance, income, expenses, planned } = budget;
   const result = await db.query(
-    "UPDATE budget SET balance = $1, income = $2, expenses = $3, planned = $4 WHERE id = $5 RETURNING *",
+    "UPDATE budget SET balance = $1, income = $2, expenses = $3, planned = $4 WHERE user_id = $5 RETURNING *",
     [balance, income, expenses, planned, userId]
   );
   if (result.rows.length === 0) {
@@ -61,10 +61,10 @@ const createBudgetCategory = async (budgetCategory) => {
 };
 
 const editBudgetCategory = async (budgetCategory) => {
-  const { userId, name, actualStatus, planned } = budgetCategory;
+  const { categoryId, name, actualStatus, planned } = budgetCategory;
   const result = await db.query(
     "UPDATE budget_categories SET name = $1, actual_status = $2, planned = $3 WHERE id = $4 RETURNING *",
-    [name, actualStatus, planned, userId]
+    [name, actualStatus, planned, categoryId]
   );
   if (result.rows.length === 0) {
     throw new NotFoundError("Budget category not found");
@@ -84,10 +84,10 @@ const deleteBudgetCategory = async (budgetCategoryId) => {
 };
 
 const updateBudgetCategoryStatus = async (budgetCategory) => {
-  const { userId, actualStatus } = budgetCategory;
+  const { categoryId, actualStatus } = budgetCategory;
   const result = await db.query(
     "UPDATE budget_categories SET actual_status = $1 WHERE id = $2 RETURNING *",
-    [actualStatus, userId]
+    [actualStatus, categoryId]
   );
   if (result.rows.length === 0) {
     throw new NotFoundError("Budget category not found");
@@ -108,11 +108,17 @@ const createTransaction = async (transaction) => {
 };
 
 const editTransaction = async (transaction) => {
-  const { userId, budgetCategoryId, value, transactionDate, name, status } =
-    transaction;
+  const {
+    transactionId,
+    budgetCategoryId,
+    value,
+    transactionDate,
+    name,
+    status,
+  } = transaction;
   const result = await db.query(
     "UPDATE transactions SET budget_category_id = $1, value = $2, transaction_date = $3, name = $4, status = $5 WHERE id = $6 RETURNING *",
-    [budgetCategoryId, value, transactionDate, name, status, userId]
+    [budgetCategoryId, value, transactionDate, name, status, transactionId]
   );
   if (result.rows.length === 0) {
     throw new NotFoundError("Transaction not found");
@@ -132,6 +138,7 @@ const deleteTransaction = async (transactionId) => {
 };
 
 const getTransactions = async (userId) => {
+  console.log(userId);
   const result = await db.query(
     "SELECT * FROM transactions WHERE user_id = $1 ORDER BY id ASC",
     [userId]
@@ -155,10 +162,10 @@ const createFinancialGoal = async (financialGoal) => {
 };
 
 const editFinancialGoal = async (financialGoal) => {
-  const { userId, name, actualDeposit, goal } = financialGoal;
+  const { financialGoalId, name, actualDeposit, goal } = financialGoal;
   const result = await db.query(
     "UPDATE financial_goals SET name = $1, actual_deposit = $2, goal = $3 WHERE id = $4 RETURNING *",
-    [name, actualDeposit, goal, userId]
+    [name, actualDeposit, goal, financialGoalId]
   );
   if (result.rows.length === 0) {
     throw new NotFoundError("Financial goal not found");
@@ -190,10 +197,10 @@ const getFinancialGoals = async (userId) => {
 };
 
 const updateFinancialGoalStatus = async (financialGoal) => {
-  const { userId, actualDeposit } = financialGoal;
+  const { financialGoalId, actualDeposit } = financialGoal;
   const result = await db.query(
     "UPDATE financial_goals SET actual_deposit = $1 WHERE id = $2 RETURNING *",
-    [actualDeposit, userId]
+    [actualDeposit, financialGoalId]
   );
   if (result.rows.length === 0) {
     throw new NotFoundError("Financial goal not found");
