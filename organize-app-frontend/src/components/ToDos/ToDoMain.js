@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useReducer } from 'react';
 
 import classes from './ToDoMain.module.css';
 
@@ -10,41 +10,78 @@ import Divider from '../UI/Divider';
 import TaskList from './TaskList';
 import TaskModal from './TaskModal';
 
-const DUMMY_TASKS = [];
+const tasksReducer = (state, action) => {
+   switch (action.type) {
+      case 'ADD': {
+         if (!action.task) throw new Error('task is undefined! Please provide task!');
+         const newTask = { ...action.task, id: state.length + 1 };
+         return [...state, newTask];
+      }
+      case 'EDIT': {
+         if (!action.task) throw new Error('task is undefined! Please provide task!');
+         const newTasks = state.filter((task) => task.id !== action.task.id);
+         newTasks.push(action.task);
+         return newTasks;
+      }
+      case 'DONE': {
+         if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
+         const task = state.find((task) => task.id === action.taskId);
+         task.status = task.status === 'completed' ? 'inProgress' : 'completed';
+         const newTasks = state.filter((task) => task.id !== action.taskId);
+         newTasks.push(task);
+         return newTasks;
+      }
+      case 'DELETE': {
+         if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
+         return state.filter((task) => task.id !== action.taskId);
+      }
+      default:
+         throw new Error('Should not get there!');
+   }
+};
 
-function getRandomDate() {
-   const startDate = new Date(2023, 5, 20);
-   const endDate = new Date(2023, 5, 31);
-   const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
-   return new Date(randomTime);
-}
-function getRandomStatus() {
-   return Math.random() < 0.5 ? 'inProgress' : 'completed';
-}
+const taskModalsVisibilityInitialState = {
+   add: false,
+   edit: false,
+};
 
-for (let i = 1; i <= 100; i++) {
-   DUMMY_TASKS.push({
-      id: i,
-      text: 'Task ' + i,
-      date: getRandomDate(),
-      status: getRandomStatus(),
-   });
-}
+const taskModalsVisibilityReducer = (state, action) => {
+   switch (action.type) {
+      case 'ADD':
+         return { add: true, edit: false };
+      case 'EDIT':
+         return { add: false, edit: true };
+      case 'CLOSE': {
+         return { add: false, edit: false };
+      }
+      default:
+         throw new Error('Should not get there!');
+   }
+};
 
 const ToDoMain = () => {
    const today = new Date();
    const [day, setDay] = useState(today);
-   const [tasks, setTasks] = useState(DUMMY_TASKS);
    const [fillPercent, setFillPercent] = useState(0);
-   const [isTaskFormShown, setIsTaskFormShown] = useState(true);
+   const [tasks, tasksDispatch] = useReducer(tasksReducer, []);
+   const [shownTasks, setShownTasks] = useState(tasks);
+   const [taskModalsVisibility, taskModalsVisibilityDispatch] = useReducer(
+      taskModalsVisibilityReducer,
+      taskModalsVisibilityInitialState,
+   );
+   const [editedTask, setEditedTask] = useState(null);
 
    useEffect(() => {
-      setTasks(DUMMY_TASKS.filter((task) => task.date.toDateString() === day.toDateString()));
-   }, [day]);
+      setShownTasks(tasks.filter((task) => task.date.toDateString() === day.toDateString()));
+   }, [day, tasks]);
 
    useEffect(() => {
-      setFillPercent(Math.floor((tasks.filter((task) => task.status === 'completed').length / tasks.length) * 100));
-   }, [tasks]);
+      setFillPercent(
+         shownTasks.length !== 0
+            ? Math.floor((shownTasks.filter((task) => task.status === 'completed').length / shownTasks.length) * 100)
+            : 0,
+      );
+   }, [shownTasks]);
 
    const changeDayHandler = (isToday, date) => {
       setDay(isToday ? today : date);
@@ -62,19 +99,38 @@ const ToDoMain = () => {
       setDay(prevDay);
    };
 
+   const showAddTaskModalHandler = () => {
+      taskModalsVisibilityDispatch({ type: 'ADD' });
+   };
+
+   const showEditTaskModalHandler = (taskId) => {
+      const task = tasks.find((task) => task.id === taskId);
+      setEditedTask(task);
+      taskModalsVisibilityDispatch({ type: 'EDIT' });
+   };
+
+   const hideTaskModalHandler = () => {
+      taskModalsVisibilityDispatch({ type: 'CLOSE' });
+   };
+
    const addTaskHandler = (task) => {
-      setTasks((prevTasks) => {
-         return [...prevTasks, task];
-      });
-      setIsTaskFormShown(false);
+      tasksDispatch({ type: 'ADD', task: task });
+      hideTaskModalHandler();
    };
 
-   const showTaskFormHandler = () => {
-      setIsTaskFormShown(true);
+   const editTaskHandler = (task) => {
+      tasksDispatch({ type: 'EDIT', task: task });
+      setEditedTask(null);
+      hideTaskModalHandler();
    };
 
-   const hideTaskFormHandler = () => {
-      setIsTaskFormShown(false);
+   const deleteTaskHandler = (taskId) => {
+      tasksDispatch({ type: 'DELETE', taskId: taskId });
+      hideTaskModalHandler();
+   };
+
+   const doneTaskHandler = (taskId) => {
+      tasksDispatch({ type: 'DONE', taskId: taskId });
    };
 
    return (
@@ -87,15 +143,33 @@ const ToDoMain = () => {
             prevDayHandler={prevDayHandler}
          />
          <Divider />
-         <TaskList type="inProgress" tasks={tasks} onAddTask={showTaskFormHandler} />
-         <TaskList type="completed" tasks={tasks} onAddTask={showTaskFormHandler} />
-         {isTaskFormShown && (
+         <TaskList
+            type="inProgress"
+            tasks={shownTasks}
+            onAddTask={showAddTaskModalHandler}
+            onEditTask={showEditTaskModalHandler}
+            onDoneTask={doneTaskHandler}
+         />
+         <TaskList
+            type="completed"
+            tasks={shownTasks}
+            onEditTask={showEditTaskModalHandler}
+            onDoneTask={doneTaskHandler}
+         />
+         {taskModalsVisibility.add && (
+            <TaskModal date={day} action="add" onClose={hideTaskModalHandler} onAddTask={addTaskHandler} />
+         )}
+         {taskModalsVisibility.edit && (
             <TaskModal
-               date={day}
-               type="inProgress"
-               action="Create"
-               onClose={hideTaskFormHandler}
-               onAddTask={addTaskHandler}
+               id={editedTask.id}
+               task={editedTask.task}
+               description={editedTask.description}
+               date={editedTask.date}
+               status={editedTask.status}
+               action="edit"
+               onClose={hideTaskModalHandler}
+               onEditTask={editTaskHandler}
+               onDeleteTask={deleteTaskHandler}
             />
          )}
       </Wrapper>

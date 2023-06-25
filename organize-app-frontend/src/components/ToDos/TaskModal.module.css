@@ -21,14 +21,21 @@
 }
 
 .taskModal form input,
-.taskModal form select {
+.taskModal form select,
+.taskModal form textarea {
    padding: 0.25em;
    border-radius: var(--border-radius);
    border: 1px solid var(--primary-color);
 }
 
+.taskModal form textarea {
+   height: 5em;
+   resize: none;
+}
+
 .taskModal form input:focus,
-.taskModal form select:focus {
+.taskModal form select:focus,
+.taskModal form textarea:focus {
    outline-color: var(--primary-color);
 }
 
@@ -42,4 +49,16 @@
    display: flex;
    justify-content: center;
    gap: 0.5em;
+}
+
+.taskModal form > .buttons > .delete {
+   padding: 0.5rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: #ff4757;
+}
+
+.taskModal form > .buttons > .delete:hover {
+   background-color: color-mix(in srgb, #ff4757, transparent 20%);
 }

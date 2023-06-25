@@ -2,17 +2,28 @@ import classes from './TaskList.module.css';
 
 import { IconCircleHalf2, IconChecks, IconCheckbox, IconSquare, IconPlus } from '@tabler/icons-react';
 
-const Task = (props) => {
-   const { icon: Icon, text } = props;
+const Task = ({ id, task, description, icon: Icon, onEditTask, onDoneTask }) => {
+   const editHandler = (event) => {
+      event.stopPropagation();
+      onEditTask(id);
+   };
+
+   const doneHandler = (event) => {
+      event.stopPropagation();
+      onDoneTask(id);
+   };
+
    return (
-      <li className={classes.task}>
-         <Icon /> {text}
+      <li className={classes.task} onClick={editHandler}>
+         <div className={classes['task--header']}>
+            <Icon onClick={doneHandler} /> {task}
+         </div>
+         <div className={classes['task--description']}>{description}</div>
       </li>
    );
 };
 
-const TaskList = (props) => {
-   const { type, tasks, onAddTask } = props;
+const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
    const config = {
       header: {
          icon: undefined,
@@ -46,13 +57,23 @@ const TaskList = (props) => {
             <config.header.icon />
             {config.header.text}
             <span>{taskCount}</span>
-            <button onClick={onAddTask}>
-               <IconPlus size={16} color="var(--white)" />
-            </button>
+            {type === 'inProgress' && (
+               <button onClick={onAddTask}>
+                  <IconPlus size={16} color="var(--white)" />
+               </button>
+            )}
          </h2>
          <ul className={classes['taskList-list']}>
             {taskList.map((task) => (
-               <Task key={task.id} icon={config.task.icon} text={task.text} />
+               <Task
+                  key={task.id}
+                  id={task.id}
+                  task={task.task}
+                  description={task.description}
+                  icon={config.task.icon}
+                  onEditTask={onEditTask}
+                  onDoneTask={onDoneTask}
+               />
             ))}
          </ul>
       </div>
