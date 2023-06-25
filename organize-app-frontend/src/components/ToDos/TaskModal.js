@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import Divider from '../UI/Divider';
 import Modal from '../UI/Modal';
 import classes from './TaskModal.module.css';
+import Button from '../UI/Button';
 
 const NewTaskForm = (props) => {
    const [task, setTask] = useState('');
@@ -28,7 +29,7 @@ const NewTaskForm = (props) => {
 
    return (
       <Modal onClose={props.onClose}>
-         <div className={classes.TaskForm}>
+         <div className={classes.taskModal}>
             <header>
                <h2>Add new task</h2>
                <p>The new task will be added directly to the to-do list on the chosen day.</p>
@@ -44,8 +45,10 @@ const NewTaskForm = (props) => {
                   <option value="inProgress">In Progress</option>
                   <option value="completed">Completed</option>
                </select>
-               <button type="button">Close</button>
-               <button type="submit">Add</button>
+               <Button type="button" onClick={props.onClose} color="secondary">
+                  Close
+               </Button>
+               <Button type="submit">Add</Button>
             </form>
          </div>
       </Modal>

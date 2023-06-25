@@ -1,0 +1,3 @@
+.taskModal header > h2 {
+   font-size: var(--header-2-font-size);
+}

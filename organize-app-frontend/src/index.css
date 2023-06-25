@@ -1,38 +1,7 @@
+/* CSS Reset supported by React */
+@import-normalize;
+
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
-
-body {
-   margin: 0;
-   background: rgb(176, 244, 243);
-   background: linear-gradient(
-      108deg,
-      rgba(176, 244, 243, 1) 0%,
-      rgba(115, 63, 197, 1) 17%,
-      rgba(138, 45, 186, 1) 31%,
-      rgba(255, 159, 202, 1) 51%,
-      rgba(178, 44, 206, 1) 74%,
-      rgba(95, 83, 207, 1) 100%
-   );
-}
-main {
-   font-family: Lato, sans-serif;
-   width: calc(100% - 4rem);
-   height: 100vh;
-   overflow-y: auto;
-}
-#root {
-   width: 100%;
-   height: 100vh;
-   display: flex;
-   background-color: rgba(253, 251, 255, 0.7);
-}
-
-* {
-   font-family: Lato, sans-serif;
-   color: var(--black-100);
-}
-code {
-   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
 
 :root {
    --primary-color: #9a5bd9;
@@ -63,158 +32,35 @@ code {
    --text-font-size: 16px;
 }
 
-/* css reset
-
-Primary: #9A5BD9
-Primary-200: #8A2DBB
-Primary-150: #B22CCE
-Praimry-80: #E234E2
-Primary-50: #F96BF2
-Primary-25: #FF88F4
-Secondary: #B591D9
-Secondary-200: #723FC5
-Secondary-150: #5F53CF
-Secondary-80: #7EACE2
-Secondary-50: #96D5EC
-Secondary-25: #B0F5F4
-Black-100: #0C0711
-Black-85: #302C35
-Black-50: #858388
-Black-25: #C2C1C3
-Black-15: #DBDADB
-White: #FDFBFF
-
-Display: Lato Bold 64
-Header 1: Lato Regular 48
-Header 2: Lato Regular 36
-Header 3: Lato Regular 24
-Text: Lato Regular 16*/
-/* http://meyerweb.com/eric/tools/css/reset/ 
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
-html,
-body,
-div,
-span,
-applet,
-object,
-iframe,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-blockquote,
-pre,
-a,
-abbr,
-acronym,
-address,
-big,
-cite,
-code,
-del,
-dfn,
-em,
-img,
-ins,
-kbd,
-q,
-s,
-samp,
-small,
-strike,
-strong,
-sub,
-sup,
-tt,
-var,
-b,
-u,
-i,
-center,
-dl,
-dt,
-dd,
-ol,
-ul,
-li,
-fieldset,
-form,
-label,
-legend,
-table,
-caption,
-tbody,
-tfoot,
-thead,
-tr,
-th,
-td,
-article,
-aside,
-canvas,
-details,
-embed,
-figure,
-figcaption,
-footer,
-header,
-hgroup,
-menu,
-nav,
-output,
-ruby,
-section,
-summary,
-time,
-mark,
-audio,
-video {
-   margin: 0;
-   padding: 0;
-   border: 0;
-   font-size: 100%;
-   font: inherit;
-   vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article,
-aside,
-details,
-figcaption,
-figure,
-footer,
-header,
-hgroup,
-menu,
-nav,
-section {
-   display: block;
-}
 body {
-   line-height: 1;
+   font-family: Lato, sans-serif;
+   color: var(--black-100);
+   margin: 0;
+   background: rgb(176, 244, 243);
+   background: linear-gradient(
+      108deg,
+      rgba(176, 244, 243, 1) 0%,
+      rgba(115, 63, 197, 1) 17%,
+      rgba(138, 45, 186, 1) 31%,
+      rgba(255, 159, 202, 1) 51%,
+      rgba(178, 44, 206, 1) 74%,
+      rgba(95, 83, 207, 1) 100%
+   );
 }
-ol,
-ul {
-   list-style: none;
+
+main {
+   width: calc(100% - 4rem);
+   height: 100vh;
+   overflow-y: auto;
 }
-blockquote,
-q {
-   quotes: none;
+
+#root {
+   width: 100%;
+   height: 100vh;
+   display: flex;
+   background-color: rgba(253, 251, 255, 0.7);
 }
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-   content: '';
-   content: none;
-}
-table {
-   border-collapse: collapse;
-   border-spacing: 0;
+
+code {
+   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
