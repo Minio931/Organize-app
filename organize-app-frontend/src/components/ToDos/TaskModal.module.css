@@ -1,3 +1,45 @@
+.taskModal header {
+   display: flex;
+   flex-direction: column;
+   gap: 1em;
+   padding: 0.5em 0;
+}
+
 .taskModal header > h2 {
    font-size: var(--header-2-font-size);
+}
+
+.taskModal header > p {
+   line-height: 1.25em;
+}
+
+.taskModal form {
+   display: flex;
+   flex-direction: column;
+   gap: 1em;
+   padding: 0.5em 0;
+}
+
+.taskModal form input,
+.taskModal form select {
+   padding: 0.25em;
+   border-radius: var(--border-radius);
+   border: 1px solid var(--primary-color);
+}
+
+.taskModal form input:focus,
+.taskModal form select:focus {
+   outline-color: var(--primary-color);
+}
+
+.taskModal form > .form--section {
+   display: flex;
+   gap: 0.5em;
+   flex-direction: column;
+}
+
+.taskModal form > .buttons {
+   display: flex;
+   justify-content: center;
+   gap: 0.5em;
 }
