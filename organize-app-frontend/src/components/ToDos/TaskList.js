@@ -2,29 +2,28 @@ import classes from './TaskList.module.css';
 
 import { IconCircleHalf2, IconChecks, IconCheckbox, IconSquare, IconPlus } from '@tabler/icons-react';
 
-import TaskModal from './TaskModal';
-
-const Task = ({ id, icon: Icon, task, description, onEditTask, onDoneTask }) => {
-   const taskEditHandler = () => {
+const Task = ({ id, task, description, icon: Icon, onEditTask, onDoneTask }) => {
+   const editHandler = (event) => {
+      event.stopPropagation();
       onEditTask(id);
    };
 
-   const taskDoneHandler = (e) => {
-      e.stopPropagation();
+   const doneHandler = (event) => {
+      event.stopPropagation();
       onDoneTask(id);
    };
 
    return (
-      <li className={classes.task} onClick={taskEditHandler}>
+      <li className={classes.task} onClick={editHandler}>
          <div className={classes['task--header']}>
-            <Icon onClick={taskDoneHandler} /> {task}
+            <Icon onClick={doneHandler} /> {task}
          </div>
          <div className={classes['task--description']}>{description}</div>
       </li>
    );
 };
 
-const TaskList = ({ type, tasks, day, tasksDispatch, taskModalsVisibility, taskModalsVisibilityDispatch }) => {
+const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
    const config = {
       header: {
          icon: undefined,
@@ -52,23 +51,6 @@ const TaskList = ({ type, tasks, day, tasksDispatch, taskModalsVisibility, taskM
    const taskList = tasks.filter((task) => task.status === type);
    const taskCount = taskList.length === 1 ? '1 task' : `${taskList.length} tasks`;
 
-   const showTaskModalHandler = () => {
-      taskModalsVisibilityDispatch({ type: 'ADD' });
-   };
-
-   const hideTaskModalHandler = () => {
-      taskModalsVisibilityDispatch({ type: 'CLOSE' });
-   };
-
-   const addTaskHandler = (task) => {
-      tasksDispatch({ type: 'ADD', task: task });
-      hideTaskModalHandler();
-   };
-
-   const doneTaskHandler = (taskId) => {
-      tasksDispatch({ type: 'DONE', taskId: taskId });
-   };
-
    return (
       <div className={classes.taskList}>
          <h2 className={classes['taskList-header']}>
@@ -76,7 +58,7 @@ const TaskList = ({ type, tasks, day, tasksDispatch, taskModalsVisibility, taskM
             {config.header.text}
             <span>{taskCount}</span>
             {type === 'inProgress' && (
-               <button onClick={showTaskModalHandler}>
+               <button onClick={onAddTask}>
                   <IconPlus size={16} color="var(--white)" />
                </button>
             )}
@@ -86,22 +68,14 @@ const TaskList = ({ type, tasks, day, tasksDispatch, taskModalsVisibility, taskM
                <Task
                   key={task.id}
                   id={task.id}
-                  icon={config.task.icon}
                   task={task.task}
                   description={task.description}
-                  onDoneTask={doneTaskHandler}
+                  icon={config.task.icon}
+                  onEditTask={onEditTask}
+                  onDoneTask={onDoneTask}
                />
             ))}
          </ul>
-         {taskModalsVisibility.add && (
-            <TaskModal
-               date={day}
-               type="inProgress"
-               action="add"
-               onClose={hideTaskModalHandler}
-               onAddTask={addTaskHandler}
-            />
-         )}
       </div>
    );
 };

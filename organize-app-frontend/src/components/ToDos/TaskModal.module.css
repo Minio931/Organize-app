@@ -50,3 +50,15 @@
    justify-content: center;
    gap: 0.5em;
 }
+
+.taskModal form > .buttons > .delete {
+   padding: 0.5rem;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   background-color: #ff4757;
+}
+
+.taskModal form > .buttons > .delete:hover {
+   background-color: color-mix(in srgb, #ff4757, transparent 20%);
+}

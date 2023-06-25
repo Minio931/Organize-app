@@ -1,25 +1,40 @@
-import { useEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { useState } from 'react';
+
+import { IconTrash } from '@tabler/icons-react';
 
 import Divider from '../UI/Divider';
 import Modal from '../UI/Modal';
 import classes from './TaskModal.module.css';
 import Button from '../UI/Button';
 
-const NewTaskForm = (props) => {
-   const [task, setTask] = useState('');
-   const [description, setDescription] = useState('');
+const TaskModal = (props) => {
+   const [task, setTask] = useState(props.task ? props.task : '');
+   const [description, setDescription] = useState(props.description ? props.description : '');
    const [date, setDate] = useState(props.date.toISOString().slice(0, 10));
-   const [status, setStatus] = useState(props.type);
+   const [status, setStatus] = useState(props.status ? props.status : 'inProgress');
 
    const submitHandler = (event) => {
       event.preventDefault();
-      props.onAddTask({
-         task: task,
-         description: description,
-         date: new Date(date),
-         status: status,
-      });
+      if (props.action === 'add') {
+         props.onAddTask({
+            task: task,
+            description: description,
+            date: new Date(date),
+            status: status,
+         });
+      } else if (props.action === 'edit') {
+         props.onEditTask({
+            id: props.id,
+            task: task,
+            description: description,
+            date: new Date(date),
+            status: status,
+         });
+      }
+   };
+
+   const deleteHandler = () => {
+      props.onDeleteTask(props.id);
    };
 
    const taskChangeHandler = (event) => {
@@ -38,18 +53,32 @@ const NewTaskForm = (props) => {
       setStatus(event.target.value);
    };
 
+   const headerText = props.action === 'add' ? 'Add new task' : 'Edit task';
+   const headerDescription =
+      props.action === 'add'
+         ? 'The new task will be added directly to the to-do list on the chosen day.'
+         : 'The task will be edited in the to-do list.';
+
    return (
       <Modal onClose={props.onClose}>
          <div className={classes.taskModal}>
             <header>
-               <h2>Add new task</h2>
-               <p>The new task will be added directly to the to-do list on the chosen day.</p>
+               <h2>{headerText}</h2>
+               <p>{headerDescription}</p>
             </header>
             <Divider />
             <form className={classes.form} onSubmit={submitHandler}>
                <div className={classes['form--section']}>
                   <label htmlFor="task">Task:</label>
-                  <input id="task" type="text" placeholder="Do the laundry" value={task} onChange={taskChangeHandler} />
+                  <input
+                     id="task"
+                     type="text"
+                     placeholder="Do the laundry"
+                     minLength={4}
+                     required
+                     value={task}
+                     onChange={taskChangeHandler}
+                  />
                </div>
                <div className={classes['form--section']}>
                   <label htmlFor="description">Description:</label>
@@ -62,11 +91,11 @@ const NewTaskForm = (props) => {
                </div>
                <div className={classes['form--section']}>
                   <label htmlFor="date">Date:</label>
-                  <input id="date" type="date" value={date} onChange={dateChangeHandler} />
+                  <input id="date" type="date" value={date} onChange={dateChangeHandler} required />
                </div>
                <div className={classes['form--section']}>
                   <label htmlFor="status">Status:</label>
-                  <select id="status" value={status} onChange={statusChangeHandler}>
+                  <select id="status" value={status} onChange={statusChangeHandler} required>
                      <option value="inProgress">In Progress</option>
                      <option value="completed">Completed</option>
                   </select>
@@ -75,7 +104,12 @@ const NewTaskForm = (props) => {
                   <Button type="button" onClick={props.onClose} color="secondary">
                      Close
                   </Button>
-                  <Button type="submit">Add</Button>
+                  <Button type="submit">{props.action === 'add' ? 'Add' : 'Edit'}</Button>
+                  {props.action === 'edit' && (
+                     <Button type="button" className={classes.delete} onClick={deleteHandler}>
+                        <IconTrash size={16} color="var(--white)" />
+                     </Button>
+                  )}
                </div>
             </form>
          </div>
@@ -83,4 +117,4 @@ const NewTaskForm = (props) => {
    );
 };
 
-export default NewTaskForm;
+export default TaskModal;

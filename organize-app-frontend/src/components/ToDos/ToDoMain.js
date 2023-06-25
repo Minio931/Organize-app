@@ -8,29 +8,8 @@ import HorizontalDatePicker from './HorizontalDatePicker';
 import ProgressBarWithButtons from './ProgressBarWithButtons';
 import Divider from '../UI/Divider';
 import TaskList from './TaskList';
+import TaskModal from './TaskModal';
 
-const DUMMY_TASKS = [];
-
-function getRandomDate() {
-   const startDate = new Date(2023, 5, 20);
-   const endDate = new Date(2023, 5, 31);
-   const randomTime = startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime());
-   return new Date(randomTime);
-}
-function getRandomStatus() {
-   return Math.random() < 0.5 ? 'inProgress' : 'completed';
-}
-
-for (let i = 1; i <= 100; i++) {
-   DUMMY_TASKS.push({
-      id: i,
-      task: 'Task ' + i,
-      description:
-         'Ut excepteur eiusmod eu laborum consectetur quis sint aliqua do. Consectetur nisi nisi elit et occaecat non. Dolor adipisicing esse minim et culpa in dolor non incididunt. Excepteur magna ut aute nulla aliquip mollit pariatur adipisicing reprehenderit non nostrud sit reprehenderit nisi. Et id laborum do in labore aliquip voluptate.',
-      date: getRandomDate(),
-      status: getRandomStatus(),
-   });
-}
 const tasksReducer = (state, action) => {
    switch (action.type) {
       case 'ADD': {
@@ -40,22 +19,22 @@ const tasksReducer = (state, action) => {
       }
       case 'EDIT': {
          if (!action.task) throw new Error('task is undefined! Please provide task!');
-         if (!action.taskId) throw new Error('taskId is undefined! Please provide taskId!');
-         const task = state.find((task) => task.id === action.taskId);
-         const newTasks = state.filter((task) => task.id !== action.taskId);
-         newTasks.push(task);
+         const newTasks = state.filter((task) => task.id !== action.task.id);
+         newTasks.push(action.task);
          return newTasks;
       }
       case 'DONE': {
          if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
          const task = state.find((task) => task.id === action.taskId);
-         task.status = task.status === 'inProgress' ? 'completed' : 'inProgress';
+         task.status = task.status === 'completed' ? 'inProgress' : 'completed';
          const newTasks = state.filter((task) => task.id !== action.taskId);
          newTasks.push(task);
          return newTasks;
       }
-      case 'DELETE':
-         return state.filter((task) => task.id !== action.id);
+      case 'DELETE': {
+         if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
+         return state.filter((task) => task.id !== action.taskId);
+      }
       default:
          throw new Error('Should not get there!');
    }
@@ -72,8 +51,9 @@ const taskModalsVisibilityReducer = (state, action) => {
          return { add: true, edit: false };
       case 'EDIT':
          return { add: false, edit: true };
-      case 'CLOSE':
+      case 'CLOSE': {
          return { add: false, edit: false };
+      }
       default:
          throw new Error('Should not get there!');
    }
@@ -83,16 +63,13 @@ const ToDoMain = () => {
    const today = new Date();
    const [day, setDay] = useState(today);
    const [fillPercent, setFillPercent] = useState(0);
-   const [tasks, tasksDispatch] = useReducer(tasksReducer, DUMMY_TASKS);
+   const [tasks, tasksDispatch] = useReducer(tasksReducer, []);
    const [shownTasks, setShownTasks] = useState(tasks);
    const [taskModalsVisibility, taskModalsVisibilityDispatch] = useReducer(
       taskModalsVisibilityReducer,
       taskModalsVisibilityInitialState,
    );
-
-   useEffect(() => {
-      console.log(taskModalsVisibility);
-   }, [taskModalsVisibility]);
+   const [editedTask, setEditedTask] = useState(null);
 
    useEffect(() => {
       setShownTasks(tasks.filter((task) => task.date.toDateString() === day.toDateString()));
@@ -122,6 +99,40 @@ const ToDoMain = () => {
       setDay(prevDay);
    };
 
+   const showAddTaskModalHandler = () => {
+      taskModalsVisibilityDispatch({ type: 'ADD' });
+   };
+
+   const showEditTaskModalHandler = (taskId) => {
+      const task = tasks.find((task) => task.id === taskId);
+      setEditedTask(task);
+      taskModalsVisibilityDispatch({ type: 'EDIT' });
+   };
+
+   const hideTaskModalHandler = () => {
+      taskModalsVisibilityDispatch({ type: 'CLOSE' });
+   };
+
+   const addTaskHandler = (task) => {
+      tasksDispatch({ type: 'ADD', task: task });
+      hideTaskModalHandler();
+   };
+
+   const editTaskHandler = (task) => {
+      tasksDispatch({ type: 'EDIT', task: task });
+      setEditedTask(null);
+      hideTaskModalHandler();
+   };
+
+   const deleteTaskHandler = (taskId) => {
+      tasksDispatch({ type: 'DELETE', taskId: taskId });
+      hideTaskModalHandler();
+   };
+
+   const doneTaskHandler = (taskId) => {
+      tasksDispatch({ type: 'DONE', taskId: taskId });
+   };
+
    return (
       <Wrapper>
          <Header>Todo List</Header>
@@ -135,19 +146,32 @@ const ToDoMain = () => {
          <TaskList
             type="inProgress"
             tasks={shownTasks}
-            day={day}
-            tasksDispatch={tasksDispatch}
-            taskModalsVisibility={taskModalsVisibility}
-            taskModalsVisibilityDispatch={taskModalsVisibilityDispatch}
+            onAddTask={showAddTaskModalHandler}
+            onEditTask={showEditTaskModalHandler}
+            onDoneTask={doneTaskHandler}
          />
          <TaskList
             type="completed"
             tasks={shownTasks}
-            day={day}
-            tasksDispatch={tasksDispatch}
-            taskModalsVisibility={taskModalsVisibility}
-            taskModalsVisibilityDispatch={taskModalsVisibilityDispatch}
+            onEditTask={showEditTaskModalHandler}
+            onDoneTask={doneTaskHandler}
          />
+         {taskModalsVisibility.add && (
+            <TaskModal date={day} action="add" onClose={hideTaskModalHandler} onAddTask={addTaskHandler} />
+         )}
+         {taskModalsVisibility.edit && (
+            <TaskModal
+               id={editedTask.id}
+               task={editedTask.task}
+               description={editedTask.description}
+               date={editedTask.date}
+               status={editedTask.status}
+               action="edit"
+               onClose={hideTaskModalHandler}
+               onEditTask={editTaskHandler}
+               onDeleteTask={deleteTaskHandler}
+            />
+         )}
       </Wrapper>
    );
 };
