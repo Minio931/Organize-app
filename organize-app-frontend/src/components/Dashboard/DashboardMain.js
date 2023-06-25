@@ -13,37 +13,39 @@ const DashboardMain = (props) => {
   const { tasks, habitsData } = useLoaderData();
 
   return (
-    <Wrapper>
-      <div className={classes["dashboard-body"]}>
-        <section>
-          <header className={classes.header}>
-            <h1 className={classes.welcome}>Welcome</h1>
-            <p className={classes["username-display"]}>{username}</p>
-          </header>
-          <Suspense
-            fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
-          >
-            <Await resolve={habitsData}>
-              {(habitsData) => <HabitsView habitsData={habitsData} />}
-            </Await>
-          </Suspense>
+    <>
+      <Wrapper>
+        <div className={classes["dashboard-body"]}>
+          <section>
+            <header className={classes.header}>
+              <h1 className={classes.welcome}>Welcome</h1>
+              <p className={classes["username-display"]}>{username}</p>
+            </header>
+            <Suspense
+              fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
+            >
+              <Await resolve={habitsData}>
+                {(habitsData) => <HabitsView habitsData={habitsData} />}
+              </Await>
+            </Suspense>
 
-          <BudgetView />
-        </section>
-        <section>
-          <Suspense
-            fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
-          >
-            <Await resolve={tasks}>
-              {(tasks) => <TodoView tasks={tasks} />}
-            </Await>
-          </Suspense>
-        </section>
+            <BudgetView />
+          </section>
+          <section>
+            <Suspense
+              fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
+            >
+              <Await resolve={tasks}>
+                {(tasks) => <TodoView tasks={tasks} />}
+              </Await>
+            </Suspense>
+          </section>
+        </div>
         <section>
           <Statistics />
         </section>
-      </div>
-    </Wrapper>
+      </Wrapper>
+    </>
   );
 };
 
