@@ -89,7 +89,15 @@ const ToDoMain = () => {
          <Divider />
          <TaskList type="inProgress" tasks={tasks} onAddTask={showTaskFormHandler} />
          <TaskList type="completed" tasks={tasks} onAddTask={showTaskFormHandler} />
-         {isTaskFormShown && <TaskModal date={day} type="inProgress" action="Create" onClose={hideTaskFormHandler} />}
+         {isTaskFormShown && (
+            <TaskModal
+               date={day}
+               type="inProgress"
+               action="Create"
+               onClose={hideTaskFormHandler}
+               onAddTask={addTaskHandler}
+            />
+         )}
       </Wrapper>
    );
 };

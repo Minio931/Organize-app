@@ -1,99 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap');
 
-body {
-   margin: 0;
-   background: rgb(176, 244, 243);
-   background: linear-gradient(
-      108deg,
-      rgba(176, 244, 243, 1) 0%,
-      rgba(115, 63, 197, 1) 17%,
-      rgba(138, 45, 186, 1) 31%,
-      rgba(255, 159, 202, 1) 51%,
-      rgba(178, 44, 206, 1) 74%,
-      rgba(95, 83, 207, 1) 100%
-   );
-}
-main {
-   font-family: Lato, sans-serif;
-   width: calc(100% - 4rem);
-   height: 100vh;
-   overflow-y: auto;
-}
-#root {
-   width: 100%;
-   height: 100vh;
-   display: flex;
-   background-color: rgba(253, 251, 255, 0.7);
-}
+/* CSS Reset supported by React */
+@import-normalize;
 
-* {
-   font-family: Lato, sans-serif;
-   color: var(--black-100);
-}
-code {
-   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
-}
-
-:root {
-   --primary-color: #9a5bd9;
-   --primary-200: #8a2dbb;
-   --primary-150: #b22cce;
-   --primary-80: #e234e2;
-   --primary-50: #f96bf2;
-   --primary-25: #ff88f4;
-
-   --secondary-color: #b591d9;
-   --secondary-200: #723fc5;
-   --secondary-150: #5f53cf;
-   --secondary-80: #7eace2;
-   --secondary-50: #96d5ec;
-   --secondary-25: #b0f5f4;
-
-   --black-100: #0c0711;
-   --black-85: #302c35;
-   --black-50: #858388;
-   --black-25: #c2c1c3;
-   --black-15: #dbdadb;
-   --black-5: #efefef;
-   --white: #fdfbff;
-   --display-font-size: 64px;
-   --header-1-font-size: 48px;
-   --header-2-font-size: 36px;
-   --header-3-font-size: 24px;
-   --text-font-size: 16px;
-}
-
-/* css reset
-
-Primary: #9A5BD9
-Primary-200: #8A2DBB
-Primary-150: #B22CCE
-Praimry-80: #E234E2
-Primary-50: #F96BF2
-Primary-25: #FF88F4
-Secondary: #B591D9
-Secondary-200: #723FC5
-Secondary-150: #5F53CF
-Secondary-80: #7EACE2
-Secondary-50: #96D5EC
-Secondary-25: #B0F5F4
-Black-100: #0C0711
-Black-85: #302C35
-Black-50: #858388
-Black-25: #C2C1C3
-Black-15: #DBDADB
-White: #FDFBFF
-
-Display: Lato Bold 64
-Header 1: Lato Regular 48
-Header 2: Lato Regular 36
-Header 3: Lato Regular 24
-Text: Lato Regular 16*/
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
-
 html,
 body,
 div,
@@ -182,7 +95,6 @@ video {
    font: inherit;
    vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
 article,
 aside,
 details,
@@ -217,4 +129,70 @@ q:after {
 table {
    border-collapse: collapse;
    border-spacing: 0;
+}
+
+/* Our CSS */
+
+:root {
+   --primary-color: #9a5bd9;
+   --primary-200: #8a2dbb;
+   --primary-150: #b22cce;
+   --primary-80: #e234e2;
+   --primary-50: #f96bf2;
+   --primary-25: #ff88f4;
+
+   --secondary-color: #b591d9;
+   --secondary-200: #723fc5;
+   --secondary-150: #5f53cf;
+   --secondary-80: #7eace2;
+   --secondary-50: #96d5ec;
+   --secondary-25: #b0f5f4;
+
+   --black-100: #0c0711;
+   --black-85: #302c35;
+   --black-50: #858388;
+   --black-25: #c2c1c3;
+   --black-15: #dbdadb;
+   --black-5: #efefef;
+   --white: #fdfbff;
+
+   --display-font-size: 64px;
+   --header-1-font-size: 48px;
+   --header-2-font-size: 36px;
+   --header-3-font-size: 24px;
+   --text-font-size: 16px;
+   --border-radius: 0.3em;
+}
+
+body {
+   font-family: Lato, sans-serif;
+   color: var(--black-100);
+   margin: 0;
+   background: rgb(176, 244, 243);
+   background: linear-gradient(
+      108deg,
+      rgba(176, 244, 243, 1) 0%,
+      rgba(115, 63, 197, 1) 17%,
+      rgba(138, 45, 186, 1) 31%,
+      rgba(255, 159, 202, 1) 51%,
+      rgba(178, 44, 206, 1) 74%,
+      rgba(95, 83, 207, 1) 100%
+   );
+}
+
+main {
+   width: calc(100% - 4rem);
+   height: 100vh;
+   overflow-y: auto;
+}
+
+#root {
+   width: 100%;
+   height: 100vh;
+   display: flex;
+   background-color: rgba(253, 251, 255, 0.7);
+}
+
+code {
+   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
