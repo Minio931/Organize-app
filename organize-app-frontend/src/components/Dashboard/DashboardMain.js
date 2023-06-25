@@ -10,7 +10,7 @@ import Wrapper from "../UI/Wrapper";
 const DashboardMain = (props) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const username = user.username;
-  const { tasks, habitsData } = useLoaderData();
+  const { tasks, todayTasks, habitsData } = useLoaderData();
 
   return (
     <>
@@ -35,13 +35,19 @@ const DashboardMain = (props) => {
             <Suspense
               fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
             >
-              <Await resolve={tasks}>
-                {(tasks) => <TodoView tasks={tasks} />}
+              <Await resolve={todayTasks}>
+                {(todayTasks) => <TodoView tasks={todayTasks} />}
               </Await>
             </Suspense>
           </section>
           <section>
-            <Statistics />
+            <Suspense
+              fallback={<p style={{ textAlign: "center" }}>Loading...</p>}
+            >
+              <Await resolve={tasks}>
+                {(tasks) => <Statistics tasks={tasks} />}
+              </Await>
+            </Suspense>
           </section>
         </div>
       </Wrapper>
@@ -51,7 +57,7 @@ const DashboardMain = (props) => {
 
 export default DashboardMain;
 
-async function loadTasks() {
+async function loadTodayTasks() {
   const user = localStorage.getItem("user");
   const parseUser = JSON.parse(user);
 
@@ -103,9 +109,29 @@ async function loadHabits() {
   return responseData;
 }
 
+export async function loadTasks() {
+  const user = localStorage.getItem("user");
+  const parseUser = JSON.parse(user);
+
+  const response = await fetch("http://localhost:3001/todo/" + parseUser.id, {
+    method: "GET",
+  });
+
+  if (response.status === 404) {
+    return json({ error: "No tasks found for this user" }, { status: 404 });
+  }
+  if (!response.ok) {
+    throw new Error("Something went wrong!");
+  }
+
+  const responseData = await response.json();
+  return responseData;
+}
+
 export function loader() {
   return defer({
-    tasks: loadTasks(),
+    todayTasks: loadTodayTasks(),
     habitsData: loadHabits(),
+    tasks: loadTasks(),
   });
 }
