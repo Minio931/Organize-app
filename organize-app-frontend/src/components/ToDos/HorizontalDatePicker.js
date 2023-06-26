@@ -1,12 +1,20 @@
 import classes from './HorizontalDatePicker.module.css';
 
 const Day = (props) => {
-   const { isToday, date, changeDayHandler, children } = props;
+   const { isChosenDay, date, changeDayHandler, children } = props;
+
+   let className = isChosenDay ? classes.chosenDay : classes.day;
+
+   if (new Date(date.toISOString().slice(0, 10)) < new Date(new Date().toISOString().slice(0, 10)))
+      className += ` ${classes.pastDay}`;
+   if (date.toISOString().slice(0, 10) === new Date().toISOString().slice(0, 10) && !isChosenDay)
+      className += ` ${classes.today}`;
+
    return (
       <div
-         className={isToday ? classes.today : classes.day}
+         className={className}
          onClick={() => {
-            changeDayHandler(isToday, date);
+            changeDayHandler(isChosenDay, date);
          }}
       >
          {children}
@@ -19,7 +27,7 @@ const HorizontalDatePicker = (props) => {
    const days = [];
 
    for (let i = 0; i < numOfDays; i++) {
-      const today = Math.floor(numOfDays / 2) === i;
+      const chosenDay = Math.floor(numOfDays / 2) === i;
       let newDay;
       if (!i) {
          newDay = new Date(currentDay);
@@ -28,7 +36,7 @@ const HorizontalDatePicker = (props) => {
          newDay = new Date(days[i - 1].date);
          newDay.setDate(newDay.getDate() + 1);
       }
-      days.push({ id: i + 1, date: newDay, today });
+      days.push({ id: i + 1, date: newDay, chosenDay });
    }
 
    if (currentDay === undefined || numOfDays === undefined)
@@ -39,12 +47,12 @@ const HorizontalDatePicker = (props) => {
       return (
          <div className={classes['picker']}>
             {days.map((item) => {
-               const { id, date, today } = item;
+               const { id, date, chosenDay } = item;
                let text;
-               if (!today) text = date.getDate();
+               if (!chosenDay) text = date.getDate();
                else text = `${date.toLocaleString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}`;
                return (
-                  <Day key={id} isToday={today} date={date} changeDayHandler={changeDayHandler}>
+                  <Day key={id} isChosenDay={chosenDay} date={date} changeDayHandler={changeDayHandler}>
                      {text}
                   </Day>
                );

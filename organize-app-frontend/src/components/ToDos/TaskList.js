@@ -2,7 +2,15 @@ import classes from './TaskList.module.css';
 
 import { IconCircleHalf2, IconChecks, IconCheckbox, IconSquare, IconPlus } from '@tabler/icons-react';
 
-const Task = ({ id, task, description, icon: Icon, onEditTask, onDoneTask }) => {
+const Task = ({
+   id,
+   task,
+   description,
+   iconPrimary: IconPrimary,
+   iconSecondary: IconSecondary,
+   onEditTask,
+   onDoneTask,
+}) => {
    const editHandler = (event) => {
       event.stopPropagation();
       onEditTask(id);
@@ -16,7 +24,11 @@ const Task = ({ id, task, description, icon: Icon, onEditTask, onDoneTask }) => 
    return (
       <li className={classes.task} onClick={editHandler}>
          <div className={classes['task--header']}>
-            <Icon onClick={doneHandler} /> {task}
+            <div className={classes['task--icon']} onClick={doneHandler}>
+               <IconPrimary className={classes['icon--primary']} />
+               <IconSecondary className={classes['icon--secondary']} />
+            </div>
+            {task}
          </div>
          <div className={classes['task--description']}>{description}</div>
       </li>
@@ -30,18 +42,21 @@ const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
          text: undefined,
       },
       task: {
-         icon: undefined,
+         iconPrimary: undefined,
+         iconSecondary: undefined,
       },
    };
 
    if (type === 'inProgress') {
       config.header.icon = IconCircleHalf2;
       config.header.text = 'Tasks in progress';
-      config.task.icon = IconSquare;
+      config.task.iconPrimary = IconSquare;
+      config.task.iconSecondary = IconCheckbox;
    } else if (type === 'completed') {
       config.header.icon = IconChecks;
       config.header.text = 'Completed';
-      config.task.icon = IconCheckbox;
+      config.task.iconPrimary = IconCheckbox;
+      config.task.iconSecondary = IconSquare;
    } else {
       throw new Error('You must provide type for this element. Eligible values: inProgress, completed');
    }
@@ -70,7 +85,8 @@ const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
                   id={task.id}
                   task={task.task}
                   description={task.description}
-                  icon={config.task.icon}
+                  iconPrimary={config.task.iconPrimary}
+                  iconSecondary={config.task.iconSecondary}
                   onEditTask={onEditTask}
                   onDoneTask={onDoneTask}
                />

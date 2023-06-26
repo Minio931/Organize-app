@@ -1,11 +1,12 @@
 .picker {
    padding: 15px;
    border-radius: 100vw;
-   background-color: var(--secondary-color);
+   background-color: var(--white);
    overflow: hidden;
    display: flex;
    justify-content: space-between;
    font-weight: bold;
+   box-shadow: 4px 4px 10px -3px var(--black-85);
 }
 
 .day {
@@ -21,11 +22,20 @@
    cursor: pointer;
 }
 
-.day:hover {
-   background-color: #fff;
+.day.pastDay {
+   color: var(--black-25);
 }
 
-.today {
+.day.today {
+   color: var(--primary-color);
+   font-weight: 900;
+}
+
+.day:hover {
+   background-color: color-mix(in srgb, transparent, var(--black-100) 10%);
+}
+
+.chosenDay {
    display: flex;
    align-items: center;
    justify-content: center;
@@ -34,5 +44,20 @@
    padding: 10px;
    transition: background-color 0.2s;
    cursor: pointer;
-   background-color: #fff;
+   background: linear-gradient(
+      108deg,
+      rgba(138, 45, 187, 1) 11%,
+      rgba(226, 52, 226, 1) 52%,
+      rgba(255, 136, 244, 1) 99%
+   );
+   color: var(--white);
+}
+
+.chosenDay:hover {
+   background: linear-gradient(
+      108deg,
+      rgba(138, 45, 187, 1) 11%,
+      rgba(226, 52, 226, 1) 52%,
+      rgba(255, 136, 244, 1) 99%
+   );
 }
