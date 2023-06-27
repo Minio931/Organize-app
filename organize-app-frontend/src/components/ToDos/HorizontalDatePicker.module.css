@@ -42,7 +42,7 @@
    border-radius: 100vw;
    height: 1em;
    padding: 10px;
-   transition: background-color 0.2s;
+   transition: background 0.2s;
    cursor: pointer;
    background: linear-gradient(
       108deg,
@@ -56,8 +56,8 @@
 .chosenDay:hover {
    background: linear-gradient(
       108deg,
-      rgba(138, 45, 187, 1) 11%,
-      rgba(226, 52, 226, 1) 52%,
-      rgba(255, 136, 244, 1) 99%
+      rgba(138, 45, 187, 0.8) 11%,
+      rgba(226, 52, 226, 0.8) 52%,
+      rgba(255, 136, 244, 0.8) 99%
    );
 }

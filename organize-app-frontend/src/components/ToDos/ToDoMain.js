@@ -91,6 +91,13 @@ class Data {
    }
 }
 
+const updateMedia = () => {
+   const width = window.innerWidth;
+   if (width < 768) return 'mobile';
+   else if (width >= 768 && width < 1024) return 'tablet';
+   else return 'desktop';
+};
+
 const ToDoMain = () => {
    const data = new Data();
 
@@ -105,6 +112,8 @@ const ToDoMain = () => {
    );
    const [editedTask, setEditedTask] = useState(null);
    const [refresh, setRefresh] = useState(false);
+
+   const [viewport, setViewport] = useState(updateMedia());
 
    useEffect(() => {
       data
@@ -133,7 +142,11 @@ const ToDoMain = () => {
    }, [refresh]);
 
    useEffect(() => {
-      console.log(tasks);
+      window.addEventListener('resize', () => setViewport(updateMedia()));
+      return () => window.removeEventListener('resize', () => setViewport(updateMedia()));
+   });
+
+   useEffect(() => {
       setShownTasks(tasks.filter((task) => task.executionDate.toDateString() === day.toDateString()));
    }, [day, tasks]);
 
@@ -199,7 +212,15 @@ const ToDoMain = () => {
    return (
       <Wrapper>
          <Header>Todo List</Header>
-         <HorizontalDatePicker currentDay={day} numOfDays={19} changeDayHandler={changeDayHandler} />
+         {viewport === 'mobile' && (
+            <HorizontalDatePicker currentDay={day} numOfDays={5} changeDayHandler={changeDayHandler} />
+         )}
+         {viewport === 'tablet' && (
+            <HorizontalDatePicker currentDay={day} numOfDays={9} changeDayHandler={changeDayHandler} />
+         )}
+         {viewport === 'desktop' && (
+            <HorizontalDatePicker currentDay={day} numOfDays={15} changeDayHandler={changeDayHandler} />
+         )}
          <ProgressBarWithButtons
             fillPercent={fillPercent}
             nextDayHandler={nextDayHandler}
