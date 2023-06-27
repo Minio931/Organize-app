@@ -63,7 +63,6 @@ const edit = async (req, res, next) => {
 //delete is not allowed as name :(
 const deleteTodo = async (req, res, next) => {
   try {
-    console.log(req.params.id, "req.params.id");
     const todo = await todosService.deleteTodo(req.params.id);
     res.status(200).send(todo);
   } catch (error) {
