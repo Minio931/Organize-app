@@ -34,5 +34,7 @@ router.patch(
   "/financialGoal/updateStatus",
   budget_controller.updateFinancialGoalStatus
 );
+router.patch("/balance/update", budget_controller.updateBalance);
+router.patch("/income/update", budget_controller.updateIncome);
 
 module.exports = router;

@@ -9,6 +9,24 @@ const createBudget = async (req, res, next) => {
   }
 };
 
+const updateBalance = async (req, res, next) => {
+  try {
+    const budget = await budgetService.updateBalance(req.body);
+    res.status(200).send(budget);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateIncome = async (req, res, next) => {
+  try {
+    const budget = await budgetService.updateIncome(req.body);
+    res.status(200).send(budget);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const editBudget = async (req, res, next) => {
   try {
     const budget = await budgetService.editBudget(req.body);
@@ -187,4 +205,6 @@ module.exports = {
   deleteFinancialGoal,
   getFinancialGoals,
   updateFinancialGoalStatus,
+  updateBalance,
+  updateIncome,
 };
