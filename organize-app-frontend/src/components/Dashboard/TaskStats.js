@@ -30,6 +30,8 @@ ChartJS.register(
 const TaskStats = (props) => {
   const [chartData, setChartData] = useState();
   const [chartLabel, setChartLabel] = useState();
+  const [numberOfDoneTasks, setNumberOfDoneTasks] = useState(0);
+  const [numberOfUndoneTasks, setNumberOfUndoneTasks] = useState(0);
 
   const weeklyData = [];
   const monthlyData = [];
@@ -104,6 +106,11 @@ const TaskStats = (props) => {
     calculateWeeklyData();
     setChartLabel(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
     setChartData(weeklyData);
+
+    const doneTasks = props.tasks.filter((task) => task.completion);
+    const undoneTasks = props.tasks.filter((task) => !task.completion);
+    setNumberOfDoneTasks(doneTasks.length);
+    setNumberOfUndoneTasks(undoneTasks.length);
   }, []);
 
   const getGradient = (ctx, chartArea) => {
@@ -238,11 +245,11 @@ const TaskStats = (props) => {
       <div className={classes["count-container"]}>
         <h2>Proggress</h2>
         <div className={classes["stats-done"]}>
-          <div>100</div>
+          <div>{numberOfDoneTasks}</div>
           <p>done</p>
         </div>
         <div className={classes["stats-notdone"]}>
-          <div>23</div>
+          <div>{numberOfUndoneTasks}</div>
           <p>not done</p>
         </div>
       </div>
