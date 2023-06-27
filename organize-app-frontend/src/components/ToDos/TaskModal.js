@@ -8,10 +8,10 @@ import classes from './TaskModal.module.css';
 import Button from '../UI/Button';
 
 const TaskModal = (props) => {
-   const [task, setTask] = useState(props.task ? props.task : '');
+   const [task, setTask] = useState(props.name ? props.name : '');
    const [description, setDescription] = useState(props.description ? props.description : '');
-   const [date, setDate] = useState(props.date.toISOString().slice(0, 10));
-   const [completion, setCompletion] = useState(props.completion ? props.completion : false);
+   const [date, setDate] = useState(props.executionDate.toISOString().slice(0, 10));
+   const [status, setStatus] = useState(props.completion ? 'completed' : 'inProgress');
 
    const submitHandler = (event) => {
       event.preventDefault();
@@ -19,18 +19,17 @@ const TaskModal = (props) => {
          props.onAddTask({
             name: task,
             description: description,
-            execution_date: new Date(date),
-            creation_date: new Date(date),
-            completion: completion,
+            executionDate: new Date(date),
+            creationDate: new Date(date),
+            completion: status === 'completed' ? true : false,
          });
       } else if (props.action === 'edit') {
          props.onEditTask({
             id: props.id,
             name: task,
             description: description,
-            execution_date: new Date(date),
-            creation_date: new Date(date),
-            completion: completion,
+            executionDate: new Date(date),
+            completion: status === 'completed' ? true : false,
          });
       }
    };
@@ -51,8 +50,8 @@ const TaskModal = (props) => {
       setDate(event.target.value);
    };
 
-   const completionChangeHandler = (event) => {
-      setCompletion(event.target.value);
+   const statusChangeHandler = (event) => {
+      setStatus(event.target.value);
    };
 
    const headerText = props.action === 'add' ? 'Add new task' : 'Edit task';
@@ -97,9 +96,9 @@ const TaskModal = (props) => {
                </div>
                <div className={classes['form--section']}>
                   <label htmlFor="status">Status:</label>
-                  <select id="status" value={completion} onChange={completionChangeHandler} required>
-                     <option value={true}>In Progress</option>
-                     <option value={false}>Completed</option>
+                  <select id="status" value={status} onChange={statusChangeHandler} required>
+                     <option value="inProgress">In Progress</option>
+                     <option value="completed">Completed</option>
                   </select>
                </div>
                <div className={classes.buttons}>
