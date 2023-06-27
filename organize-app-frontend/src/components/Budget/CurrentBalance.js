@@ -9,11 +9,12 @@ const CurrentBalance = () => {
         <div className={classes["balance-amount"]}>
           0.00zł <IconPlus className={classes["add-balance"]} />
         </div>
-        <span className={classes["income-month"]}>This month:</span>
+
         <div className={classes["income"]}>
+          <span className={classes["income-month"]}>This month:</span>
           <div className={classes["income-title"]}>Income:</div>
           <div className={classes["income-amount"]}>
-            0.00zł <IconPlus />
+            0.00zł <IconPlus className={classes["add-income"]} />
           </div>
         </div>
       </div>
