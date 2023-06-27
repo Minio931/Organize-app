@@ -81,6 +81,25 @@ const TaskStats = (props) => {
     setChartLabel(labels);
   };
 
+  const calculateYearlyData = () => {
+    const today = new Date();
+    const first = new Date(today.getFullYear(), 0, 1);
+    const last = new Date(today.getFullYear(), 11, 31);
+
+    const yearlyTasks = props.tasks.filter((task) => {
+      const taskDate = new Date(task.execution_date);
+      return taskDate >= first && taskDate <= last && task.completion;
+    });
+
+    for (let i = 0; i < 12; i++) {
+      const monthTasks = yearlyTasks.filter((task) => {
+        const taskDate = new Date(task.execution_date);
+        return taskDate.getMonth() === i;
+      });
+      yearlyData.push(monthTasks.length);
+    }
+  };
+
   useEffect(() => {
     calculateWeeklyData();
     setChartLabel(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
@@ -183,6 +202,22 @@ const TaskStats = (props) => {
     activeHandler("isMonthly");
   };
   const yearlyClickHandler = () => {
+    calculateYearlyData();
+    setChartData(yearlyData);
+    setChartLabel([
+      "Jun",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ]);
     activeHandler("isYearly");
   };
   let weeklyClass = classes["chart-options-list-item"];
