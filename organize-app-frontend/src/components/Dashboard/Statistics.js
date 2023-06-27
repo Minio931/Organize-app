@@ -10,6 +10,11 @@ const Statistics = (props) => {
     "isBudget",
   ]);
 
+  let tasks = props.tasks;
+  if (props.tasks.status === 404) {
+    tasks = [];
+  }
+
   const tasksHandler = () => {
     activeHandler("isTasks");
   };
@@ -51,7 +56,7 @@ const Statistics = (props) => {
           </ul>
         </div>
         <div className={classes["statistics-content"]}>
-          {activeState.isTasks && <TaskStats tasks={props.tasks} />}
+          {activeState.isTasks && <TaskStats tasks={tasks} />}
           {activeState.isHabits && <h1>Habits</h1>}
           {activeState.isBudget && <h1>Budget</h1>}
         </div>

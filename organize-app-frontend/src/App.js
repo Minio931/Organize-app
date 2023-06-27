@@ -9,8 +9,11 @@ import BudgetPage from "./pages/Budget";
 import RegisterPage from "./pages/Register";
 import { action as registerUser } from "./components/RegisterForm";
 import { action as loginUser } from "./components/LoginForm";
+import { action as balanceAction } from "./components/Budget/ManageBalanceForm";
 // import { loader as loadTodos } from "./components/Dashboard/TodoView";
 import { loader as dashboardLoaders } from "./components/Dashboard/DashboardMain";
+import { loader as budgetLoader } from "./components/Budget/BudgetMain";
+
 import DashboardPage from "./pages/Dashboard";
 import "chartjs-adapter-date-fns";
 import ErrorPage from "./pages/Error";
@@ -55,6 +58,8 @@ const Router = createBrowserRouter([
           {
             path: "budget",
             element: <BudgetPage />,
+            action: balanceAction,
+            loader: budgetLoader,
           },
           {
             path: "test",
