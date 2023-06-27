@@ -13,10 +13,10 @@ const createBudget = async (budget) => {
 };
 
 const updateBalance = async (budget) => {
-  const { userId, balance } = budget;
+  const { userId, amount } = budget;
   const result = await db.query(
     "UPDATE budget SET balance = $1 WHERE user_id = $2 RETURNING *",
-    [balance, userId]
+    [amount, userId]
   );
   if (result.rows.length === 0) {
     throw new NotFoundError("Budget not found");
@@ -26,10 +26,10 @@ const updateBalance = async (budget) => {
 };
 
 const updateIncome = async (budget) => {
-  const { userId, income } = budget;
+  const { userId, amount } = budget;
   const result = await db.query(
     "UPDATE budget SET income = $1 WHERE user_id = $2 RETURNING *",
-    [income, userId]
+    [amount, userId]
   );
   if (result.rows.length === 0) {
     throw new NotFoundError("Budget not found");

@@ -1,0 +1,25 @@
+.balance-form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 25rem;
+  height: 2rem;
+}
+.balance-form input {
+  width: 5rem;
+  height: 2rem;
+  font-size: var(--text);
+  color: var(--black-100);
+  border: 1px solid var(--black-100);
+  border-radius: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+.balance-form label {
+  font-size: var(--text);
+  color: var(--black-100);
+  font-weight: bold;
+  text-transform: uppercase;
+}
