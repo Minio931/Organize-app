@@ -4,6 +4,7 @@ import Modal from "../UI/Modal";
 import Wrapper from "../UI/Wrapper";
 import classes from "./BudgetMain.module.css";
 import CurrentBalance from "./CurrentBalance";
+import FinancialGoals from "./FinancialGoals";
 import ManageBalanceForm from "./ManageBalanceForm";
 
 const BudgetMain = () => {
@@ -20,7 +21,7 @@ const BudgetMain = () => {
     setIsModalShown(false);
   };
   return (
-    <Wrapper>
+    <Wrapper className={classes.budget}>
       <h1 className={classes.header}>Budget</h1>
       <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
         <Await resolve={balance}>
@@ -29,6 +30,7 @@ const BudgetMain = () => {
           )}
         </Await>
       </Suspense>
+      <FinancialGoals />
       {isModalShown && (
         <Modal onClose={hideModalHandler}>
           <ManageBalanceForm type={typeOfRequest} onClose={hideModalHandler} />

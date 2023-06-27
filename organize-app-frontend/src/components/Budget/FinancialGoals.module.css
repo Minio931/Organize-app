@@ -1,0 +1,12 @@
+.financial-goals-wrapper {
+  width: 30rem;
+  height: 10rem;
+  border-radius: 1.5rem;
+  background: rgb(249, 107, 242);
+  background: linear-gradient(
+    108deg,
+    rgba(249, 107, 242, 1) 0%,
+    rgba(95, 83, 207, 1) 100%
+  );
+  padding: 1rem;
+}
