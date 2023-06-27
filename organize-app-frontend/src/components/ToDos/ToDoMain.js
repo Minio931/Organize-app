@@ -1,7 +1,5 @@
 import { useEffect, useState, useReducer } from 'react';
 
-import classes from './ToDoMain.module.css';
-
 import Wrapper from '../UI/Wrapper';
 import Header from '../UI/Header';
 import HorizontalDatePicker from './HorizontalDatePicker';
@@ -11,29 +9,39 @@ import TaskList from './TaskList';
 import TaskModal from './TaskModal';
 
 const tasksReducer = (state, action) => {
+   const data = new Data();
    switch (action.type) {
       case 'ADD': {
          if (!action.task) throw new Error('task is undefined! Please provide task!');
          const newTask = { ...action.task, id: state.length + 1 };
+         data.add(action.task);
          return [...state, newTask];
       }
       case 'EDIT': {
          if (!action.task) throw new Error('task is undefined! Please provide task!');
          const newTasks = state.filter((task) => task.id !== action.task.id);
          newTasks.push(action.task);
+         data.edit(action.task);
          return newTasks;
       }
       case 'DONE': {
          if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
          const task = state.find((task) => task.id === action.taskId);
-         task.status = task.status === 'completed' ? 'inProgress' : 'completed';
+         console.log(task);
+         task.completion = task.completion ? false : true;
          const newTasks = state.filter((task) => task.id !== action.taskId);
          newTasks.push(task);
+         data.update({ id: task.id, completion: task.completion });
          return newTasks;
       }
       case 'DELETE': {
          if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
+         data.delete(action.taskId);
          return state.filter((task) => task.id !== action.taskId);
+      }
+      case 'REPLACE': {
+         if (!action.tasks) throw new Error('tasks is undefined! Please provide tasks!');
+         return action.tasks;
       }
       default:
          throw new Error('Should not get there!');
@@ -59,6 +67,70 @@ const taskModalsVisibilityReducer = (state, action) => {
    }
 };
 
+class Data {
+   constructor() {
+      this.userId = JSON.parse(localStorage.getItem('user')).id;
+      this.url = 'http://localhost:3001/todo';
+   }
+
+   async get() {
+      const userId = JSON.parse(localStorage.getItem('user')).id;
+      const response = await fetch(`${this.url}/${userId}`);
+      const data = await response.json();
+      const tasks = data.message ? [] : data;
+      return tasks;
+   }
+
+   async add(task) {
+      const newTask = {
+         ...task,
+         userId: this.userId,
+      };
+      console.log(newTask);
+      const response = await fetch(`${this.url}/create`, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(newTask),
+      });
+      const data = await response.json();
+      return data;
+   }
+
+   async edit(task) {
+      const response = await fetch(`${this.url}/edit`, {
+         method: 'PUT',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(task),
+      });
+      const data = await response.json();
+      return data;
+   }
+
+   async update(task) {
+      const response = await fetch(`${this.url}/update`, {
+         method: 'PATCH',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(task),
+      });
+      const data = await response.json();
+      return data;
+   }
+
+   async delete(taskId) {
+      const response = await fetch(`${this.url}/delete/${taskId}`, {
+         method: 'DELETE',
+      });
+      const data = await response.json();
+      return data;
+   }
+}
+
 const ToDoMain = () => {
    const today = new Date();
    const [day, setDay] = useState(today);
@@ -72,7 +144,35 @@ const ToDoMain = () => {
    const [editedTask, setEditedTask] = useState(null);
 
    useEffect(() => {
-      setShownTasks(tasks.filter((task) => task.date.toDateString() === day.toDateString()));
+      const data = new Data();
+      data
+         .get()
+         .then((data) => {
+            const newTasks = data.map((task) => {
+               const executionDate = new Date(task.execution_date);
+               executionDate.setHours(2);
+               const creationDate = new Date(task.creation_date);
+               creationDate.setHours(2);
+               return {
+                  id: task.id,
+                  name: task.name,
+                  description: task.description,
+                  userId: task.user_id,
+                  completion: task.completion,
+                  executionDate,
+                  creationDate,
+               };
+            });
+            return newTasks;
+         })
+         .then((newTasks) => {
+            tasksDispatch({ type: 'REPLACE', tasks: newTasks });
+         });
+   }, []);
+
+   useEffect(() => {
+      console.log(tasks);
+      setShownTasks(tasks.filter((task) => task.executionDate.toDateString() === day.toDateString()));
    }, [day, tasks]);
 
    useEffect(() => {
@@ -105,6 +205,7 @@ const ToDoMain = () => {
 
    const showEditTaskModalHandler = (taskId) => {
       const task = tasks.find((task) => task.id === taskId);
+      console.log(task);
       setEditedTask(task);
       taskModalsVisibilityDispatch({ type: 'EDIT' });
    };
@@ -157,15 +258,16 @@ const ToDoMain = () => {
             onDoneTask={doneTaskHandler}
          />
          {taskModalsVisibility.add && (
-            <TaskModal date={day} action="add" onClose={hideTaskModalHandler} onAddTask={addTaskHandler} />
+            <TaskModal executionDate={day} action="add" onClose={hideTaskModalHandler} onAddTask={addTaskHandler} />
          )}
          {taskModalsVisibility.edit && (
             <TaskModal
                id={editedTask.id}
-               task={editedTask.task}
+               name={editedTask.name}
                description={editedTask.description}
-               date={editedTask.date}
-               status={editedTask.status}
+               executionDate={editedTask.executionDate}
+               creationDate={editedTask.creationDate}
+               completion={editedTask.completion}
                action="edit"
                onClose={hideTaskModalHandler}
                onEditTask={editTaskHandler}

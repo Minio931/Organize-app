@@ -8,27 +8,28 @@ import classes from './TaskModal.module.css';
 import Button from '../UI/Button';
 
 const TaskModal = (props) => {
-   const [task, setTask] = useState(props.task ? props.task : '');
+   const [task, setTask] = useState(props.name ? props.name : '');
    const [description, setDescription] = useState(props.description ? props.description : '');
-   const [date, setDate] = useState(props.date.toISOString().slice(0, 10));
-   const [status, setStatus] = useState(props.status ? props.status : 'inProgress');
+   const [date, setDate] = useState(props.executionDate.toISOString().slice(0, 10));
+   const [status, setStatus] = useState(props.completion ? 'completed' : 'inProgress');
 
    const submitHandler = (event) => {
       event.preventDefault();
       if (props.action === 'add') {
          props.onAddTask({
-            task: task,
+            name: task,
             description: description,
-            date: new Date(date),
-            status: status,
+            executionDate: new Date(date),
+            creationDate: new Date(date),
+            completion: status === 'completed' ? true : false,
          });
       } else if (props.action === 'edit') {
          props.onEditTask({
             id: props.id,
-            task: task,
+            name: task,
             description: description,
-            date: new Date(date),
-            status: status,
+            executionDate: new Date(date),
+            completion: status === 'completed' ? true : false,
          });
       }
    };

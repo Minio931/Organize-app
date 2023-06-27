@@ -2,7 +2,15 @@ import classes from './TaskList.module.css';
 
 import { IconCircleHalf2, IconChecks, IconCheckbox, IconSquare, IconPlus } from '@tabler/icons-react';
 
-const Task = ({ id, task, description, icon: Icon, onEditTask, onDoneTask }) => {
+const Task = ({
+   id,
+   name,
+   description,
+   iconPrimary: IconPrimary,
+   iconSecondary: IconSecondary,
+   onEditTask,
+   onDoneTask,
+}) => {
    const editHandler = (event) => {
       event.stopPropagation();
       onEditTask(id);
@@ -16,7 +24,11 @@ const Task = ({ id, task, description, icon: Icon, onEditTask, onDoneTask }) => 
    return (
       <li className={classes.task} onClick={editHandler}>
          <div className={classes['task--header']}>
-            <Icon onClick={doneHandler} /> {task}
+            <div className={classes['task--icon']} onClick={doneHandler}>
+               <IconPrimary className={classes['icon--primary']} />
+               <IconSecondary className={classes['icon--secondary']} />
+            </div>
+            {name}
          </div>
          <div className={classes['task--description']}>{description}</div>
       </li>
@@ -30,25 +42,31 @@ const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
          text: undefined,
       },
       task: {
-         icon: undefined,
+         iconPrimary: undefined,
+         iconSecondary: undefined,
+         completion: undefined,
       },
    };
 
    if (type === 'inProgress') {
       config.header.icon = IconCircleHalf2;
       config.header.text = 'Tasks in progress';
-      config.task.icon = IconSquare;
+      config.task.iconPrimary = IconSquare;
+      config.task.iconSecondary = IconCheckbox;
+      config.task.completion = false;
    } else if (type === 'completed') {
       config.header.icon = IconChecks;
       config.header.text = 'Completed';
-      config.task.icon = IconCheckbox;
+      config.task.iconPrimary = IconCheckbox;
+      config.task.iconSecondary = IconSquare;
+      config.task.completion = true;
    } else {
       throw new Error('You must provide type for this element. Eligible values: inProgress, completed');
    }
    if (tasks === undefined || !Array.isArray(tasks))
       throw new Error('You must provide tasks for this element. Eligible values: Array');
 
-   const taskList = tasks.filter((task) => task.status === type);
+   const taskList = tasks.filter((task) => task.completion === config.task.completion);
    const taskCount = taskList.length === 1 ? '1 task' : `${taskList.length} tasks`;
 
    return (
@@ -68,9 +86,10 @@ const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
                <Task
                   key={task.id}
                   id={task.id}
-                  task={task.task}
+                  name={task.name}
                   description={task.description}
-                  icon={config.task.icon}
+                  iconPrimary={config.task.iconPrimary}
+                  iconSecondary={config.task.iconSecondary}
                   onEditTask={onEditTask}
                   onDoneTask={onDoneTask}
                />

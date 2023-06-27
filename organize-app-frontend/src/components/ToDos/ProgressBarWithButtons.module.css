@@ -10,7 +10,7 @@
 }
 
 .button {
-   border: 2px solid var(--secondary-color);
+   border: none;
    border-radius: 100%;
    aspect-ratio: 1 / 1;
    background-color: var(--white);
@@ -19,10 +19,11 @@
    align-items: center;
    cursor: pointer;
    transition: background-color 0.2s;
+   box-shadow: 4px 4px 10px -3px var(--black-85);
 }
 
 .button:hover {
-   background-color: var(--black-5);
+   background-color: color-mix(in srgb, var(--white), var(--black-100) 10%);
 }
 
 .progressBar {
@@ -30,6 +31,7 @@
    flex-grow: 1;
    background-color: var(--white);
    border-radius: 100vw;
+   box-shadow: 4px 4px 10px -3px var(--black-85);
    overflow: hidden;
 }
 
@@ -38,7 +40,13 @@
    width: 0%;
    height: 100%;
    border-radius: 100vw;
-   background-color: var(--secondary-color);
+   /* background-color: var(--primary-color); */
+   background: linear-gradient(
+      108deg,
+      rgba(138, 45, 187, 1) 11%,
+      rgba(226, 52, 226, 1) 52%,
+      rgba(255, 136, 244, 1) 99%
+   );
 }
 
 .progressText {
