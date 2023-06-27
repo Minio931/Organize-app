@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useState, useReducer, useMemo } from 'react';
 
 import Wrapper from '../UI/Wrapper';
 import Header from '../UI/Header';
@@ -70,7 +70,6 @@ class Data {
    }
 
    async update(task) {
-      console.log(task);
       const response = await fetch(`${this.url}/update`, {
          method: 'PATCH',
          headers: {
@@ -99,7 +98,7 @@ const updateMedia = () => {
 };
 
 const ToDoMain = () => {
-   const data = new Data();
+   const data = useMemo(() => new Data(), []);
 
    const today = new Date();
    const [day, setDay] = useState(today);
@@ -139,7 +138,7 @@ const ToDoMain = () => {
          .then((newTasks) => {
             setTasks(newTasks);
          });
-   }, [refresh]);
+   }, [data, refresh]);
 
    useEffect(() => {
       window.addEventListener('resize', () => setViewport(updateMedia()));
@@ -153,7 +152,7 @@ const ToDoMain = () => {
    useEffect(() => {
       setFillPercent(
          shownTasks.length !== 0
-            ? Math.floor((shownTasks.filter((task) => task.status === 'completed').length / shownTasks.length) * 100)
+            ? Math.floor((shownTasks.filter((task) => task.completion).length / shownTasks.length) * 100)
             : 0,
       );
    }, [shownTasks]);
