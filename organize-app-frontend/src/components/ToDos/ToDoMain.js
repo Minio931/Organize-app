@@ -8,46 +8,6 @@ import Divider from '../UI/Divider';
 import TaskList from './TaskList';
 import TaskModal from './TaskModal';
 
-const tasksReducer = (state, action) => {
-   const data = new Data();
-   switch (action.type) {
-      case 'ADD': {
-         if (!action.task) throw new Error('task is undefined! Please provide task!');
-         const newTask = { ...action.task, id: state.length + 1 };
-         data.add(action.task);
-         return [...state, newTask];
-      }
-      case 'EDIT': {
-         if (!action.task) throw new Error('task is undefined! Please provide task!');
-         const newTasks = state.filter((task) => task.id !== action.task.id);
-         newTasks.push(action.task);
-         data.edit(action.task);
-         return newTasks;
-      }
-      case 'DONE': {
-         if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
-         const task = state.find((task) => task.id === action.taskId);
-         console.log(task);
-         task.completion = task.completion ? false : true;
-         const newTasks = state.filter((task) => task.id !== action.taskId);
-         newTasks.push(task);
-         data.update({ id: task.id, completion: task.completion });
-         return newTasks;
-      }
-      case 'DELETE': {
-         if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
-         data.delete(action.taskId);
-         return state.filter((task) => task.id !== action.taskId);
-      }
-      case 'REPLACE': {
-         if (!action.tasks) throw new Error('tasks is undefined! Please provide tasks!');
-         return action.tasks;
-      }
-      default:
-         throw new Error('Should not get there!');
-   }
-};
-
 const taskModalsVisibilityInitialState = {
    add: false,
    edit: false,
@@ -86,7 +46,6 @@ class Data {
          ...task,
          userId: this.userId,
       };
-      console.log(newTask);
       const response = await fetch(`${this.url}/create`, {
          method: 'POST',
          headers: {
@@ -111,6 +70,7 @@ class Data {
    }
 
    async update(task) {
+      console.log(task);
       const response = await fetch(`${this.url}/update`, {
          method: 'PATCH',
          headers: {
@@ -132,19 +92,21 @@ class Data {
 }
 
 const ToDoMain = () => {
+   const data = new Data();
+
    const today = new Date();
    const [day, setDay] = useState(today);
    const [fillPercent, setFillPercent] = useState(0);
-   const [tasks, tasksDispatch] = useReducer(tasksReducer, []);
+   const [tasks, setTasks] = useState([]);
    const [shownTasks, setShownTasks] = useState(tasks);
    const [taskModalsVisibility, taskModalsVisibilityDispatch] = useReducer(
       taskModalsVisibilityReducer,
       taskModalsVisibilityInitialState,
    );
    const [editedTask, setEditedTask] = useState(null);
+   const [refresh, setRefresh] = useState(false);
 
    useEffect(() => {
-      const data = new Data();
       data
          .get()
          .then((data) => {
@@ -166,9 +128,9 @@ const ToDoMain = () => {
             return newTasks;
          })
          .then((newTasks) => {
-            tasksDispatch({ type: 'REPLACE', tasks: newTasks });
+            setTasks(newTasks);
          });
-   }, []);
+   }, [refresh]);
 
    useEffect(() => {
       console.log(tasks);
@@ -204,8 +166,7 @@ const ToDoMain = () => {
    };
 
    const showEditTaskModalHandler = (taskId) => {
-      const task = tasks.find((task) => task.id === taskId);
-      console.log(task);
+      const task = shownTasks.find((task) => task.id === taskId);
       setEditedTask(task);
       taskModalsVisibilityDispatch({ type: 'EDIT' });
    };
@@ -215,23 +176,24 @@ const ToDoMain = () => {
    };
 
    const addTaskHandler = (task) => {
-      tasksDispatch({ type: 'ADD', task: task });
+      data.add(task).then(() => setRefresh(!refresh));
       hideTaskModalHandler();
    };
 
    const editTaskHandler = (task) => {
-      tasksDispatch({ type: 'EDIT', task: task });
+      data.edit(task).then(() => setRefresh(!refresh));
       setEditedTask(null);
       hideTaskModalHandler();
    };
 
    const deleteTaskHandler = (taskId) => {
-      tasksDispatch({ type: 'DELETE', taskId: taskId });
+      data.delete(taskId).then(() => setRefresh(!refresh));
       hideTaskModalHandler();
    };
 
    const doneTaskHandler = (taskId) => {
-      tasksDispatch({ type: 'DONE', taskId: taskId });
+      const task = shownTasks.find((task) => task.id === taskId);
+      data.update({ id: task.id, completion: !task.completion }).then(() => setRefresh(!refresh));
    };
 
    return (
