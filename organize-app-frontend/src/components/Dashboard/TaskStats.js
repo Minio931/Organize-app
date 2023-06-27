@@ -1,4 +1,5 @@
 import classes from "./TaskStats.module.css";
+import { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -27,15 +28,64 @@ ChartJS.register(
 );
 
 const TaskStats = (props) => {
-  const labels = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+  const [chartData, setChartData] = useState();
+  const [chartLabel, setChartLabel] = useState();
+
+  const weeklyData = [];
+  const monthlyData = [];
+  const yearlyData = [];
+
+  const calculateWeeklyData = () => {
+    const today = new Date();
+    const first = today.getDate() - today.getDay();
+    const last = first + 6;
+    const firstDay = new Date(today.setDate(first));
+    const lastDay = new Date(today.setDate(last));
+
+    const weeklyTasks = props.tasks.filter((task) => {
+      const taskDate = new Date(task.execution_date);
+
+      return taskDate >= firstDay && taskDate <= lastDay && task.completion;
+    });
+
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(today.setDate(first + i));
+      const dayTasks = weeklyTasks.filter((task) => {
+        const taskDate = new Date(task.execution_date);
+        return taskDate.getDate() - 1 === day.getDate();
+      });
+      weeklyData.push(dayTasks.length);
+    }
+  };
+
+  const calculateMonthlyData = () => {
+    const today = new Date();
+    const first = new Date(today.getFullYear(), today.getMonth(), 1);
+    const last = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+    const monthlyTasks = props.tasks.filter((task) => {
+      const taskDate = new Date(task.execution_date);
+      return taskDate >= first && taskDate <= last && task.completion;
+    });
+    const labels = [];
+    for (let i = 0; i < last.getDate(); i++) {
+      const day = new Date(first.setDate(i + 1));
+      labels.push(day.getDate());
+      const dayTasks = monthlyTasks.filter((task) => {
+        const taskDate = new Date(task.execution_date);
+
+        return taskDate.getDate() - 1 === day.getDate();
+      });
+      monthlyData.push(dayTasks.length);
+    }
+    setChartLabel(labels);
+  };
+
+  useEffect(() => {
+    calculateWeeklyData();
+    setChartLabel(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+    setChartData(weeklyData);
+  }, []);
 
   const getGradient = (ctx, chartArea) => {
     const colorStart = "rgba(253,251,255,0.4)";
@@ -55,11 +105,11 @@ const TaskStats = (props) => {
     return gradient;
   };
   const data = {
-    labels,
+    labels: chartLabel,
     datasets: [
       {
-        label: "Expenses",
-        data: [14, 5, 6, 20, 10, 15, 10],
+        label: "Todos",
+        data: chartData,
         fill: true,
         backgroundColor: (context) => {
           const chart = context.chart;
@@ -122,9 +172,14 @@ const TaskStats = (props) => {
   const { isWeekly, isMonthly, isYearly } = activeState;
 
   const weeklyClickHandler = () => {
+    calculateWeeklyData();
+    setChartLabel(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
+    setChartData(weeklyData);
     activeHandler("isWeekly");
   };
   const monthlyClickHandler = () => {
+    calculateMonthlyData();
+    setChartData(monthlyData);
     activeHandler("isMonthly");
   };
   const yearlyClickHandler = () => {

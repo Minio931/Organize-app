@@ -27,7 +27,6 @@ const Router = createBrowserRouter([
       {
         index: true,
         element: <LoginPage />,
-
         action: loginUser,
       },
       {
