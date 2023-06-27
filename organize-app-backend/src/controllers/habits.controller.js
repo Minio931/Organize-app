@@ -18,6 +18,15 @@ const get = async (req, res, next) => {
   }
 };
 
+const getOne = async (req, res, next) => {
+  try {
+    const habit = await habitsService.getHabit(req.params.habitId);
+    res.status(200).send(habit);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const edit = async (req, res, next) => {
   try {
     const habit = await habitsService.editHabit(req.body);
@@ -61,4 +70,5 @@ module.exports = {
   deleteHabit,
   deleteComplete,
   create,
+  getOne,
 };

@@ -2,8 +2,9 @@ const db = require("../config/db.config.js");
 const { TodoNotFoundError } = require("../utils/errors.utils.js");
 
 const createTodo = async (todo) => {
-  const { userId, name, description, creationDate, executionDate } = todo;
-  const completion = false;
+  const { userId, name, description, creationDate, executionDate, completion } =
+    todo;
+
   const result = await db.query(
     "INSERT INTO Todos (user_id, name, description, creation_date, execution_date, completion ) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
     [userId, name, description, creationDate, executionDate, completion]
@@ -41,6 +42,15 @@ const getTodayTodos = async (userId) => {
   }
 
   return result.rows;
+};
+
+const getTodo = async (id) => {
+  const result = await db.query("SELECT * FROM todos WHERE id = $1", [id]);
+  if (result.rows.length === 0) {
+    throw new TodoNotFoundError("Todo not found");
+  }
+
+  return result.rows[0];
 };
 
 const editTodo = async (todo) => {
@@ -86,6 +96,7 @@ const deleteTodo = async (id) => {
 module.exports = {
   createTodo,
   getTodos,
+  getTodo,
   updateTodo,
   getTodayTodos,
   editTodo,

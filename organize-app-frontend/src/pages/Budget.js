@@ -1,5 +1,7 @@
+import BudgetMain from "../components/Budget/BudgetMain";
+
 const BudgetPage = () => {
-  return <h1>Budget Page</h1>;
+  return <BudgetMain />;
 };
 
 export default BudgetPage;

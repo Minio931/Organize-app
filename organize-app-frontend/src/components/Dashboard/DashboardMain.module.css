@@ -25,3 +25,7 @@
   gap: 2rem;
   user-select: none;
 }
+.wrapper {
+  padding-top: 0;
+  padding-right: 0;
+}

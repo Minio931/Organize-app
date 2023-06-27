@@ -40,6 +40,17 @@ const getHabits = async (userId) => {
   return { habits: result.rows, completionDates: completionDates.rows };
 };
 
+const getHabit = async (habitId) => {
+  const result = await db.query("SELECT * FROM habits WHERE id = $1", [
+    habitId,
+  ]);
+
+  if (result.rows.length === 0) {
+    throw new NotFoundError("Habit not found");
+  }
+  return { habit: result.rows[0] };
+};
+
 const deleteHabit = async (habitId) => {
   const result = await db.query(
     "DELETE FROM habits WHERE id = $1 RETURNING *",
@@ -78,6 +89,7 @@ module.exports = {
   createHabit,
   editHabit,
   getHabits,
+  getHabit,
   deleteHabit,
   completeHabit,
   deleteCompletionDate,

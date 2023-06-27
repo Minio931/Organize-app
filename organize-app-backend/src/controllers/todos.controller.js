@@ -21,6 +21,15 @@ const get = async (req, res, next) => {
   }
 };
 
+const getTodo = async (req, res, next) => {
+  try {
+    const todo = await todosService.getTodoById(req.params.id);
+    res.status(200).send(todo);
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getToday = async (req, res, next) => {
   try {
     const todos = await todosService.getTodayTodos(req.params.userId);
@@ -54,7 +63,6 @@ const edit = async (req, res, next) => {
 //delete is not allowed as name :(
 const deleteTodo = async (req, res, next) => {
   try {
-    console.log(req.params.id, "req.params.id");
     const todo = await todosService.deleteTodo(req.params.id);
     res.status(200).send(todo);
   } catch (error) {
@@ -66,6 +74,7 @@ module.exports = {
   get,
   update,
   getToday,
+  getTodo,
   edit,
   deleteTodo,
 };
