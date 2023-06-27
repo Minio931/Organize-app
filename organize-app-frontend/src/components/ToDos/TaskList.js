@@ -4,7 +4,7 @@ import { IconCircleHalf2, IconChecks, IconCheckbox, IconSquare, IconPlus } from 
 
 const Task = ({
    id,
-   task,
+   name,
    description,
    iconPrimary: IconPrimary,
    iconSecondary: IconSecondary,
@@ -28,7 +28,7 @@ const Task = ({
                <IconPrimary className={classes['icon--primary']} />
                <IconSecondary className={classes['icon--secondary']} />
             </div>
-            {task}
+            {name}
          </div>
          <div className={classes['task--description']}>{description}</div>
       </li>
@@ -44,6 +44,7 @@ const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
       task: {
          iconPrimary: undefined,
          iconSecondary: undefined,
+         completion: undefined,
       },
    };
 
@@ -52,18 +53,20 @@ const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
       config.header.text = 'Tasks in progress';
       config.task.iconPrimary = IconSquare;
       config.task.iconSecondary = IconCheckbox;
+      config.task.completion = false;
    } else if (type === 'completed') {
       config.header.icon = IconChecks;
       config.header.text = 'Completed';
       config.task.iconPrimary = IconCheckbox;
       config.task.iconSecondary = IconSquare;
+      config.task.completion = true;
    } else {
       throw new Error('You must provide type for this element. Eligible values: inProgress, completed');
    }
    if (tasks === undefined || !Array.isArray(tasks))
       throw new Error('You must provide tasks for this element. Eligible values: Array');
 
-   const taskList = tasks.filter((task) => task.status === type);
+   const taskList = tasks.filter((task) => task.completion === config.task.completion);
    const taskCount = taskList.length === 1 ? '1 task' : `${taskList.length} tasks`;
 
    return (
@@ -83,7 +86,7 @@ const TaskList = ({ type, tasks, onAddTask, onEditTask, onDoneTask }) => {
                <Task
                   key={task.id}
                   id={task.id}
-                  task={task.task}
+                  name={task.name}
                   description={task.description}
                   iconPrimary={config.task.iconPrimary}
                   iconSecondary={config.task.iconSecondary}

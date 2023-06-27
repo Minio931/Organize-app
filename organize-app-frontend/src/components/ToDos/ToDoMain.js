@@ -1,5 +1,7 @@
 import { useEffect, useState, useReducer } from 'react';
 
+import { useLoaderData } from 'react-router-dom';
+
 import classes from './ToDoMain.module.css';
 
 import Wrapper from '../UI/Wrapper';
@@ -35,6 +37,10 @@ const tasksReducer = (state, action) => {
          if (!action.taskId) throw new Error('taskId is undefined! Please provide id!');
          return state.filter((task) => task.id !== action.taskId);
       }
+      case 'REPLACE': {
+         if (!action.tasks) throw new Error('tasks is undefined! Please provide tasks!');
+         return action.tasks;
+      }
       default:
          throw new Error('Should not get there!');
    }
@@ -59,6 +65,37 @@ const taskModalsVisibilityReducer = (state, action) => {
    }
 };
 
+class Data {
+   constructor() {
+      this.userId = JSON.parse(localStorage.getItem('user')).id;
+      this.url = 'http://localhost:3001/todo';
+   }
+
+   async get() {
+      const userId = JSON.parse(localStorage.getItem('user')).id;
+      const response = await fetch(`${this.url}/${userId}`);
+      const data = await response.json();
+      const tasks = data.message ? [] : data;
+      return tasks;
+   }
+
+   async add(task) {
+      const newTask = {
+         ...task,
+         userId: this.userId,
+      };
+      const response = await fetch(`${this.url}/create`, {
+         method: 'POST',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(task),
+      });
+      const data = await response.json();
+      return data;
+   }
+}
+
 const ToDoMain = () => {
    const today = new Date();
    const [day, setDay] = useState(today);
@@ -72,7 +109,29 @@ const ToDoMain = () => {
    const [editedTask, setEditedTask] = useState(null);
 
    useEffect(() => {
-      setShownTasks(tasks.filter((task) => task.date.toDateString() === day.toDateString()));
+      const data = new Data();
+      data
+         .get()
+         .then((data) => {
+            const newTasks = data.map((task) => {
+               const execution_date = new Date(task.execution_date);
+               const creation_date = new Date(task.creation_date);
+               return {
+                  ...task,
+                  execution_date,
+                  creation_date,
+               };
+            });
+            return newTasks;
+         })
+         .then((newTasks) => {
+            tasksDispatch({ type: 'REPLACE', tasks: newTasks });
+         });
+   }, []);
+
+   useEffect(() => {
+      console.log(tasks);
+      setShownTasks(tasks.filter((task) => task.execution_date.toDateString() === day.toDateString()));
    }, [day, tasks]);
 
    useEffect(() => {
