@@ -27,7 +27,15 @@ const createUser = async (user) => {
     "INSERT INTO users (username, email, password, firstname, lastname) VALUES ($1, $2, $3, $4, $5) RETURNING *",
     [username, email, password, firstName, lastName]
   );
-  return { message: `A new user has been added: ${result.rows[0]}` };
+
+  const budget = await db.query(
+    "INSERT INTO budget (balance, income, expenses, planned, user_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+    [0, 0, 0, 0, result.rows[0].id]
+  );
+
+  return {
+    message: `A new user has been added: ${result.rows[0]}, ${budget.rows[0]}`,
+  };
 };
 
 const loginUser = async (user) => {

@@ -12,6 +12,32 @@ const createBudget = async (budget) => {
   return { message: `A new budget has been added: ${result.rows[0]}` };
 };
 
+const updateBalance = async (budget) => {
+  const { userId, balance } = budget;
+  const result = await db.query(
+    "UPDATE budget SET balance = $1 WHERE user_id = $2 RETURNING *",
+    [balance, userId]
+  );
+  if (result.rows.length === 0) {
+    throw new NotFoundError("Budget not found");
+  }
+
+  return { message: `Budget has been updated: ${result.rows[0]}` };
+};
+
+const updateIncome = async (budget) => {
+  const { userId, income } = budget;
+  const result = await db.query(
+    "UPDATE budget SET income = $1 WHERE user_id = $2 RETURNING *",
+    [income, userId]
+  );
+  if (result.rows.length === 0) {
+    throw new NotFoundError("Budget not found");
+  }
+
+  return { message: `Budget has been updated: ${result.rows[0]}` };
+};
+
 const editBudget = async (budget) => {
   const { userId, balance, income, expenses, planned } = budget;
   const result = await db.query(
@@ -226,4 +252,6 @@ module.exports = {
   deleteFinancialGoal,
   getFinancialGoals,
   updateFinancialGoalStatus,
+  updateBalance,
+  updateIncome,
 };
