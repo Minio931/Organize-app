@@ -11,7 +11,7 @@ import ManageBalanceForm from "./ManageBalanceForm";
 const BudgetMain = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [typeOfRequest, setTypeOfRequest] = useState();
-  const { balance } = useLoaderData();
+  const { balance, financialGoals } = useLoaderData();
 
   const showModalHandler = (type) => {
     setIsModalShown(true);
@@ -35,7 +35,17 @@ const BudgetMain = () => {
           )}
         </Await>
       </Suspense>
-      <FinancialGoals className={classes["financial-goals"]} />
+      <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
+        <Await resolve={financialGoals}>
+          {(financialGoals) => (
+            <FinancialGoals
+              className={classes["financial-goals"]}
+              financialGoals={financialGoals}
+            />
+          )}
+        </Await>
+      </Suspense>
+
       <ExpensesPlanner className={classes["expenses-planner"]} />
       {isModalShown && (
         <Modal onClose={hideModalHandler}>
@@ -60,9 +70,29 @@ export async function loadBudgetData() {
   return responseData;
 }
 
+export async function loadFinancialGoalsData() {
+  const userId = JSON.parse(localStorage.getItem("user")).id;
+
+  const response = await fetch(
+    "http://localhost:3001/budget/financialGoal/" + userId
+  );
+
+  if (response.status === 404) {
+    return json({ message: "No financial goals found", status: 404 });
+  }
+  if (!response.ok) {
+    return json({ message: "Something went wrong", status: 500 });
+  }
+
+  const responseData = await response.json();
+
+  return responseData;
+}
+
 export function loader() {
   return defer({
     balance: loadBudgetData(),
+    financialGoals: loadFinancialGoalsData(),
   });
 }
 

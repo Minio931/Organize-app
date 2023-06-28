@@ -34,6 +34,7 @@ router.patch(
   "/financialGoal/updateStatus",
   budget_controller.updateFinancialGoalStatus
 );
+router.get("/financialGoal/:userId", budget_controller.getFinancialGoals);
 router.patch("/balance/update", budget_controller.updateBalance);
 router.patch("/income/update", budget_controller.updateIncome);
 

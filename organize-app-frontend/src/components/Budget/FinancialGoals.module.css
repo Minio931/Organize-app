@@ -35,3 +35,30 @@
 .financial-goals-icon:hover {
   color: var(--primary-25);
 }
+.financial-goal-item-wrapper {
+  width: 100%;
+}
+.progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  margin-top: 0.2rem;
+}
+.financial-goal-item-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--white);
+}
+.divider {
+  color: var(--black-25);
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.current {
+  font-weight: bold;
+}
+.goal {
+  font-weight: bold;
+}

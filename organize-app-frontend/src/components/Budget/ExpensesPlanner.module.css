@@ -1,0 +1,36 @@
+.expenses-planner-wrapper {
+  background-color: var(--white);
+  width: 35rem;
+  border-radius: 1.5rem;
+}
+.expenses-planner-header {
+  font-size: var(--header-3-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+  padding: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.planned-money {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1rem;
+}
+.title {
+  font-size: var(--text-font-size);
+  color: var(--black-50);
+  font-weight: bold;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.amount {
+  font-size: var(--text-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+}
