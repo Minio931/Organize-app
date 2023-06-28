@@ -1,7 +1,5 @@
 import { useEffect, useReducer, useState, useMemo } from 'react';
 
-import classes from './HabitMain.module.css';
-
 import Wrapper from '../UI/Wrapper';
 import Header from '../UI/Header';
 import Navigation from './Navigation';
@@ -61,6 +59,26 @@ const habitModalsVisibilityReducer = (state, action) => {
       default:
          throw new Error('Should not get there!');
    }
+};
+
+const getHabitsForWeek = (habits, completionDates, week, type) => {
+   const weekHabits = habits.filter((habit) => habit.startDate <= week.end);
+   const newWeekHabits = weekHabits.map((habit) => {
+      return {
+         ...habit,
+         completedDates: [],
+      };
+   });
+   const weekCompletedTasks = completionDates.filter(
+      (date) => date.completionDate >= week.start && date.completionDate <= week.end,
+   );
+   weekCompletedTasks.forEach((date) => {
+      const habitIndex = newWeekHabits.findIndex((habit) => habit.id === date.habitId);
+      if (habitIndex !== -1) {
+         newWeekHabits[habitIndex].completedDates.push(date.completionDate);
+      }
+   });
+   return newWeekHabits;
 };
 
 class Data {
@@ -126,9 +144,14 @@ class Data {
 }
 
 const HabitMain = () => {
-   const data = useMemo(() => new Data(), []);
+   const loader = useMemo(() => new Data(), []);
 
    const [habits, setHabits] = useState([]);
+   const [completionDates, setCompletionDates] = useState([]);
+
+   const [shownHabits, setShownHabits] = useState([]);
+   const [previousWeekHabits, setPreviousWeekHabits] = useState([]);
+   const [fillPercent, setFillPercent] = useState({ previous: 0, current: 0 });
    const [week, weekDispatch] = useReducer(weekReducer, weekInitialState);
    const [habitModalsVisibility, habitModalsVisibilityDispatch] = useReducer(
       habitModalsVisibilityReducer,
@@ -137,43 +160,62 @@ const HabitMain = () => {
    const [refresh, setRefresh] = useState(false);
 
    useEffect(() => {
-      data
+      console.log('Shown habits: ', shownHabits);
+      console.log('Previous week habits: ', previousWeekHabits);
+   }, [shownHabits, previousWeekHabits]);
+
+   useEffect(() => {
+      loader
          .get()
          .then((data) => {
-            const newHabits = data.habits.map((habit) => {
-               const startDate = new Date(habit.start_date);
-               startDate.setHours(2);
-               return {
-                  id: habit.id,
-                  userId: habit.user_id,
-                  name: habit.name,
-                  frequency: habit.frequency,
-                  goal: habit.goal,
-                  startDate,
-               };
-            });
-            const newCompletionDates = data.completionDates.map((date) => {
-               const startDate = new Date(date.start_date);
-               startDate.setHours(2);
-               const completionDate = new Date(date.completion_date);
-               startDate.setHours(2);
-               return {
-                  id: date.id,
-                  userId: date.user_id,
-                  habitId: date.habit_id,
-                  name: date.name,
-                  frequency: date.frequency,
-                  goal: date.goal,
-                  startDate,
-                  completionDate,
-               };
-            });
-            return { habits: newHabits, completionDates: newCompletionDates };
+            if (data.habits && data.completionDates) {
+               const newHabits = data.habits.map((habit) => {
+                  const startDate = new Date(habit.start_date);
+                  startDate.setHours(2);
+                  return {
+                     id: habit.id,
+                     userId: habit.user_id,
+                     name: habit.name,
+                     frequency: habit.frequency,
+                     goal: habit.goal,
+                     startDate,
+                  };
+               });
+               const newCompletionDates = data.completionDates.map((date) => {
+                  const startDate = new Date(date.start_date);
+                  startDate.setHours(2);
+                  const completionDate = new Date(date.completion_date);
+                  startDate.setHours(2);
+                  return {
+                     id: date.id,
+                     userId: date.user_id,
+                     habitId: date.habit_id,
+                     name: date.name,
+                     frequency: date.frequency,
+                     goal: date.goal,
+                     startDate,
+                     completionDate,
+                  };
+               });
+               return { newHabits, newCompletionDates };
+            }
+            return {};
          })
-         .then((newHabits) => {
-            setHabits(newHabits);
+         .then(({ newHabits, newCompletionDates }) => {
+            if (newHabits && newCompletionDates) {
+               setHabits(newHabits);
+               setCompletionDates(newCompletionDates);
+            }
          });
-   }, [data, refresh]);
+   }, [loader, refresh]);
+
+   useEffect(() => {
+      const previousWeek = { start: new Date(week.start), end: new Date(week.end) };
+      previousWeek.start.setDate(previousWeek.start.getDate() - 7);
+      previousWeek.end.setDate(previousWeek.end.getDate() - 7);
+      setShownHabits(getHabitsForWeek(habits, completionDates, week, 'current'));
+      setPreviousWeekHabits(getHabitsForWeek(habits, completionDates, previousWeek, 'previous'));
+   }, [habits, completionDates, week]);
 
    const nextWeekHandler = () => {
       weekDispatch({ type: 'NEXT' });
@@ -192,7 +234,7 @@ const HabitMain = () => {
    };
 
    const addHabitHandler = (habit) => {
-      data.add(habit).then(() => setRefresh(!refresh));
+      loader.add(habit).then(() => setRefresh(!refresh));
       hideHabitModal();
    };
 
@@ -202,6 +244,7 @@ const HabitMain = () => {
          <Navigation week={week} onNext={nextWeekHandler} onBack={prevWeekHandler} onAddHabit={showHabitModal} />
          <HabitProgressBar fillPercent={20} prevFillPercent={20} />
          <Divider />
+
          {habitModalsVisibility.add && (
             <HabitModal startDate={week.start} action="add" onClose={hideHabitModal} onAddHabit={addHabitHandler} />
          )}
