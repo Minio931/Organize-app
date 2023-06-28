@@ -2,6 +2,7 @@ import { Suspense, useState } from "react";
 import { Await, defer, json, useLoaderData } from "react-router-dom";
 import Modal from "../UI/Modal";
 import Wrapper from "../UI/Wrapper";
+import BudgetForm from "./BudgetForm";
 import classes from "./BudgetMain.module.css";
 import CurrentBalance from "./CurrentBalance";
 import ExpensesPlanner from "./ExpensesPlanner";
@@ -10,6 +11,7 @@ import ManageBalanceForm from "./ManageBalanceForm";
 
 const BudgetMain = () => {
   const [isModalShown, setIsModalShown] = useState(false);
+  const [isFormShow, setIsFormShown] = useState(false);
   const [typeOfRequest, setTypeOfRequest] = useState();
   const { balance, financialGoals } = useLoaderData();
 
@@ -20,6 +22,14 @@ const BudgetMain = () => {
 
   const hideModalHandler = () => {
     setIsModalShown(false);
+  };
+
+  const showFormHandler = () => {
+    setIsFormShown(true);
+  };
+
+  const hideFormHandler = () => {
+    setIsFormShown(false);
   };
   return (
     <Wrapper className={classes.budget}>
@@ -41,6 +51,7 @@ const BudgetMain = () => {
             <FinancialGoals
               className={classes["financial-goals"]}
               financialGoals={financialGoals}
+              onClick={showFormHandler}
             />
           )}
         </Await>
@@ -50,6 +61,11 @@ const BudgetMain = () => {
       {isModalShown && (
         <Modal onClose={hideModalHandler}>
           <ManageBalanceForm type={typeOfRequest} onClose={hideModalHandler} />
+        </Modal>
+      )}
+      {isFormShow && (
+        <Modal onClose={hideFormHandler}>
+          <BudgetForm onClose={hideFormHandler} />
         </Modal>
       )}
     </Wrapper>

@@ -219,7 +219,7 @@ const getFinancialGoals = async (userId) => {
   if (result.rows.length === 0) {
     throw new NotFoundError("No financial goals found for this user");
   }
-  return result.rows[0];
+  return { financialGoals: result.rows };
 };
 
 const updateFinancialGoalStatus = async (financialGoal) => {
