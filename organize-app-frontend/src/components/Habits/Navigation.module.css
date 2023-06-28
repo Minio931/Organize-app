@@ -1,0 +1,28 @@
+.navigation {
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+}
+
+.navigation h2 {
+   flex-grow: 1;
+   font-size: 1.5rem;
+   color: var(--text-color);
+}
+
+.navigation h2 > strong {
+   font-weight: bold;
+}
+
+.button {
+   display: flex;
+   align-items: center;
+   border-radius: 100vw;
+   box-shadow: 4px 4px 10px -3px var(--black-85);
+}
+
+@media (max-width: 1024px) {
+   .navigation h2 {
+      font-size: 1.15rem;
+   }
+}

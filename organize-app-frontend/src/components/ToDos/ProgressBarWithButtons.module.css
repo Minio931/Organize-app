@@ -4,26 +4,9 @@
    gap: 30px;
 }
 
-.buttons {
-   display: flex;
-   gap: 15px;
-}
-
-.button {
-   border: none;
-   border-radius: 100%;
-   aspect-ratio: 1 / 1;
-   background-color: var(--white);
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   cursor: pointer;
-   transition: background-color 0.2s;
-   box-shadow: 4px 4px 10px -3px var(--black-85);
-}
-
-.button:hover {
-   background-color: color-mix(in srgb, var(--white), var(--black-100) 10%);
+.progressBar {
+   margin: 10px 0;
+   border: 2px solid var(--white);
 }
 
 .progressText {

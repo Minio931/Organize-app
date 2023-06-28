@@ -1,0 +1,31 @@
+.habitProgressBar {
+   display: flex;
+   flex-direction: column;
+   padding: 25px 0;
+   gap: 1.5rem;
+}
+
+.progressBar {
+   border: 2px solid var(--white);
+}
+
+.progressText {
+   font-weight: bold;
+}
+
+.information {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.comparison {
+   display: flex;
+   align-items: center;
+   gap: 0.75rem;
+}
+
+.comparison p > span {
+   color: var(--black-100);
+   font-weight: bold;
+}

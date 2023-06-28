@@ -1,19 +1,7 @@
 import classes from './ProgressBarWithButtons.module.css';
 
 import ProgressBar from '../UI/ProgressBar';
-
-import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
-
-const Button = (props) => {
-   const { direction, onClick } = props;
-   if (direction !== 'left' && direction !== 'right')
-      throw new Error('You need to specify direction! Eligible values: "left", "right".');
-   return (
-      <button className={classes.button} onClick={onClick}>
-         {direction === 'left' ? <IconArrowLeft /> : <IconArrowRight />}
-      </button>
-   );
-};
+import ArrowButtons from '../UI/ArrowButtons';
 
 const ProgressText = (props) => {
    const { percent } = props;
@@ -27,11 +15,8 @@ const ProgressBarWithButtons = (props) => {
 
    return (
       <div className={classes.progressBarWithButtons}>
-         <div className={classes.buttons}>
-            <Button direction="left" onClick={prevDayHandler} />
-            <Button direction="right" onClick={nextDayHandler} />
-         </div>
-         <ProgressBar fillPercent={fillPercent} />
+         <ArrowButtons onBack={prevDayHandler} onNext={nextDayHandler} />
+         <ProgressBar className={classes.progressBar} fillPercent={fillPercent} />
          <ProgressText percent={fillPercent} />
       </div>
    );
