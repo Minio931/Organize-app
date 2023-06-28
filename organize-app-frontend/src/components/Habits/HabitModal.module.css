@@ -20,22 +20,13 @@
    padding: 0.5em 0;
 }
 
-.habitModal form input,
-.habitModal form select,
-.habitModal form textarea {
+.habitModal form input {
    padding: 0.5em;
    border-radius: var(--border-radius);
    border: 1px solid var(--primary-color);
 }
 
-.habitModal form textarea {
-   height: 5em;
-   resize: none;
-}
-
-.habitModal form input:focus,
-.habitModal form select:focus,
-.habitModal form textarea:focus {
+.habitModal form input:focus {
    outline-color: var(--primary-color);
 }
 
@@ -43,6 +34,16 @@
    display: flex;
    gap: 0.5em;
    flex-direction: column;
+}
+
+.habitModal form > .form--section > .input--suffix {
+   display: flex;
+   align-items: center;
+   gap: 0.5em;
+}
+
+.habitModal form > .form--section > .input--suffix > input {
+   flex-grow: 1;
 }
 
 .habitModal form > .buttons {

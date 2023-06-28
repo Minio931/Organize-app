@@ -20,7 +20,7 @@ const Navigation = ({ week, onBack, onNext, onAddHabit }) => {
          <h2>
             Monday, <strong>{weekStart}</strong> - Sunday, <strong>{weekEnd}</strong>
          </h2>
-         <Button className={classes.button} onAddHabit={onAddHabit}>
+         <Button className={classes.button} onClick={onAddHabit}>
             <IconPlus />
             Add Habit
          </Button>

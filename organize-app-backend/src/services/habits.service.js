@@ -15,7 +15,7 @@ const createHabit = async (habit) => {
 const editHabit = async (habit) => {
    const { id, name, startDate, frequency, goal } = habit;
    const result = await db.query(
-      'UPDATE habits SET name = $1, start_date = $2, frequency = $3, goal = $4 WHERE id = $6 RETURNING *',
+      'UPDATE habits SET name = $1, start_date = $2, frequency = $3, goal = $4 WHERE id = $5 RETURNING *',
       [name, startDate, frequency, goal, id],
    );
    if (result.rows.length === 0) {

@@ -10,20 +10,21 @@ import Button from '../UI/Button';
 const HabitModal = (props) => {
    const [name, setName] = useState(props.name ? props.name : '');
    const [goal, setGoal] = useState(props.goal ? props.goal : '');
+
    const [startDate, setStartDate] = useState(props.startDate.toISOString().slice(0, 10));
    const [frequency, setFrequency] = useState(props.frequency ? props.frequency : 1);
 
    const submitHandler = (event) => {
       event.preventDefault();
       if (props.action === 'add') {
-         props.onAddTask({
+         props.onAddHabit({
             name,
             goal,
             startDate: new Date(startDate),
             frequency,
          });
       } else if (props.action === 'edit') {
-         props.onEditTask({
+         props.onEditHabit({
             id: props.id,
             name,
             goal,
@@ -97,16 +98,18 @@ const HabitModal = (props) => {
                </div>
                <div className={classes['form--section']}>
                   <label htmlFor="frequency">Frequency:</label>
-                  <input
-                     id="frequency"
-                     type="number"
-                     value={frequency}
-                     onChange={frequencyChangeHandler}
-                     required
-                     step={1}
-                     min={1}
-                  />
-                  <label htmlFor="frequency">days</label>
+                  <div className={classes['input--suffix']}>
+                     <input
+                        id="frequency"
+                        type="number"
+                        value={frequency}
+                        onChange={frequencyChangeHandler}
+                        required
+                        step={1}
+                        min={1}
+                     />
+                     <label htmlFor="frequency">days</label>
+                  </div>
                </div>
                <div className={classes.buttons}>
                   <Button type="button" onClick={props.onClose} color="secondary">
