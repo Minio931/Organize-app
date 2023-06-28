@@ -1,0 +1,22 @@
+.progressBar {
+   margin: 12px 0;
+   flex-grow: 1;
+   background-color: var(--white);
+   border-radius: 100vw;
+   box-shadow: 4px 4px 10px -3px var(--black-85);
+   overflow: hidden;
+}
+
+.progressBar--fill {
+   display: block;
+   width: 0%;
+   height: 100%;
+   border-radius: 100vw;
+   /* background-color: var(--primary-color); */
+   background: linear-gradient(
+      108deg,
+      rgba(138, 45, 187, 1) 11%,
+      rgba(226, 52, 226, 1) 52%,
+      rgba(255, 136, 244, 1) 99%
+   );
+}

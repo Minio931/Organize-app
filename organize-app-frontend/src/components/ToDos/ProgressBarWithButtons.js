@@ -1,5 +1,7 @@
 import classes from './ProgressBarWithButtons.module.css';
 
+import ProgressBar from '../UI/ProgressBar';
+
 import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
 
 const Button = (props) => {
@@ -10,17 +12,6 @@ const Button = (props) => {
       <button className={classes.button} onClick={onClick}>
          {direction === 'left' ? <IconArrowLeft /> : <IconArrowRight />}
       </button>
-   );
-};
-
-const ProgressBar = (props) => {
-   const { fillPercent } = props;
-   if (fillPercent === undefined || isNaN(fillPercent) || fillPercent < 0 || fillPercent > 100)
-      throw new Error('You need to specify fillPercent! Eligibles values: numbers from 0 to 100.');
-   return (
-      <div className={classes.progressBar}>
-         <span className={classes['progressBar-fill']} style={{ width: `${fillPercent}%` }}></span>
-      </div>
    );
 };
 

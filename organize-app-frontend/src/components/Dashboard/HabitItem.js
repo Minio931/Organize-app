@@ -1,4 +1,4 @@
-import ProggressBar from '../UI/ProggressBar';
+import ProgressBar from '../UI/ProgressBar';
 import classes from './HabitItem.module.css';
 import { useState } from 'react';
 const HabitItem = (props) => {
@@ -74,7 +74,7 @@ const HabitItem = (props) => {
          </div>
          <div className={classes['habit-proggress']}>
             <div className={classes['proggress']}>
-               <ProggressBar proggress={props.proggress} />
+               <ProgressBar className={classes.completion} fillPercent={props.proggress} />
                <span>{props.proggress}%</span>
             </div>
             <p>Monthly proggress</p>

@@ -1,191 +1,192 @@
 .todos-wrapper {
-  width: 20rem;
+   width: 20rem;
 
-  margin-top: 2rem;
-  margin-left: 6rem;
-  position: relative;
+   margin-top: 2rem;
+   margin-left: 6rem;
+   position: relative;
 }
 .todo-container {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  background-color: var(--white);
-  max-height: 55rem;
-  min-height: 40rem;
-  border-radius: 1rem;
-  border-top-right-radius: 0;
-  box-shadow: 5px 5px 2px 2px var(--black-25);
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   background-color: var(--white);
+   max-height: 55rem;
+   min-height: 40rem;
+   border-radius: 1rem;
+   border-top-right-radius: 0;
+   box-shadow: 5px 5px 2px 2px var(--black-25);
 }
 .todos-header {
-  margin-bottom: 1rem;
-  font-size: var(--header-2-font-size);
+   margin-bottom: 1rem;
+   font-size: var(--header-2-font-size);
 }
 
 .todo-item {
-  display: flex;
-  justify-content: flex-start;
-  height: auto;
-  align-items: center;
-  width: 100%;
-  margin-top: 0.6rem;
+   display: flex;
+   justify-content: flex-start;
+   height: auto;
+   align-items: center;
+   width: 100%;
+   margin-top: 0.6rem;
 }
 .todo-item p {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--black-100);
+   font-size: 1rem;
+   font-weight: 500;
+   color: var(--black-100);
 }
 
 .todo-item input {
-  display: none;
+   display: none;
 }
 
 .todo-item label {
-  display: block;
-  min-width: 1.8rem;
-  height: 1.8rem;
-  border-radius: 100%;
-  border: 1px solid var(--primary-color);
-  cursor: pointer;
-  margin-right: 0.5rem;
-  margin-top: 0.5rem;
-  position: relative;
+   display: block;
+   min-width: 1.8rem;
+   height: 1.8rem;
+   border-radius: 100%;
+   border: 1px solid var(--primary-color);
+   cursor: pointer;
+   margin-right: 0.5rem;
+   margin-top: 0.5rem;
+   position: relative;
 }
 
 .todo-item label::after {
-  content: "";
-  position: absolute;
-  width: 0.85rem;
-  height: 0.4rem;
-  border: 3px solid var(--primary-color);
-  border-top: none;
-  border-right: none;
-  top: 3px;
-  left: 2px;
-  transform: rotate(-45deg);
-  margin: 0.3rem;
-  visibility: hidden;
+   content: '';
+   position: absolute;
+   width: 0.85rem;
+   height: 0.4rem;
+   border: 3px solid var(--primary-color);
+   border-top: none;
+   border-right: none;
+   top: 3px;
+   left: 2px;
+   transform: rotate(-45deg);
+   margin: 0.3rem;
+   visibility: hidden;
 }
 .todo-item input:checked + label::after {
-  visibility: visible;
+   visibility: visible;
 }
 
 .todo-divider {
-  width: 100%;
-  height: 2px;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
-  position: relative;
+   width: 100%;
+   height: 2px;
+   margin-top: 2rem;
+   margin-bottom: 2rem;
+   display: flex;
+   justify-content: center;
+   position: relative;
 }
 .todo-divider-line {
-  width: 90%;
-  height: 100%;
-  background-color: var(--primary-color);
-  cursor: row-resize;
+   width: 90%;
+   height: 100%;
+   background-color: var(--primary-color);
+   cursor: row-resize;
 }
 
 .resize {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
 
-  padding: 0.5rem;
-  background-color: var(--white);
-  border-radius: 100%;
+   padding: 0.5rem;
+   background-color: var(--white);
+   border-radius: 100%;
 
-  box-shadow: 0px 0px 5px 2px var(--black-25);
-  cursor: pointer;
+   box-shadow: 0px 0px 5px 2px var(--black-25);
+   cursor: pointer;
 }
 
 .not-done-container {
-  padding: 1rem;
+   padding: 1rem;
 
-  height: 20rem;
-  overflow: hidden;
-  overflow-y: scroll;
+   height: 20rem;
+   overflow: hidden;
+   overflow-y: scroll;
 }
 
 .done-container {
-  padding: 1rem;
+   padding: 1rem;
 
-  height: 20rem;
-  overflow: hidden;
-  overflow-y: scroll;
+   height: 20rem;
+   overflow: hidden;
+   overflow-y: scroll;
 }
 
 .not-done-container::-webkit-scrollbar {
-  width: 0.3rem;
-  border-radius: 0.5rem;
+   width: 0.3rem;
+   border-radius: 0.5rem;
 }
 .not-done-container::-webkit-scrollbar-track {
-  background-color: var(--white);
-  border-radius: 1rem;
+   background-color: var(--white);
+   border-radius: 1rem;
 }
 .not-done-container::-webkit-scrollbar-thumb {
-  background-color: var(--primary-color);
-  border-radius: 0.5rem;
-  margin: 0.2rem;
+   background-color: var(--primary-color);
+   border-radius: 0.5rem;
+   margin: 0.2rem;
 }
 
 .done-container::-webkit-scrollbar {
-  width: 0.3rem;
-  border-radius: 0.5rem;
+   width: 0.3rem;
+   border-radius: 0.5rem;
 }
 .done-container::-webkit-scrollbar-track {
-  background-color: var(--white);
-  border-radius: 1rem;
+   background-color: var(--white);
+   border-radius: 1rem;
 }
 .done-container::-webkit-scrollbar-thumb {
-  background-color: var(--primary-color);
-  border-radius: 0.5rem;
-  margin: 0.2rem;
+   background-color: var(--primary-color);
+   border-radius: 0.5rem;
+   margin: 0.2rem;
 }
 
 .proggress {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+   width: 100%;
+   height: 5rem;
+   padding: 0.5rem;
+   display: flex;
+   justify-content: center;
+   flex-direction: column;
+   border-bottom-left-radius: 1rem;
+   border-bottom-right-radius: 1rem;
+   align-items: center;
+   background-color: #8a2dbb;
+   box-sizing: border-box;
+}
 
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
-  align-items: center;
-  height: 5rem;
-  background-color: #8a2dbb;
-  gap: 0;
-}
-.proggress span {
-  color: var(--white);
-  margin-left: 0.3rem;
-}
 .proggress p {
-  color: var(--white);
-  margin-top: 0.5rem;
-  font-style: italic;
+   color: var(--white);
+   margin-top: 0.5rem;
+   font-style: italic;
 }
 
 .proggress-bar-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+   width: 100%;
+   display: flex;
+   align-items: center;
 }
+
+.proggress-bar-wrapper > span {
+   color: var(--white);
+   margin-left: 0.3rem;
+}
+
 .completion {
-  border: 2px solid var(--white);
-  width: 80%;
-  height: 0.85rem;
+   border: 2px solid var(--white);
+   height: 0.85rem;
 }
 
 .empty-todo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 100%;
-  gap: 1rem;
-  font-size: var(--header-3-font-size);
-  font-style: italic;
-  color: var(--black-50);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   flex-direction: column;
+   height: 100%;
+   gap: 1rem;
+   font-size: var(--header-3-font-size);
+   font-style: italic;
+   color: var(--black-50);
 }
