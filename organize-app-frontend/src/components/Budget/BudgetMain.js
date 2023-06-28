@@ -5,15 +5,15 @@ import Wrapper from "../UI/Wrapper";
 import BudgetForm from "./BudgetForm";
 import classes from "./BudgetMain.module.css";
 import CurrentBalance from "./CurrentBalance";
+import ExpensesChart from "./ExpensesChart";
 import ExpensesPlanner from "./ExpensesPlanner";
 import FinancialGoals from "./FinancialGoals";
-import ManageBalanceForm from "./ManageBalanceForm";
+import TransactionHistory from "./TransactionHistory";
 
 const BudgetMain = () => {
-  const [isModalShown, setIsModalShown] = useState(false);
   const [isFormShow, setIsFormShown] = useState(false);
 
-  const { balance, financialGoals } = useLoaderData();
+  const { balance, financialGoals, categories, transactions } = useLoaderData();
   const [formConfig, setFormConfig] = useState({
     type: "",
     title: "",
@@ -55,10 +55,42 @@ const BudgetMain = () => {
         </Await>
       </Suspense>
 
-      <ExpensesPlanner className={classes["expenses-planner"]} />
+      <ExpensesChart a="a" className={classes["expesnse-chart"]} />
+      <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
+        <Await resolve={transactions}>
+          {(transactions) => (
+            <TransactionHistory
+              className={classes["transaction-history"]}
+              transactions={transactions}
+              onClick={showFormHandler}
+            />
+          )}
+        </Await>
+      </Suspense>
+
+      <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
+        <Await resolve={categories}>
+          {(categories) => (
+            <ExpensesPlanner
+              className={classes["expenses-planner"]}
+              onClick={showFormHandler}
+              categories={categories}
+            />
+          )}
+        </Await>
+      </Suspense>
+
       {isFormShow && (
         <Modal onClose={hideFormHandler}>
-          <BudgetForm onClose={hideFormHandler} config={formConfig} />
+          <Await resolve={categories}>
+            {(categories) => (
+              <BudgetForm
+                onClose={hideFormHandler}
+                config={formConfig}
+                categories={categories}
+              />
+            )}
+          </Await>
         </Modal>
       )}
     </Wrapper>
@@ -98,10 +130,50 @@ export async function loadFinancialGoalsData() {
   return responseData;
 }
 
+export async function loadCategories() {
+  const userId = JSON.parse(localStorage.getItem("user")).id;
+
+  const response = await fetch(
+    "http://localhost:3001/budget/category/" + userId
+  );
+
+  if (response.status === 404) {
+    return json({ message: "No categories found", status: 404 });
+  }
+  if (!response.ok) {
+    return json({ message: "Something went wrong", status: 500 });
+  }
+
+  const responseData = await response.json();
+
+  return responseData;
+}
+
+export async function loadTransactions() {
+  const userId = JSON.parse(localStorage.getItem("user")).id;
+
+  const response = await fetch(
+    "http://localhost:3001/budget/transaction/" + userId
+  );
+
+  if (response.status === 404) {
+    return json({ message: "No transactions found", status: 404 });
+  }
+  if (!response.ok) {
+    return json({ message: "Something went wrong", status: 500 });
+  }
+
+  const responseData = await response.json();
+
+  return responseData;
+}
+
 export function loader() {
   return defer({
     balance: loadBudgetData(),
     financialGoals: loadFinancialGoalsData(),
+    categories: loadCategories(),
+    transactions: loadTransactions(),
   });
 }
 

@@ -1,10 +1,13 @@
-import { Form, json, redirect, useActionData } from "react-router-dom";
+import { Form, json, useLoaderData } from "react-router-dom";
 import classes from "./BudgetForm.module.css";
 import Button from "../UI/Button";
+import { useNavigate } from "react-router-dom";
+import { IconTrash } from "@tabler/icons-react";
 
-const BudgetForm = ({ config, onClose }) => {
-  const data = useActionData();
-  const formPayload = config.payload;
+const BudgetForm = ({ config, onClose, categories }) => {
+  let categoriestList = categories.budgetCategories;
+
+  let formPayload = config.payload;
 
   let financialGoalForm = (
     <>
@@ -79,6 +82,167 @@ const BudgetForm = ({ config, onClose }) => {
     </>
   );
 
+  let categoryForm = (
+    <>
+      <input type="hidden" name="type" value={config.type} />
+      <input
+        type="hidden"
+        name="id"
+        defaultValue={formPayload ? formPayload.id : ""}
+      />
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="name">
+          Category Name
+        </label>
+        <input
+          className={classes["form-input"]}
+          type="text"
+          id="name"
+          name="name"
+          defaultValue={formPayload ? formPayload.name : ""}
+        />
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="actualStatus">
+          Actual Status
+        </label>
+        <input
+          type="number"
+          className={classes["form-input"]}
+          id="actualStatus"
+          name="actualStatus"
+          defaultValue={formPayload ? formPayload.actualStatus : 0}
+        />
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="planned">
+          Planned
+        </label>
+        <input
+          type="number"
+          className={classes["form-input"]}
+          id="planned"
+          name="planned"
+          defaultValue={formPayload ? formPayload.planned : 0}
+        />
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="planned">
+          Choose Icon Type:
+        </label>
+        <select name="icon" className={classes["select"]}>
+          <option value="IconDeviceGamePad">Entertainment</option>
+          <option value="IconShoppingCart">Shopping</option>
+          <option value="IconActivity">Health &amp; Fitness</option>
+          <option value="IconHome2">Home</option>
+          <option value="IconCash">Money</option>
+          <option value="IconBusStop">Transport</option>
+          <option value="IconGift">Gifts</option>
+          <option value="IconPizza">Food</option>
+        </select>
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="color">
+          Choose Color:
+        </label>
+        <input type="color" name="color" className={classes["color"]} />
+      </div>
+    </>
+  );
+
+  formPayload = config.transaction;
+  console.log(config);
+
+  const navigate = useNavigate();
+  const transactionDeleteHandler = () => {
+    fetch(
+      `http://localhost:3001/budget//transaction/delete/${formPayload.id}`,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((response) => {
+        if (response.ok) {
+          console.log("Transaction deleted");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    navigate(0);
+  };
+
+  let transactionForm = (
+    <>
+      {config.request === "PUT" && (
+        <Button
+          className={classes["delete-icon"]}
+          onClick={transactionDeleteHandler}
+        >
+          <IconTrash />
+        </Button>
+      )}
+
+      <input type="hidden" name="type" value={config.type} />
+      <input
+        type="hidden"
+        name="id"
+        defaultValue={formPayload ? formPayload.id : ""}
+      />
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="name">
+          Transaction Name
+        </label>
+        <input
+          className={classes["form-input"]}
+          id="name"
+          name="name"
+          defaultValue={formPayload ? formPayload.name : ""}
+        />
+      </div>
+      <select name="category" className={classes["select"]}>
+        {categoriestList.map((category) => (
+          <option key={category.id} value={category.id}>
+            {category.name}
+          </option>
+        ))}
+      </select>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="name">
+          Status
+        </label>
+        <select name="status" className={classes["select"]}>
+          <option value="incoming">Incoming</option>
+          <option value="completed">Completed</option>
+        </select>
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="amount">
+          Amount
+        </label>
+        <input
+          className={classes["form-input"]}
+          id="amount"
+          name="amount"
+          defaultValue={formPayload ? formPayload.amount : 0}
+        />
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="date">
+          Date
+        </label>
+        <input
+          type="date"
+          className={classes["form-input"]}
+          id="date"
+          name="date"
+          defaultValue={formPayload ? new Date(formPayload.date) : ""}
+        />
+      </div>
+    </>
+  );
+
   return (
     <Form method={config.request}>
       <div className={classes["form-wrapper"]}>
@@ -90,6 +254,8 @@ const BudgetForm = ({ config, onClose }) => {
           {config.type === "financialGoal" && financialGoalForm}
           {(config.type === "balance" || config.type === "income") &&
             balanceForm}
+          {config.type === "category" && categoryForm}
+          {config.type === "transaction" && transactionForm}
           <div className={classes["form-action"]}>
             <Button type="submit">Submit</Button>
             <Button
@@ -191,6 +357,97 @@ export async function action({ request, params }) {
 
     return result;
   }
+
+  if (type === "category" && request.method === "POST") {
+    const category = {
+      name: data.get("name"),
+      actualStatus: data.get("actualStatus"),
+      planned: data.get("planned"),
+      icon: data.get("icon"),
+      color: data.get("color"),
+      userId,
+    };
+
+    const response = await fetch(
+      "http://localhost:3001/budget/category/create",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(category),
+      }
+    );
+
+    if (!response.ok) {
+      return json({ message: "Something went wrong", status: 500 });
+    }
+
+    const result = await response.json();
+
+    return result;
+  }
+
+  if (type === "category" && request.method === "PUT") {
+    const category = {
+      categoryId: parseInt(data.get("id")),
+      name: data.get("name"),
+      actualStatus: data.get("actualStatus"),
+      planned: data.get("planned"),
+      icon: data.get("icon"),
+      color: data.get("color"),
+      userId,
+    };
+
+    const response = await fetch("http://localhost:3001/budget/category/edit", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(category),
+    });
+
+    if (!response.ok) {
+      return json({ message: "Something went wrong", status: 500 });
+    }
+
+    const result = await response.json();
+
+    return result;
+  }
+
+  if (type === "transaction" && request.method === "POST") {
+    const transaction = {
+      name: data.get("name"),
+      value: data.get("amount"),
+      transactionDate: data.get("date"),
+      status: data.get("status"),
+      budgetCategoryId: parseInt(data.get("category")),
+      userId,
+    };
+
+    console.log(transaction);
+    const response = await fetch(
+      "http://localhost:3001/budget/transaction/create",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(transaction),
+      }
+    );
+
+    if (!response.ok) {
+      return json({ message: "Something went wrong", status: 500 });
+    }
+
+    const result = await response.json();
+
+    return result;
+  }
+
+  return json({ message: "Something went wrong", status: 500 });
 }
 
 export default BudgetForm;
