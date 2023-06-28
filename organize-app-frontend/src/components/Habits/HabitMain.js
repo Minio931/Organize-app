@@ -81,6 +81,27 @@ const getHabitsForWeek = (habits, completionDates, week, type) => {
    return newWeekHabits;
 };
 
+const getFillPercent = (habits, week, type) => {
+   const totalHabits = habits.reduce((acc, habit) => {
+      if (habit.startDate <= week.start) {
+         return acc + 7;
+      } else {
+         const difference = Math.round((week.end - habit.startDate) / (1000 * 60 * 60 * 24));
+         return acc + difference;
+      }
+   }, 0);
+   console.log(`totalHabits(${type}): ${totalHabits}`);
+   const totalCompleted = habits.reduce((acc, habit) => {
+      return acc + habit.completedDates.length;
+   }, 0);
+   console.log(`totalCompleted(${type}): ${totalCompleted}`);
+   if (totalHabits === 0) {
+      return 0;
+   }
+   const fillPercent = Math.round((totalCompleted / totalHabits) * 100);
+   return fillPercent;
+};
+
 class Data {
    constructor() {
       this.userId = JSON.parse(localStorage.getItem('user')).id;
@@ -217,6 +238,17 @@ const HabitMain = () => {
       setPreviousWeekHabits(getHabitsForWeek(habits, completionDates, previousWeek, 'previous'));
    }, [habits, completionDates, week]);
 
+   useEffect(() => {
+      const previousWeek = { start: new Date(week.start), end: new Date(week.end) };
+      previousWeek.start.setDate(previousWeek.start.getDate() - 7);
+      previousWeek.end.setDate(previousWeek.end.getDate() - 7);
+      const currentFillPercent = getFillPercent(shownHabits, week, 'current');
+      const previousFillPercent = getFillPercent(previousWeekHabits, previousWeek, 'previous');
+      console.log('Current fill percent: ', currentFillPercent);
+      console.log('Previous fill percent: ', previousFillPercent);
+      setFillPercent({ previous: previousFillPercent, current: currentFillPercent });
+   }, [shownHabits, previousWeekHabits, week]);
+
    const nextWeekHandler = () => {
       weekDispatch({ type: 'NEXT' });
    };
@@ -242,7 +274,7 @@ const HabitMain = () => {
       <Wrapper>
          <Header>Habit tracker</Header>
          <Navigation week={week} onNext={nextWeekHandler} onBack={prevWeekHandler} onAddHabit={showHabitModal} />
-         <HabitProgressBar fillPercent={20} prevFillPercent={20} />
+         <HabitProgressBar fillPercent={fillPercent.current} prevFillPercent={fillPercent.previous} />
          <Divider />
 
          {habitModalsVisibility.add && (
