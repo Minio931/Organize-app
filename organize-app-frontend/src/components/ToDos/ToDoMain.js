@@ -199,6 +199,7 @@ const ToDoMain = () => {
 
    const deleteTaskHandler = (taskId) => {
       data.delete(taskId).then(() => setRefresh(!refresh));
+      setEditedTask(null);
       hideTaskModalHandler();
    };
 

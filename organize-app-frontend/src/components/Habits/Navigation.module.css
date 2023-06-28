@@ -5,13 +5,24 @@
 }
 
 .navigation h2 {
-   flex-grow: 1;
+   padding: 0.5rem 1rem;
    font-size: 1.5rem;
+   border-radius: var(--border-radius);
    color: var(--text-color);
+   cursor: pointer;
+   transition: background-color 0.2s;
+}
+
+.navigation h2:hover {
+   background-color: color-mix(in srgb, var(--white), transparent 70%);
 }
 
 .navigation h2 > strong {
    font-weight: bold;
+}
+
+.spacer {
+   flex-grow: 1;
 }
 
 .button {

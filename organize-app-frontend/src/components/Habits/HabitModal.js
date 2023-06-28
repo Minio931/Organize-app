@@ -35,7 +35,7 @@ const HabitModal = (props) => {
    };
 
    const deleteHandler = () => {
-      props.onDeleteTask(props.id);
+      props.onDeleteHabit(props.id);
    };
 
    const nameChangeHandler = (event) => {
@@ -58,7 +58,7 @@ const HabitModal = (props) => {
    const headerDescription =
       props.action === 'add'
          ? 'The new habit will be added directly to the habit tracker starting on the chosen day.'
-         : 'The task will be edited in the habit tracker.';
+         : 'The habit will be edited in the habit tracker.';
 
    return (
       <Modal onClose={props.onClose}>

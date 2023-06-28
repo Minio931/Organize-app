@@ -6,6 +6,7 @@ import Navigation from './Navigation';
 import HabitProgressBar from './HabitProgressBar';
 import Divider from '../UI/Divider';
 import HabitModal from './HabitModal';
+import HabitsList from './HabitsList';
 
 const getWeek = (date) => {
    const today = new Date(date);
@@ -17,8 +18,7 @@ const getWeek = (date) => {
 };
 
 const weekInitialState = {
-   start: getWeek(new Date()).start,
-   end: getWeek(new Date()).end,
+   ...getWeek(new Date()),
 };
 
 const weekReducer = (state, action) => {
@@ -35,6 +35,10 @@ const weekReducer = (state, action) => {
             start: new Date(state.start.getFullYear(), state.start.getMonth(), state.start.getDate() + 7, 2),
             end: new Date(state.end.getFullYear(), state.end.getMonth(), state.end.getDate() + 7, 2),
          };
+         return nextWeek;
+      }
+      case 'CURRENT': {
+         const nextWeek = getWeek(new Date());
          return nextWeek;
       }
       default:
@@ -90,11 +94,9 @@ const getFillPercent = (habits, week, type) => {
          return acc + difference;
       }
    }, 0);
-   console.log(`totalHabits(${type}): ${totalHabits}`);
    const totalCompleted = habits.reduce((acc, habit) => {
       return acc + habit.completedDates.length;
    }, 0);
-   console.log(`totalCompleted(${type}): ${totalCompleted}`);
    if (totalHabits === 0) {
       return 0;
    }
@@ -131,33 +133,45 @@ class Data {
       return data;
    }
 
-   async edit(task) {
+   async edit(habit) {
       const response = await fetch(`${this.url}/edit`, {
          method: 'PUT',
          headers: {
             'Content-Type': 'application/json',
          },
-         body: JSON.stringify(task),
+         body: JSON.stringify(habit),
       });
       const data = await response.json();
       return data;
    }
 
-   async update(task) {
-      const response = await fetch(`${this.url}/update`, {
-         method: 'PATCH',
+   async delete(habitId) {
+      const response = await fetch(`${this.url}/delete/${habitId}`, {
+         method: 'DELETE',
+      });
+      const data = await response.json();
+      return data;
+   }
+
+   async complete(habit) {
+      const response = await fetch(`${this.url}/complete`, {
+         method: 'POST',
          headers: {
             'Content-Type': 'application/json',
          },
-         body: JSON.stringify(task),
+         body: JSON.stringify(habit),
       });
       const data = await response.json();
       return data;
    }
 
-   async delete(taskId) {
-      const response = await fetch(`${this.url}/delete/${taskId}`, {
+   async uncomplete(habit) {
+      const response = await fetch(`${this.url}/deleteComplete`, {
          method: 'DELETE',
+         headers: {
+            'Content-Type': 'application/json',
+         },
+         body: JSON.stringify(habit),
       });
       const data = await response.json();
       return data;
@@ -178,6 +192,7 @@ const HabitMain = () => {
       habitModalsVisibilityReducer,
       habitModalsVisibilityInitialState,
    );
+   const [editedHabit, setEditedHabit] = useState(null);
    const [refresh, setRefresh] = useState(false);
 
    useEffect(() => {
@@ -244,8 +259,6 @@ const HabitMain = () => {
       previousWeek.end.setDate(previousWeek.end.getDate() - 7);
       const currentFillPercent = getFillPercent(shownHabits, week, 'current');
       const previousFillPercent = getFillPercent(previousWeekHabits, previousWeek, 'previous');
-      console.log('Current fill percent: ', currentFillPercent);
-      console.log('Previous fill percent: ', previousFillPercent);
       setFillPercent({ previous: previousFillPercent, current: currentFillPercent });
    }, [shownHabits, previousWeekHabits, week]);
 
@@ -257,28 +270,78 @@ const HabitMain = () => {
       weekDispatch({ type: 'PREV' });
    };
 
-   const showHabitModal = () => {
+   const currentWeekHandler = () => {
+      weekDispatch({ type: 'CURRENT' });
+   };
+
+   const showHabitAddModal = () => {
       habitModalsVisibilityDispatch({ type: 'ADD' });
    };
 
-   const hideHabitModal = () => {
+   const showHabitEditModal = (habit) => {
+      setEditedHabit(habit);
+      habitModalsVisibilityDispatch({ type: 'EDIT' });
+   };
+
+   const hideHabitModals = () => {
       habitModalsVisibilityDispatch({ type: 'CLOSE' });
    };
 
    const addHabitHandler = (habit) => {
       loader.add(habit).then(() => setRefresh(!refresh));
-      hideHabitModal();
+      hideHabitModals();
+   };
+
+   const editHabitHandler = (habit) => {
+      console.log('Edited habit: ', habit);
+      loader.edit(habit).then(() => setRefresh(!refresh));
+      setEditedHabit(null);
+      hideHabitModals();
+   };
+
+   const deleteHabitHandler = (habitId) => {
+      loader.delete(habitId).then(() => setRefresh(!refresh));
+      setEditedHabit(null);
+      hideHabitModals();
+   };
+
+   const doneHabitHandler = (habitId, completionDate, isCompleted) => {
+      const habit = { habitId, completionDate };
+      if (isCompleted) {
+         loader.complete(habit).then(() => setRefresh(!refresh));
+      } else {
+         loader.uncomplete(habit).then(() => setRefresh(!refresh));
+      }
    };
 
    return (
       <Wrapper>
          <Header>Habit tracker</Header>
-         <Navigation week={week} onNext={nextWeekHandler} onBack={prevWeekHandler} onAddHabit={showHabitModal} />
+         <Navigation
+            week={week}
+            onNext={nextWeekHandler}
+            onBack={prevWeekHandler}
+            onAddHabit={showHabitAddModal}
+            onCurrentWeek={currentWeekHandler}
+         />
          <HabitProgressBar fillPercent={fillPercent.current} prevFillPercent={fillPercent.previous} />
          <Divider />
-
+         <HabitsList habits={shownHabits} week={week} onDoneHabit={doneHabitHandler} onEditHabit={showHabitEditModal} />
          {habitModalsVisibility.add && (
-            <HabitModal startDate={week.start} action="add" onClose={hideHabitModal} onAddHabit={addHabitHandler} />
+            <HabitModal startDate={week.start} action="add" onClose={hideHabitModals} onAddHabit={addHabitHandler} />
+         )}
+         {habitModalsVisibility.edit && (
+            <HabitModal
+               id={editedHabit.id}
+               name={editedHabit.name}
+               goal={editedHabit.goal}
+               startDate={editedHabit.startDate}
+               frequency={editedHabit.frequency}
+               action="edit"
+               onClose={hideHabitModals}
+               onEditHabit={editHabitHandler}
+               onDeleteHabit={deleteHabitHandler}
+            />
          )}
       </Wrapper>
    );

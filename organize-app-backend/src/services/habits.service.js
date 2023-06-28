@@ -54,19 +54,16 @@ const deleteHabit = async (habitId) => {
    return { message: `Habit has been deleted: ${result.rows[0]}` };
 };
 
-const completeHabit = async ({ habitId }) => {
-   const date = new Date();
-   const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-   const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-   const todayDate = `${date.getFullYear()}-${month}-${day}`;
-   console.log(habitId);
+const completeHabit = async (habit) => {
+   const { habitId, completionDate } = habit;
    const result = await db.query(
       'INSERT INTO "habitsCompletionDates" (habit_id, completion_date) VALUES ($1, $2) RETURNING *',
-      [habitId, todayDate],
+      [habitId, completionDate],
    );
    return result.rows[0];
 };
-const deleteCompletionDate = async ({ habitId, completionDate }) => {
+const deleteCompletionDate = async (habit) => {)
+   const { habitId, completionDate } = habit;
    const result = await db.query(
       'DELETE FROM "habitsCompletionDates" WHERE habit_id = $1 AND completion_date = $2 RETURNING *',
       [habitId, completionDate],

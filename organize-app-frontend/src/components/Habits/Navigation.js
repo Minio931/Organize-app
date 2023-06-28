@@ -10,16 +10,17 @@ const getGBDate = (date) => {
    return localDateString;
 };
 
-const Navigation = ({ week, onBack, onNext, onAddHabit }) => {
+const Navigation = ({ week, onBack, onNext, onAddHabit, onCurrentWeek }) => {
    const weekStart = getGBDate(week.start);
    const weekEnd = getGBDate(week.end);
 
    return (
       <div className={classes.navigation}>
          <ArrowButtons onNext={onNext} onBack={onBack} />
-         <h2>
+         <h2 onClick={onCurrentWeek}>
             Monday, <strong>{weekStart}</strong> - Sunday, <strong>{weekEnd}</strong>
          </h2>
+         <div className={classes.spacer}></div>
          <Button className={classes.button} onClick={onAddHabit}>
             <IconPlus />
             Add Habit
