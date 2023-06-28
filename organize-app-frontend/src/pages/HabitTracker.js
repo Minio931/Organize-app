@@ -1,14 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
+import HabitMain from '../components/Habits/HabitMain';
 
 const HabitTrackerPage = () => {
-  const [habits, setHabits] = useState(false);
-
-  return (
-    <div>
-      <h1>Habit Tracker</h1>
-      {habits ? habits : "There are no habits"}
-    </div>
-  );
+   return <HabitMain />;
 };
 
 export default HabitTrackerPage;
