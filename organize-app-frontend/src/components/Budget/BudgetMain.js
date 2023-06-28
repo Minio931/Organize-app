@@ -12,25 +12,23 @@ import ManageBalanceForm from "./ManageBalanceForm";
 const BudgetMain = () => {
   const [isModalShown, setIsModalShown] = useState(false);
   const [isFormShow, setIsFormShown] = useState(false);
-  const [typeOfRequest, setTypeOfRequest] = useState();
+
   const { balance, financialGoals } = useLoaderData();
-
-  const showModalHandler = (type) => {
-    setIsModalShown(true);
-    setTypeOfRequest(type);
-  };
-
-  const hideModalHandler = () => {
-    setIsModalShown(false);
-  };
-
-  const showFormHandler = () => {
-    setIsFormShown(true);
-  };
+  const [formConfig, setFormConfig] = useState({
+    type: "",
+    title: "",
+    request: "",
+  });
 
   const hideFormHandler = () => {
     setIsFormShown(false);
   };
+
+  const showFormHandler = (formConfig) => {
+    setIsFormShown(true);
+    setFormConfig(formConfig);
+  };
+
   return (
     <Wrapper className={classes.budget}>
       <h1 className={classes.header}>Budget</h1>
@@ -38,7 +36,7 @@ const BudgetMain = () => {
         <Await resolve={balance}>
           {(balance) => (
             <CurrentBalance
-              onClick={showModalHandler}
+              onClick={showFormHandler}
               balance={balance}
               className={classes["current-balance"]}
             />
@@ -58,14 +56,9 @@ const BudgetMain = () => {
       </Suspense>
 
       <ExpensesPlanner className={classes["expenses-planner"]} />
-      {isModalShown && (
-        <Modal onClose={hideModalHandler}>
-          <ManageBalanceForm type={typeOfRequest} onClose={hideModalHandler} />
-        </Modal>
-      )}
       {isFormShow && (
         <Modal onClose={hideFormHandler}>
-          <BudgetForm onClose={hideFormHandler} />
+          <BudgetForm onClose={hideFormHandler} config={formConfig} />
         </Modal>
       )}
     </Wrapper>

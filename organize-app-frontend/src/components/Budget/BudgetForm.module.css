@@ -73,3 +73,7 @@
 .close-button {
   background-color: var(--black-50);
 }
+
+.success-message {
+  color: rgb(1, 151, 1);
+}

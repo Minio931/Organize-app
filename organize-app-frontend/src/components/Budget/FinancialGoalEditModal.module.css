@@ -1,0 +1,46 @@
+.financial-goal-edit-modal-header {
+  font-size: var(--header-3-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.financial-goal-edit-modal-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.financial-goal-edit-modal-divider {
+  color: var(--pirmary-25);
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.financial-goal-edit-modal-item-action {
+  display: flex;
+  flex-direction: row;
+
+  align-items: center;
+
+  font-weight: bold;
+
+  gap: 0.5rem;
+}
+.delete-button {
+  background-color: #ff4757;
+}
+.delete-button:hover {
+  background-color: color-mix(in srgb, #ff4757, transparent 20%);
+}
+.edit-button-icon {
+  width: 3rem;
+  height: 2.2rem;
+  color: var(--white);
+  cursor: pointer;
+  border: none;
+  border-radius: 0.2rem;
+  background-color: var(--primary-200);
+}

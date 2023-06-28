@@ -2,6 +2,8 @@ import classes from "./FinancialGoals.module.css";
 import { IconDotsVertical } from "@tabler/icons-react";
 import ProgressBar from "../UI/ProgressBar";
 import { useState } from "react";
+import Modal from "../UI/Modal";
+import FinancialGoalEditModal from "./FinancialGoalEditModal";
 
 export const FinancialGoalItem = ({ title, current, goal }) => {
   const progress =
@@ -24,13 +26,17 @@ export const FinancialGoalItem = ({ title, current, goal }) => {
   );
 };
 
-export const FinancialMenuOptions = ({ onClick }) => {
+export const FinancialMenuOptions = ({ onClick, showEdit }) => {
   const addClickHandler = () => {
-    onClick();
+    onClick({
+      type: "financialGoal",
+      title: "Add Financial Goal",
+      request: "POST",
+    });
   };
 
   const editClickHandler = () => {
-    onClick();
+    showEdit();
   };
   return (
     <div className={classes["financial-menu-options-wrapper"]}>
@@ -53,9 +59,20 @@ export const FinancialMenuOptions = ({ onClick }) => {
 
 const FinancialGoals = ({ className, financialGoals, onClick }) => {
   const [isMenuShown, setIsMenuShown] = useState(false);
+  const [isEditShown, setIsEditShown] = useState(false);
   const financialGoalsClasses = `${classes["financial-goals-wrapper"]} ${className}`;
 
-  const financialGoalsList = financialGoals.financialGoals;
+  const showEditHandler = () => {
+    setIsEditShown(true);
+  };
+
+  const hideEditHandler = () => {
+    setIsEditShown(false);
+  };
+
+  const financialGoalsList = financialGoals.financialGoals
+    ? financialGoals.financialGoals
+    : [];
 
   const menuClickHandler = () => {
     setIsMenuShown((prevState) => !prevState);
@@ -69,7 +86,18 @@ const FinancialGoals = ({ className, financialGoals, onClick }) => {
 
   return (
     <div className={financialGoalsClasses}>
-      {isMenuShown && <FinancialMenuOptions onClick={onClick} />}
+      {isMenuShown && (
+        <FinancialMenuOptions onClick={onClick} showEdit={showEditHandler} />
+      )}
+      {isEditShown && (
+        <Modal onClose={hideEditHandler}>
+          <FinancialGoalEditModal
+            editForm={onClick}
+            onClose={hideEditHandler}
+            financialGoals={financialGoalsList}
+          />
+        </Modal>
+      )}
       <div className={classes["header-wrapper"]}>
         <h3 className={classes["financial-goals-header"]}>Financial Goals</h3>
         <IconDotsVertical
