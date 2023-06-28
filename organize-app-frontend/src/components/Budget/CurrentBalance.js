@@ -2,6 +2,7 @@ import classes from "./CurrentBalance.module.css";
 import { IconPlus } from "@tabler/icons-react";
 
 const CurrentBalance = (props) => {
+  const balanceClasses = `${classes["balance-wrapper"]} ${props.className}`;
   const addBalanceHandler = () => {
     props.onClick("balance");
   };
@@ -14,7 +15,7 @@ const CurrentBalance = (props) => {
   const income = props.balance.budget[0].income.slice(1);
 
   return (
-    <div className={classes["balance-wrapper"]}>
+    <div className={balanceClasses}>
       <h3>Current Balance</h3>
       <div className={classes.balance}>
         <div className={classes["balance-amount"]}>

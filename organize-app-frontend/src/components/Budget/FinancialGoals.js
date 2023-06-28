@@ -1,9 +1,15 @@
 import classes from "./FinancialGoals.module.css";
+import { IconDotsVertical } from "@tabler/icons-react";
 
-const FinancialGoals = () => {
+const FinancialGoals = ({ className }) => {
+  const financialGoalsClasses = `${classes["financial-goals-wrapper"]} ${className}`;
+
   return (
-    <div className={classes["financial-goals-wrapper"]}>
-      <h3>Financial Goals</h3>
+    <div className={financialGoalsClasses}>
+      <div className={classes["header-wrapper"]}>
+        <h3 className={classes["financial-goals-header"]}>Financial Goals</h3>
+        <IconDotsVertical className={classes["financial-goals-icon"]} />
+      </div>
     </div>
   );
 };
