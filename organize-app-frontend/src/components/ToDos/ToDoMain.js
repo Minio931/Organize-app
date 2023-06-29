@@ -34,8 +34,7 @@ class Data {
    }
 
    async get() {
-      const userId = JSON.parse(localStorage.getItem('user')).id;
-      const response = await fetch(`${this.url}/${userId}`);
+      const response = await fetch(`${this.url}/${this.userId}`);
       const data = await response.json();
       const tasks = data.message ? [] : data;
       return tasks;
@@ -200,6 +199,7 @@ const ToDoMain = () => {
 
    const deleteTaskHandler = (taskId) => {
       data.delete(taskId).then(() => setRefresh(!refresh));
+      setEditedTask(null);
       hideTaskModalHandler();
    };
 

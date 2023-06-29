@@ -4,20 +4,20 @@ import { useState } from 'react';
 const HabitItem = (props) => {
    const [isDone, setIsDone] = useState(props.isChecked);
    const completeTodaysHabitsHandler = (event) => {
+      const date = new Date();
+      const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+      const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+      const todayDate = `${date.getFullYear()}-${month}-${day}`;
       if (event.target.checked) {
          fetch('http://localhost:3001/habit/complete', {
             method: 'POST',
             headers: {
                'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ habitId: props.id }),
+            body: JSON.stringify({ habitId: props.id, completionDate: todayDate }),
          });
          setIsDone(true);
       } else {
-         const date = new Date();
-         const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-         const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-         const todayDate = `${date.getFullYear()}-${month}-${day}`;
          fetch('http://localhost:3001/habit/deleteComplete', {
             method: 'DELETE',
             headers: {

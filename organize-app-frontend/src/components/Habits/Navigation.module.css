@@ -1,0 +1,39 @@
+.navigation {
+   display: flex;
+   align-items: center;
+   gap: 1rem;
+}
+
+.navigation h2 {
+   padding: 0.5rem 1rem;
+   font-size: 1.5rem;
+   border-radius: var(--border-radius);
+   color: var(--text-color);
+   cursor: pointer;
+   transition: background-color 0.2s;
+}
+
+.navigation h2:hover {
+   background-color: color-mix(in srgb, var(--white), transparent 70%);
+}
+
+.navigation h2 > strong {
+   font-weight: bold;
+}
+
+.spacer {
+   flex-grow: 1;
+}
+
+.button {
+   display: flex;
+   align-items: center;
+   border-radius: 100vw;
+   box-shadow: 4px 4px 10px -3px var(--black-85);
+}
+
+@media (max-width: 1024px) {
+   .navigation h2 {
+      font-size: 1.15rem;
+   }
+}

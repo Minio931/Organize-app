@@ -1,0 +1,22 @@
+.buttons {
+   display: flex;
+   gap: 15px;
+}
+
+.button {
+   height: fit-content;
+   border: none;
+   border-radius: 100%;
+   aspect-ratio: 1 / 1;
+   background-color: var(--white);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   cursor: pointer;
+   transition: background-color 0.2s;
+   box-shadow: 4px 4px 10px -3px var(--black-85);
+}
+
+.button:hover {
+   background-color: color-mix(in srgb, var(--white), var(--black-100) 10%);
+}

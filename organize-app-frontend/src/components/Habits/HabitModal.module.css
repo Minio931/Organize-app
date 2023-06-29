@@ -1,57 +1,58 @@
-.taskModal header {
+.habitModal header {
    display: flex;
    flex-direction: column;
    gap: 1em;
    padding: 0.5em 0;
 }
 
-.taskModal header > h2 {
+.habitModal header > h2 {
    font-size: var(--header-2-font-size);
 }
 
-.taskModal header > p {
+.habitModal header > p {
    line-height: 1.25em;
 }
 
-.taskModal form {
+.habitModal form {
    display: flex;
    flex-direction: column;
    gap: 1em;
    padding: 0.5em 0;
 }
 
-.taskModal form input,
-.taskModal form select,
-.taskModal form textarea {
+.habitModal form input {
    padding: 0.5em;
    border-radius: var(--border-radius);
    border: 1px solid var(--primary-color);
 }
 
-.taskModal form textarea {
-   height: 5em;
-   resize: none;
-}
-
-.taskModal form input:focus,
-.taskModal form select:focus,
-.taskModal form textarea:focus {
+.habitModal form input:focus {
    outline-color: var(--primary-color);
 }
 
-.taskModal form > .form--section {
+.habitModal form > .form--section {
    display: flex;
    gap: 0.5em;
    flex-direction: column;
 }
 
-.taskModal form > .buttons {
+.habitModal form > .form--section > .input--suffix {
+   display: flex;
+   align-items: center;
+   gap: 0.5em;
+}
+
+.habitModal form > .form--section > .input--suffix > input {
+   flex-grow: 1;
+}
+
+.habitModal form > .buttons {
    display: flex;
    justify-content: center;
    gap: 0.5em;
 }
 
-.taskModal form > .buttons > .delete {
+.habitModal form > .buttons > .delete {
    padding: 0.5rem;
    display: flex;
    align-items: center;
@@ -59,6 +60,6 @@
    background-color: #ff4757;
 }
 
-.taskModal form > .buttons > .delete:hover {
+.habitModal form > .buttons > .delete:hover {
    background-color: color-mix(in srgb, #ff4757, transparent 20%);
 }
