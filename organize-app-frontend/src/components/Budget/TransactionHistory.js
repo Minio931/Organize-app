@@ -41,7 +41,7 @@ const TransactionHistoryItem = ({ name, status, date, amount, id, edit }) => {
 };
 const TransactionHistory = ({ className, transactions, onClick }) => {
   const [transactionList, setTransactionList] = useState(
-    transactions.transactions
+    transactions.transactions ? transactions.transactions : []
   );
 
   const addTransactionHandler = () => {

@@ -25,6 +25,9 @@ ChartJS.register(
 );
 
 const ExpensesChart = ({ className, transactions }) => {
+  const transaction = transactions.transactions
+    ? transactions.transactions
+    : [];
   const transactionData = [];
   const labels = [];
   const preprocessTransactionData = (transactions) => {
@@ -38,7 +41,7 @@ const ExpensesChart = ({ className, transactions }) => {
     });
   };
 
-  preprocessTransactionData(transactions.transactions);
+  preprocessTransactionData(transaction);
   const data = {
     labels,
     datasets: [

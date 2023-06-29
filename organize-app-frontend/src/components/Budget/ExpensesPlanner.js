@@ -50,7 +50,9 @@ export const ExpensesData = ({ balance, onClick }) => {
 };
 
 const ExpensesPlanner = ({ className, onClick, categories, balance }) => {
-  const category = categories.budgetCategories;
+  const category = categories.budgetCategories
+    ? categories.budgetCategories
+    : [];
   const addCategoryHandler = () => {
     onClick({
       type: "category",
