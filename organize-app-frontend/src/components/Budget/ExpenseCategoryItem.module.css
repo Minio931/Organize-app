@@ -11,6 +11,11 @@
   height: 5rem;
   box-shadow: inset 0px -2px 8px -2px rgba(66, 68, 90, 1);
 }
+.category-wrapper:hover {
+  cursor: pointer;
+  background: rgba(236, 234, 234, 0.945);
+  cursor: pointer;
+}
 .category-header {
   display: flex;
   flex-direction: row;

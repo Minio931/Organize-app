@@ -55,7 +55,18 @@ const BudgetMain = () => {
         </Await>
       </Suspense>
 
-      <ExpensesChart a="a" className={classes["expesnse-chart"]} />
+      <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
+        <Await resolve={transactions}>
+          {(transactions) => (
+            <ExpensesChart
+              a="a"
+              className={classes["expesnse-chart"]}
+              transactions={transactions}
+            />
+          )}
+        </Await>
+      </Suspense>
+
       <Suspense fallback={<p style={{ textAlign: "center" }}>Loading...</p>}>
         <Await resolve={transactions}>
           {(transactions) => (
@@ -75,6 +86,7 @@ const BudgetMain = () => {
               className={classes["expenses-planner"]}
               onClick={showFormHandler}
               categories={categories}
+              balance={balance}
             />
           )}
         </Await>

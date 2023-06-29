@@ -77,6 +77,7 @@
   border-bottom: 1px solid var(--black-50);
 }
 .transaction-history-item {
+  cursor: pointer;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -88,6 +89,10 @@
   font-size: var(--text-font-size);
   color: var(--black-85);
   border-bottom: 1px solid var(--black-50);
+}
+.transaction-history-item:hover {
+  background-color: var(--black-25);
+  border-radius: 0.2rem;
 }
 .transaction-history-item-date {
   color: var(--black-50);

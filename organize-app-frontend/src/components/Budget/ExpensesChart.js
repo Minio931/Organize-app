@@ -24,17 +24,21 @@ ChartJS.register(
   Filler
 );
 
-const ExpensesChart = ({ className, a }) => {
-  const labels = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday",
-  ];
+const ExpensesChart = ({ className, transactions }) => {
+  const transactionData = [];
+  const labels = [];
+  const preprocessTransactionData = (transactions) => {
+    transactions.map((transaction) => {
+      transactionData.push(
+        parseInt(transaction.value.slice(1).replaceAll(",", ""))
+      );
+      labels.push(
+        new Date(transaction.transaction_date).toUTCString().slice(0, 10)
+      );
+    });
+  };
 
+  preprocessTransactionData(transactions.transactions);
   const data = {
     labels,
     datasets: [

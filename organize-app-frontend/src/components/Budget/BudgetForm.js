@@ -6,6 +6,7 @@ import { IconTrash } from "@tabler/icons-react";
 
 const BudgetForm = ({ config, onClose, categories }) => {
   let categoriestList = categories.budgetCategories;
+  const navigate = useNavigate();
 
   let formPayload = config.payload;
 
@@ -82,8 +83,34 @@ const BudgetForm = ({ config, onClose, categories }) => {
     </>
   );
 
+  formPayload = config.category ? config.category : formPayload;
+
+  const deleteCategoryHandler = () => {
+    console.log(formPayload);
+    fetch(`http://localhost:3001/budget/category/delete/${formPayload.id}`, {
+      method: "DELETE",
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Category deleted");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    navigate(0);
+  };
   let categoryForm = (
     <>
+      {config.request === "PUT" && (
+        <Button
+          className={classes["delete-icon"]}
+          onClick={deleteCategoryHandler}
+        >
+          <IconTrash />
+        </Button>
+      )}
       <input type="hidden" name="type" value={config.type} />
       <input
         type="hidden"
@@ -111,7 +138,7 @@ const BudgetForm = ({ config, onClose, categories }) => {
           className={classes["form-input"]}
           id="actualStatus"
           name="actualStatus"
-          defaultValue={formPayload ? formPayload.actualStatus : 0}
+          defaultValue={formPayload ? formPayload.expenses : 0}
         />
       </div>
       <div className={classes["form-group"]}>
@@ -130,7 +157,11 @@ const BudgetForm = ({ config, onClose, categories }) => {
         <label className={classes["form-label"]} htmlFor="planned">
           Choose Icon Type:
         </label>
-        <select name="icon" className={classes["select"]}>
+        <select
+          name="icon"
+          className={classes["select"]}
+          defaultValue={formPayload ? formPayload.icon : ""}
+        >
           <option value="IconDeviceGamePad">Entertainment</option>
           <option value="IconShoppingCart">Shopping</option>
           <option value="IconActivity">Health &amp; Fitness</option>
@@ -145,15 +176,18 @@ const BudgetForm = ({ config, onClose, categories }) => {
         <label className={classes["form-label"]} htmlFor="color">
           Choose Color:
         </label>
-        <input type="color" name="color" className={classes["color"]} />
+        <input
+          type="color"
+          name="color"
+          defaultValue={formPayload ? formPayload.color : ""}
+          className={classes["color"]}
+        />
       </div>
     </>
   );
 
-  formPayload = config.transaction;
-  console.log(config);
+  formPayload = config.transaction ? config.transaction : formPayload;
 
-  const navigate = useNavigate();
   const transactionDeleteHandler = () => {
     fetch(
       `http://localhost:3001/budget//transaction/delete/${formPayload.id}`,
@@ -273,6 +307,9 @@ const BudgetForm = ({ config, onClose, categories }) => {
 };
 
 export async function action({ request, params }) {
+  function refreshPage() {
+    window.location.reload(false);
+  }
   const data = await request.formData();
   const userId = JSON.parse(localStorage.getItem("user")).id;
   const type = data.get("type");
@@ -302,6 +339,7 @@ export async function action({ request, params }) {
 
     const result = await response.json();
 
+    refreshPage();
     return result;
   }
   if (type === "financialGoal" && request.method === "PUT") {
@@ -329,7 +367,7 @@ export async function action({ request, params }) {
     }
 
     const result = await response.json();
-
+    refreshPage();
     return result;
   }
   if ((type === "balance" || type === "income") && request.method === "PATCH") {
@@ -354,7 +392,7 @@ export async function action({ request, params }) {
     }
 
     const result = await response.json();
-
+    refreshPage();
     return result;
   }
 
@@ -384,7 +422,7 @@ export async function action({ request, params }) {
     }
 
     const result = await response.json();
-
+    refreshPage();
     return result;
   }
 
@@ -412,7 +450,7 @@ export async function action({ request, params }) {
     }
 
     const result = await response.json();
-
+    refreshPage();
     return result;
   }
 
@@ -443,10 +481,39 @@ export async function action({ request, params }) {
     }
 
     const result = await response.json();
-
+    refreshPage();
     return result;
   }
+  if (type === "transaction" && request.method === "PUT") {
+    const transaction = {
+      transactionId: parseInt(data.get("id")),
+      name: data.get("name"),
+      value: data.get("amount"),
+      transactionDate: data.get("date"),
+      status: data.get("status"),
+      budgetCategoryId: parseInt(data.get("category")),
+      userId,
+    };
 
+    const response = await fetch(
+      "http://localhost:3001/budget/transaction/edit",
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(transaction),
+      }
+    );
+
+    if (!response.ok) {
+      return json({ message: "Something went wrong", status: 500 });
+    }
+
+    const result = await response.json();
+    refreshPage();
+    return result;
+  }
   return json({ message: "Something went wrong", status: 500 });
 }
 

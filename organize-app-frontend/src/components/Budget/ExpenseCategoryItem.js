@@ -10,7 +10,15 @@ import { IconBusStop } from "@tabler/icons-react";
 import { IconGift } from "@tabler/icons-react";
 import { IconPizza } from "@tabler/icons-react";
 
-const ExpeseCategoryItem = ({ category, expenses, planned, icon, color }) => {
+const ExpeseCategoryItem = ({
+  id,
+  category,
+  expenses,
+  planned,
+  icon,
+  color,
+  EditCategoryHandler,
+}) => {
   // icon = React.cloneElement(icon, { color: color });
 
   let iconMap = {
@@ -24,8 +32,24 @@ const ExpeseCategoryItem = ({ category, expenses, planned, icon, color }) => {
     IconPizza: <IconPizza color={color} />,
   };
 
+  const editCategoryHandler = () => {
+    EditCategoryHandler({
+      type: "category",
+      title: "Edit Category",
+      request: "PUT",
+      category: {
+        name: category,
+        planned: planned,
+        icon: icon,
+        color: color,
+        expenses: expenses,
+        id: id,
+      },
+    });
+  };
+
   return (
-    <div className={classes["category-wrapper"]}>
+    <div className={classes["category-wrapper"]} onClick={editCategoryHandler}>
       <div className={classes["category-header"]}>
         <CircleProgress progress={50} color={color} />
         <div className={classes["category-icon"]}>{iconMap[icon]}</div>
