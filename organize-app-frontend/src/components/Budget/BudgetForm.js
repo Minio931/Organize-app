@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { IconTrash } from "@tabler/icons-react";
 
 const BudgetForm = ({ config, onClose, categories }) => {
-  let categoriestList = categories.budgetCategories;
+  let categoriestList = categories.budgetCategories
+    ? categories.budgetCategories
+    : [];
   const navigate = useNavigate();
 
   let formPayload = config.payload;
