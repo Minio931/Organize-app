@@ -1,0 +1,103 @@
+.form-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.form-header {
+  font-size: var(--header-3-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+  padding: 1rem;
+}
+.form-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem;
+}
+.form-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+.form-divider {
+  width: 100%;
+  height: 0.1rem;
+  background-color: var(--primary-150);
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.form-group label {
+  font-size: var(--text-font-size);
+  color: var(--black-50);
+  font-weight: bold;
+  width: 100%;
+}
+
+.form-group input {
+  padding: 0.25em;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+
+  width: 100%;
+  height: 1rem;
+
+  font-size: var(--text-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+  background-color: var(--white);
+  box-shadow: 0px 0px 2px 0px var(--black-100);
+}
+
+.form-group input:focus {
+  outline: none;
+  border: 1px solid var(--primary-150);
+}
+
+.form-action {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.close-button {
+  background-color: var(--black-50);
+}
+
+.success-message {
+  color: rgb(1, 151, 1);
+}
+.select {
+  width: 100%;
+
+  border-radius: var(--border-radius);
+  border: 1px solid var(--primary-color);
+  height: 2rem;
+  font-size: var(--text-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+  background-color: var(--white);
+  box-shadow: 0px 0px 2px 0px var(--black-100);
+}
+
+.form-group .color {
+  width: 100%;
+  height: 3rem;
+}
+
+.delete-icon {
+  background-color: red;
+}
+.delete-icon:hover {
+  background-color: rgba(250, 41, 41, 0.911);
+}

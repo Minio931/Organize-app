@@ -1,0 +1,72 @@
+.expenses-planner-wrapper {
+  background-color: var(--white);
+  width: 35rem;
+  border-radius: 1.5rem;
+  position: relative;
+}
+.expenses-planner-header {
+  font-size: var(--header-3-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+  padding: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.planned-money {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 1rem;
+}
+.title {
+  font-size: var(--text-font-size);
+  color: var(--black-50);
+  font-weight: bold;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+.amount {
+  font-size: var(--text-font-size);
+  color: var(--black-100);
+  font-weight: bold;
+}
+.add-category {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: rgb(239, 239, 239);
+  background: linear-gradient(
+    40deg,
+    rgba(239, 239, 239, 1) 0%,
+    rgba(253, 251, 255, 1) 100%
+  );
+  height: 5rem;
+  box-shadow: inset 0px -2px 8px -2px rgba(66, 68, 90, 1);
+  font-size: var(--header-3-font-size);
+  font-weight: bold;
+}
+.add-category:hover {
+  cursor: pointer;
+  background: rgba(236, 234, 234, 0.945);
+}
+.expenses-edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--black-85);
+}
+.expenses-edit:hover {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--black-100);
+}

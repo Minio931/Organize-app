@@ -9,6 +9,7 @@
     rgba(95, 83, 207, 1) 100%
   );
   padding: 1rem;
+  position: relative;
 }
 .header-wrapper {
   display: flex;
@@ -34,4 +35,101 @@
 }
 .financial-goals-icon:hover {
   color: var(--primary-25);
+}
+.financial-goal-item-wrapper {
+  width: 100%;
+}
+.progress-bar {
+  width: 100%;
+  height: 0.5rem;
+  margin-top: 0.2rem;
+}
+.financial-goal-item-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  color: var(--white);
+}
+.divider {
+  color: var(--black-25);
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+.current {
+  font-weight: bold;
+}
+.goal {
+  font-weight: bold;
+}
+.financial-goals-container {
+  height: 70%;
+
+  overflow: auto;
+}
+
+.financial-goals-container::-webkit-scrollbar {
+  width: 0.3rem;
+  border-radius: 0.5rem;
+}
+.financial-goals-container::-webkit-scrollbar-track {
+  background-color: var(--white);
+  border-radius: 1rem;
+}
+.financial-goals-container::-webkit-scrollbar-thumb {
+  background-color: var(--primary-color);
+  border-radius: 0.5rem;
+  margin: 0.2rem;
+}
+.financial-menu-options-wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: space-around;
+
+  right: 2.5rem;
+  top: 1rem;
+  background-color: var(--white);
+  width: 5rem;
+  height: 4rem;
+  border-radius: 1rem;
+}
+.financial-menu-option {
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--black-85);
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.financial-menu-option:nth-of-type(1) {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.financial-menu-option:nth-of-type(3) {
+  border-top-left-radius: 0%;
+  border-top-right-radius: 0%;
+}
+
+.financial-menu-option:hover {
+  color: var(--white);
+  background: rgb(249, 107, 242);
+  background: linear-gradient(
+    108deg,
+    rgba(249, 107, 242, 1) 0%,
+    rgba(95, 83, 207, 1) 100%
+  );
+}
+.divider-options {
+  width: 100%;
+  height: 2px;
+  background-color: var(--black-25);
 }

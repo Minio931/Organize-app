@@ -4,11 +4,19 @@ import { IconPlus } from "@tabler/icons-react";
 const CurrentBalance = (props) => {
   const balanceClasses = `${classes["balance-wrapper"]} ${props.className}`;
   const addBalanceHandler = () => {
-    props.onClick("balance");
+    props.onClick({
+      type: "balance",
+      title: "Set Balance",
+      request: "PATCH",
+    });
   };
 
   const addIncomeHandler = () => {
-    props.onClick("income");
+    props.onClick({
+      type: "income",
+      title: "Set Income",
+      request: "PATCH",
+    });
   };
 
   const balance = props.balance.budget[0].balance.slice(1);

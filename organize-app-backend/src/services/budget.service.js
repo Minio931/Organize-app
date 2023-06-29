@@ -39,6 +39,7 @@ const updateIncome = async (budget) => {
 };
 
 const editBudget = async (budget) => {
+  console.log(budget);
   const { userId, balance, income, expenses, planned } = budget;
   const result = await db.query(
     "UPDATE budget SET balance = $1, income = $2, expenses = $3, planned = $4 WHERE user_id = $5 RETURNING *",
@@ -76,11 +77,11 @@ const getBudgetCategories = async (userId) => {
 };
 
 const createBudgetCategory = async (budgetCategory) => {
-  const { userId, name, actualStatus, planned } = budgetCategory;
+  const { userId, name, actualStatus, planned, icon, color } = budgetCategory;
 
   const result = await db.query(
-    "INSERT INTO budget_categories (user_id, name, actual_status, planned) VALUES ($1, $2, $3, $4) RETURNING *",
-    [userId, name, actualStatus, planned]
+    "INSERT INTO budget_categories (user_id, name, actual_status, planned, icon, color) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+    [userId, name, actualStatus, planned, icon, color]
   );
 
   return { message: `A new budget category has been added: ${result.rows[0]}` };
