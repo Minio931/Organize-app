@@ -186,6 +186,62 @@ const BudgetForm = ({ config, onClose, categories }) => {
     </>
   );
 
+  formPayload = config.balance ? config.balance : formPayload;
+
+  const expensesForm = (
+    <>
+      <input type="hidden" name="type" value={config.type} />
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="amount">
+          balance
+        </label>
+        <input
+          className={classes["form-input"]}
+          type="number"
+          id="amount"
+          name="balance"
+          defaultValue={formPayload ? formPayload.balance : ""}
+        />
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="income">
+          income
+        </label>
+        <input
+          className={classes["form-input"]}
+          type="number"
+          id="income"
+          name="income"
+          defaultValue={formPayload ? formPayload.income : ""}
+        />
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="expenses">
+          expenses
+        </label>
+        <input
+          className={classes["form-input"]}
+          type="number"
+          id="expenses"
+          name="expenses"
+          defaultValue={formPayload ? formPayload.expenses : ""}
+        />
+      </div>
+      <div className={classes["form-group"]}>
+        <label className={classes["form-label"]} htmlFor="planned">
+          planned
+        </label>
+        <input
+          className={classes["form-input"]}
+          type="number"
+          id="planned"
+          name="planned"
+          defaultValue={formPayload ? formPayload.planned : ""}
+        />
+      </div>
+    </>
+  );
+
   formPayload = config.transaction ? config.transaction : formPayload;
 
   const transactionDeleteHandler = () => {
@@ -277,6 +333,7 @@ const BudgetForm = ({ config, onClose, categories }) => {
     </>
   );
 
+  console.log(config.type);
   return (
     <Form method={config.request}>
       <div className={classes["form-wrapper"]}>
@@ -290,6 +347,7 @@ const BudgetForm = ({ config, onClose, categories }) => {
             balanceForm}
           {config.type === "category" && categoryForm}
           {config.type === "transaction" && transactionForm}
+          {config.type === "expenses" && expensesForm}
           <div className={classes["form-action"]}>
             <Button type="submit">Submit</Button>
             <Button
@@ -511,6 +569,35 @@ export async function action({ request, params }) {
     }
 
     const result = await response.json();
+    refreshPage();
+    return result;
+  }
+  if (type === "expenses" && request.method === "PUT") {
+    const userId = JSON.parse(localStorage.getItem("user")).id;
+    const expense = {
+      userId,
+      income: data.get("income"),
+      expenses: data.get("expenses"),
+      balance: data.get("balance"),
+      planned: data.get("planned"),
+    };
+
+    const response = await fetch("http://localhost:3001/budget/edit", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(expense),
+    });
+
+    console.log(response);
+
+    if (!response.ok) {
+      return json({ message: "Something went wrong", status: 500 });
+    }
+
+    const result = await response.json();
+
     refreshPage();
     return result;
   }

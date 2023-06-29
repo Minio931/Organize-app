@@ -39,6 +39,7 @@ const updateIncome = async (budget) => {
 };
 
 const editBudget = async (budget) => {
+  console.log(budget);
   const { userId, balance, income, expenses, planned } = budget;
   const result = await db.query(
     "UPDATE budget SET balance = $1, income = $2, expenses = $3, planned = $4 WHERE user_id = $5 RETURNING *",

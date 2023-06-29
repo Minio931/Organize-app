@@ -2,6 +2,7 @@
   background-color: var(--white);
   width: 35rem;
   border-radius: 1.5rem;
+  position: relative;
 }
 .expenses-planner-header {
   font-size: var(--header-3-font-size);
@@ -53,4 +54,19 @@
 .add-category:hover {
   cursor: pointer;
   background: rgba(236, 234, 234, 0.945);
+}
+.expenses-edit {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--black-85);
+}
+.expenses-edit:hover {
+  background: none;
+  border: none;
+  box-shadow: none;
+  color: var(--black-100);
 }

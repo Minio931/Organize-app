@@ -1,18 +1,39 @@
 import ExpeseCategoryItem from "./ExpenseCategoryItem";
 import classes from "./ExpensesPlanner.module.css";
-import { IconPlus, IconShoppingCart } from "@tabler/icons-react";
+import { IconEdit, IconPlus, IconShoppingCart } from "@tabler/icons-react";
 import { Suspense } from "react";
 import { Await } from "react-router-dom";
+import Button from "../UI/Button";
 
-export const ExpensesData = ({ balance }) => {
+export const ExpensesData = ({ balance, onClick }) => {
   const balanceAmount = balance.budget[0].balance.slice(1).replaceAll(",", "");
   const expensesAmount = balance.budget[0].expenses
     .slice(1)
     .replaceAll(",", "");
   const plannedAmount = balance.budget[0].planned.slice(1).replaceAll(",", "");
+  const incomeAmount = balance.budget[0].income.slice(1).replaceAll(",", "");
+  const editBalanceHandler = () => {
+    onClick({
+      type: "expenses",
+      title: "Edit Balance",
+      request: "PUT",
+      balance: {
+        balance: balanceAmount,
+        expenses: expensesAmount,
+        planned: plannedAmount,
+        income: incomeAmount,
+      },
+    });
+  };
   return (
     <>
       <div className={classes["container"]}>
+        <Button
+          onClick={editBalanceHandler}
+          className={classes["expenses-edit"]}
+        >
+          <IconEdit />
+        </Button>
         <div className={classes["title"]}>Balance</div>
         <div className={classes["amount"]}>{balanceAmount}zł </div>
       </div>
@@ -43,11 +64,12 @@ const ExpensesPlanner = ({ className, onClick, categories, balance }) => {
   return (
     <div className={expensesPlannerClasses}>
       <h3 className={classes["expenses-planner-header"]}>Planned Expenses</h3>
+
       <div className={classes["planned-money"]}>
         <Suspense fallback={<div>Loading...</div>}>
           <Await resolve={balance}>
             {(balance) => {
-              return <ExpensesData balance={balance} />;
+              return <ExpensesData balance={balance} onClick={onClick} />;
             }}
           </Await>
         </Suspense>
