@@ -47,11 +47,12 @@ const getHabit = async (habitId) => {
 };
 
 const deleteHabit = async (habitId) => {
-   const result = await db.query('DELETE FROM habits WHERE id = $1 RETURNING *', [habitId]);
-   if (result.rows.length === 0) {
+   const result = await db.query('DELETE FROM "habitsCompletionDates" WHERE habit_id = $1 RETURNING *', [habitId]);
+   const result2 = await db.query('DELETE FROM habits WHERE id = $1 RETURNING *', [habitId]);
+   if (result.rows.length === 0 && result2.rows.length === 0) {
       throw new NotFoundError('Habit not found');
    }
-   return { message: `Habit has been deleted: ${result.rows[0]}` };
+   return { message: `Habit has been deleted: ${result2.rows[0]}` };
 };
 
 const completeHabit = async (habit) => {
@@ -60,16 +61,16 @@ const completeHabit = async (habit) => {
       'INSERT INTO "habitsCompletionDates" (habit_id, completion_date) VALUES ($1, $2) RETURNING *',
       [habitId, completionDate],
    );
+   console.log('Complete', habitId, completionDate);
    return result.rows[0];
 };
-const deleteCompletionDate = async (habit) => {)
+const deleteCompletionDate = async (habit) => {
    const { habitId, completionDate } = habit;
    const result = await db.query(
       'DELETE FROM "habitsCompletionDates" WHERE habit_id = $1 AND completion_date = $2 RETURNING *',
       [habitId, completionDate],
    );
-   console.log(habitId, 'habitId');
-   console.log(completionDate, 'completionDate');
+   console.log('Uncomplete', habitId, completionDate);
    return result.rows[0];
 };
 

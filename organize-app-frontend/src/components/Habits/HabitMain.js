@@ -73,9 +73,11 @@ const getHabitsForWeek = (habits, completionDates, week, type) => {
          completedDates: [],
       };
    });
-   const weekCompletedTasks = completionDates.filter(
-      (date) => date.completionDate >= week.start && date.completionDate <= week.end,
-   );
+   const weekCompletedTasks = completionDates.filter((date) => {
+      const completionDate = new Date(date.completionDate);
+      completionDate.setHours(2);
+      return completionDate >= week.start && completionDate <= week.end;
+   });
    weekCompletedTasks.forEach((date) => {
       const habitIndex = newWeekHabits.findIndex((habit) => habit.id === date.habitId);
       if (habitIndex !== -1) {
@@ -85,23 +87,56 @@ const getHabitsForWeek = (habits, completionDates, week, type) => {
    return newWeekHabits;
 };
 
+const dateDiffInDays = (date1, date2) => {
+   const utc1 = Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate());
+   const utc2 = Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate());
+
+   return Math.floor((utc2 - utc1) / (1000 * 60 * 60 * 24));
+};
+
 const getFillPercent = (habits, week, type) => {
-   const totalHabits = habits.reduce((acc, habit) => {
-      if (habit.startDate <= week.start) {
-         return acc + 7;
-      } else {
-         const difference = Math.round((week.end - habit.startDate) / (1000 * 60 * 60 * 24));
-         return acc + difference;
+   console.log(habits);
+   let completedDays = 0;
+   let possibleDays = 0;
+   habits.forEach((habit) => {
+      const days = {
+         monday: { date: null, isPossible: null, isCompleted: null },
+         tuesday: { date: null, isPossible: null, isCompleted: null },
+         wednesday: { date: null, isPossible: null, isCompleted: null },
+         thursday: { date: null, isPossible: null, isCompleted: null },
+         friday: { date: null, isPossible: null, isCompleted: null },
+         saturday: { date: null, isPossible: null, isCompleted: null },
+         sunday: { date: null, isPossible: null, isCompleted: null },
+      };
+      const weekStart = new Date(week.start);
+      for (const day in days) {
+         days[day].date = new Date(weekStart);
+         if (type === 'current' && habit.name === 'test') {
+            console.log('1', dateDiffInDays(new Date(habit.startDate), days[day].date));
+            console.log('2', dateDiffInDays(new Date(week.start), days[day].date));
+         }
+         days[day].isPossible =
+            dateDiffInDays(new Date(habit.startDate), days[day].date) >= 0 &&
+            dateDiffInDays(new Date(habit.startDate), days[day].date) % habit.frequency === 0;
+         days[day].isCompleted = habit.completedDates.find((date) => {
+            const dateObj = new Date(date);
+            dateObj.setHours(2);
+            return dateObj.toISOString().slice(0, 10) === days[day].date.toISOString().slice(0, 10);
+         })
+            ? true
+            : false;
+         weekStart.setDate(weekStart.getDate() + 1);
       }
-   }, 0);
-   const totalCompleted = habits.reduce((acc, habit) => {
-      return acc + habit.completedDates.length;
-   }, 0);
-   if (totalHabits === 0) {
-      return 0;
+      if (type === 'current' && habit.name === 'test') console.log(days);
+      completedDays += Object.values(days).filter((day) => day.isCompleted).length;
+      possibleDays += Object.values(days).filter((day) => day.isPossible).length;
+   });
+   if (type === 'current') {
+      console.log(`${type}-completedDays-${completedDays}}`);
+      console.log(`${type}-possibleDays-${possibleDays}}`);
    }
-   const fillPercent = Math.round((totalCompleted / totalHabits) * 100);
-   return fillPercent;
+   if (possibleDays === 0) return 0;
+   else return Math.round((completedDays / possibleDays) * 100);
 };
 
 class Data {
@@ -196,9 +231,10 @@ const HabitMain = () => {
    const [refresh, setRefresh] = useState(false);
 
    useEffect(() => {
-      console.log('Shown habits: ', shownHabits);
-      console.log('Previous week habits: ', previousWeekHabits);
-   }, [shownHabits, previousWeekHabits]);
+      console.log(`shownHabits:`, shownHabits);
+      console.log(`previousWeekHabits:`, previousWeekHabits);
+      console.log(`fillPercent:`, fillPercent);
+   }, [shownHabits, previousWeekHabits, fillPercent]);
 
    useEffect(() => {
       loader
@@ -293,7 +329,6 @@ const HabitMain = () => {
    };
 
    const editHabitHandler = (habit) => {
-      console.log('Edited habit: ', habit);
       loader.edit(habit).then(() => setRefresh(!refresh));
       setEditedHabit(null);
       hideHabitModals();
@@ -308,9 +343,9 @@ const HabitMain = () => {
    const doneHabitHandler = (habitId, completionDate, isCompleted) => {
       const habit = { habitId, completionDate };
       if (isCompleted) {
-         loader.complete(habit).then(() => setRefresh(!refresh));
-      } else {
          loader.uncomplete(habit).then(() => setRefresh(!refresh));
+      } else {
+         loader.complete(habit).then(() => setRefresh(!refresh));
       }
    };
 

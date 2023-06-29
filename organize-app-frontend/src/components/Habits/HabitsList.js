@@ -65,7 +65,6 @@ const Habit = ({ id, userId, name, goal, startDate, frequency, completedDates, o
          : false;
       weekStart.setDate(weekStart.getDate() + 1);
    }
-   console.log(name, days);
 
    const possibleDaysCount = Object.values(days).filter((day) => day.isPossible).length;
    const completedDaysCount = Object.values(days).filter((day) => day.isCompleted).length;
